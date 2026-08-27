@@ -1,0 +1,19 @@
+---
+description: Two-way sync with GitHub repo trtr04/On_Cue
+alwaysApply: true
+---
+
+# GitHub 仓库同步
+
+本项目远程仓库固定为 [trtr04/On_Cue](https://github.com/trtr04/On_Cue)。
+
+## 本地 → GitHub（默认）
+
+- 完成功能、文档或修复后，把变更提交并推送到 `origin`（`main`）。
+- 远程地址：`https://github.com/trtr04/On_Cue.git`
+- 不要 force push，不要改 git config。
+
+## GitHub → 本地（仅在用户明确要求时）
+
+- 只有用户明确说「从仓库拉下来」「同步远程改进」「导入仓库内容」时，才执行 `git pull` / fetch + merge。
+- 不要自动覆盖本地未提交的工作。有冲突时先停下来说明，再按用户指令处理。
