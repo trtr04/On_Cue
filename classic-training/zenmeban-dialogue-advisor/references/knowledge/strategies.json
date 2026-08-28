@@ -1,0 +1,860 @@
+[
+  {
+    "id": "strategy-gentle-boundary",
+    "version": "0.2",
+    "name": "温和表达边界",
+    "goal": "通过“温和表达边界”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“温和表达边界”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "relationship-savvy",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-clear-boundary",
+    "version": "0.2",
+    "name": "清晰说明条件",
+    "goal": "通过“清晰说明条件”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“清晰说明条件”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-clarify-intent",
+    "version": "0.2",
+    "name": "先澄清目标和事实",
+    "goal": "通过“先澄清目标和事实”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“先澄清目标和事实”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-topic-exit",
+    "version": "0.2",
+    "name": "结束重复消耗",
+    "goal": "通过“结束重复消耗”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“结束重复消耗”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-value-audit",
+    "version": "0.2",
+    "name": "盘点投入回报与风险",
+    "goal": "通过“盘点投入回报与风险”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“盘点投入回报与风险”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "value-exchange",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-position-strengthen",
+    "version": "0.2",
+    "name": "补证据筹码和替代方案",
+    "goal": "通过“补证据筹码和替代方案”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“补证据筹码和替代方案”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "position-operator",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-evidence-record",
+    "version": "0.2",
+    "name": "书面记录事实时间线",
+    "goal": "通过“书面记录事实时间线”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“书面记录事实时间线”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-relationship-repair",
+    "version": "0.2",
+    "name": "承认影响并修复关系",
+    "goal": "通过“承认影响并修复关系”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“承认影响并修复关系”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "relationship-savvy",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-apology-and-repair",
+    "version": "0.2",
+    "name": "直接道歉并给出补救",
+    "goal": "通过“直接道歉并给出补救”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“直接道歉并给出补救”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-humor-redirect",
+    "version": "0.2",
+    "name": "轻松转向同时守边界",
+    "goal": "通过“轻松转向同时守边界”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“轻松转向同时守边界”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "relationship-savvy",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-priority-tradeoff",
+    "version": "0.2",
+    "name": "让决策者确认优先级",
+    "goal": "通过“让决策者确认优先级”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“让决策者确认优先级”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "position-operator",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-written-confirmation",
+    "version": "0.2",
+    "name": "把口头条件转为书面",
+    "goal": "通过“把口头条件转为书面”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“把口头条件转为书面”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-shared-rule",
+    "version": "0.2",
+    "name": "建立双方可执行规则",
+    "goal": "通过“建立双方可执行规则”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“建立双方可执行规则”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-partial-help",
+    "version": "0.2",
+    "name": "提供有限帮助而不全盘接手",
+    "goal": "通过“提供有限帮助而不全盘接手”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“提供有限帮助而不全盘接手”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "relationship-savvy",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-pause-cooldown",
+    "version": "0.2",
+    "name": "约定时点的冷静暂停",
+    "goal": "通过“约定时点的冷静暂停”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“约定时点的冷静暂停”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-safety-exit",
+    "version": "0.2",
+    "name": "优先离开危险现场",
+    "goal": "通过“优先离开危险现场”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“优先离开危险现场”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "安全优先、短句、不鼓励对峙",
+    "perspective": "safety",
+    "risk_levels": [
+      "attention",
+      "urgent"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-trusted-support",
+    "version": "0.2",
+    "name": "联系可信现实支持",
+    "goal": "通过“联系可信现实支持”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“联系可信现实支持”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "安全优先、短句、不鼓励对峙",
+    "perspective": "safety",
+    "risk_levels": [
+      "attention",
+      "urgent"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-emergency-help",
+    "version": "0.2",
+    "name": "联系当地紧急支持",
+    "goal": "通过“联系当地紧急支持”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“联系当地紧急支持”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "安全优先、短句、不鼓励对峙",
+    "perspective": "safety",
+    "risk_levels": [
+      "attention",
+      "urgent"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-professional-referral",
+    "version": "0.2",
+    "name": "转向适当专业人员",
+    "goal": "通过“转向适当专业人员”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“转向适当专业人员”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "安全优先、短句、不鼓励对峙",
+    "perspective": "safety",
+    "risk_levels": [
+      "attention",
+      "urgent"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-negotiate-scope",
+    "version": "0.2",
+    "name": "用范围时间费用做交换",
+    "goal": "通过“用范围时间费用做交换”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“用范围时间费用做交换”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "value-exchange",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-restitution",
+    "version": "0.2",
+    "name": "纠正公开影响并补偿",
+    "goal": "通过“纠正公开影响并补偿”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“纠正公开影响并补偿”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": false,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "strategy-no-exit-needed",
+    "version": "0.2",
+    "name": "继续普通协商无需退出",
+    "goal": "通过“继续普通协商无需退出”让建议符合用户目标、现实代价和当前风险。",
+    "when_to_use": [
+      "当前对话出现对应事实信号",
+      "用户目标与该策略方向一致"
+    ],
+    "when_not_to_use": [
+      "信息不足且有更低成本的澄清方式",
+      "策略会扩大即时安全风险"
+    ],
+    "response_structure": [
+      "先说可观察事实",
+      "再给具体行动",
+      "最后说明边界或后续时点"
+    ],
+    "examples": [
+      "先按事实处理，我建议现在采用“继续普通协商无需退出”，并把下一步说到具体时间和动作。"
+    ],
+    "common_mistakes": [
+      "把推测当事实",
+      "只给漂亮话而没有行动"
+    ],
+    "tone": "自然、具体、符合关系位置",
+    "perspective": "balanced",
+    "risk_levels": [
+      "none",
+      "attention"
+    ],
+    "supports_humor": true,
+    "tradeoffs": [
+      "可能牺牲部分即时和气或效率",
+      "需要根据后续反应调整"
+    ],
+    "source_note": "原创策略总结",
+    "review_status": "pending_human_review"
+  }
+]

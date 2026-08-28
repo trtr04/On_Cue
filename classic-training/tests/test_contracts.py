@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import json
+import io
 import tempfile
 import unittest
+import urllib.error
+import wave
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -41,6 +44,69 @@ from backend.app.repository import (
     content_repository,
 )
 from backend.app.training_service import TrainingService
+from backend.app.transcription_service import TranscriptionService
+
+
+class TranscriptionContractTests(unittest.TestCase):
+    @staticmethod
+    def make_wav(duration_seconds: float, sample_rate: int = 16000) -> bytes:
+        output = io.BytesIO()
+        with wave.open(output, "wb") as wav_file:
+            wav_file.setnchannels(1)
+            wav_file.setsampwidth(2)
+            wav_file.setframerate(sample_rate)
+            wav_file.writeframes(b"\x00\x00" * round(duration_seconds * sample_rate))
+        return output.getvalue()
+
+    def test_browser_wav_contract_uses_16khz_mono_and_reports_duration(self) -> None:
+        audio = self.make_wav(1.25)
+        self.assertEqual(TranscriptionService.wav_duration_ms(audio), 1250)
+
+    def test_browser_wav_contract_rejects_wrong_sample_rate(self) -> None:
+        from fastapi import HTTPException
+
+        with self.assertRaises(HTTPException) as raised:
+            TranscriptionService.wav_duration_ms(self.make_wav(1, sample_rate=8000))
+        self.assertEqual(raised.exception.status_code, 422)
+
+    def test_tencent_uin_is_rejected_before_network_request(self) -> None:
+        from fastapi import HTTPException
+
+        audio = self.make_wav(1)
+        fake_settings = SimpleNamespace(
+            transcription_enabled=True,
+            tencent_app_id="100000000000",
+        )
+        with patch("backend.app.transcription_service.settings", fake_settings):
+            with self.assertRaises(HTTPException) as raised:
+                TranscriptionService().transcribe(audio, "classic_turn")
+        self.assertEqual(raised.exception.status_code, 503)
+        self.assertIn("账号 ID/UIN", raised.exception.detail)
+
+    def test_long_wav_is_split_for_standard_api_limit(self) -> None:
+        chunks = TranscriptionService._split_wav(self.make_wav(180))
+        self.assertEqual(len(chunks), 2)
+        self.assertEqual(TranscriptionService.wav_duration_ms(chunks[0]), 120000)
+        self.assertEqual(TranscriptionService.wav_duration_ms(chunks[1]), 60000)
+        self.assertTrue(all(len(chunk) < 5 * 1024 * 1024 for chunk in chunks))
+
+    def test_flash_404_falls_back_to_standard_recording_api(self) -> None:
+        error = urllib.error.HTTPError("https://example.test", 404, "not found", {}, None)
+        with (
+            patch("backend.app.transcription_service.urllib.request.urlopen", side_effect=error),
+            patch.object(
+                TranscriptionService,
+                "_transcribe_standard",
+                return_value=("这是识别结果", "request-1"),
+            ) as standard,
+        ):
+            text, request_id, provider = TranscriptionService()._transcribe_flash(
+                self.make_wav(1)
+            )
+        standard.assert_called_once()
+        self.assertEqual(text, "这是识别结果")
+        self.assertEqual(request_id, "request-1")
+        self.assertEqual(provider, "tencent_recording")
 
 
 class ContentContractTests(unittest.TestCase):

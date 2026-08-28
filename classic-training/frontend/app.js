@@ -37,6 +37,9 @@ const confirmSceneButton = document.querySelector("#confirm-scene-button");
 const startCustomTrainingButton = document.querySelector("#start-custom-training-button");
 const sceneCard = document.querySelector("#scene-card");
 const incidentSafety = document.querySelector("#incident-safety");
+const recordButtons = [...document.querySelectorAll(".record-button")];
+const classicRecordButton = document.querySelector("#classic-record-button");
+let activeRecording = null;
 
 function setMode(mode) {
   state.mode = mode;
@@ -63,6 +66,9 @@ function setIncidentBusy(isBusy, label = "") {
   incidentAnswerButton.disabled = isBusy;
   confirmSceneButton.disabled = isBusy || state.incidentStatus !== "ready";
   startCustomTrainingButton.disabled = isBusy || state.incidentStatus !== "confirmed";
+  recordButtons
+    .filter((button) => button.dataset.purpose === "incident_narration")
+    .forEach((button) => { button.disabled = isBusy || Boolean(activeRecording); });
   if (label) document.querySelector("#incident-status").textContent = label;
 }
 
@@ -168,6 +174,7 @@ function setBusy(isBusy, label = "") {
   hintButton.disabled = isBusy || !state.sessionId;
   finishButton.disabled = isBusy || !state.sessionId;
   startButton.disabled = isBusy || Boolean(state.sessionId);
+  classicRecordButton.disabled = isBusy || !state.sessionId || Boolean(activeRecording);
   statusText.textContent = label || "所有角色对话均由 LLM 生成";
 }
 
@@ -300,8 +307,9 @@ function activateTrainingSession(data, scenario = null, roleName = "直属领导
 }
 
 async function api(path, options = {}) {
+  const isFormData = options.body instanceof FormData;
   const response = await fetch(path, {
-    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    headers: { ...(isFormData ? {} : { "Content-Type": "application/json" }), ...(options.headers || {}) },
     ...options,
   });
   const raw = await response.text();
@@ -314,6 +322,181 @@ async function api(path, options = {}) {
   if (!response.ok) throw new Error(data.detail || "请求失败，请重试");
   return data;
 }
+
+function setRecordStatus(recording, message) {
+  const status = document.querySelector(`#${recording.button.dataset.status}`);
+  if (status) status.textContent = message;
+}
+
+function mergeAudioChunks(chunks) {
+  const length = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const merged = new Float32Array(length);
+  let offset = 0;
+  chunks.forEach((chunk) => {
+    merged.set(chunk, offset);
+    offset += chunk.length;
+  });
+  return merged;
+}
+
+function resampleTo16k(samples, sourceRate) {
+  if (sourceRate === 16000) return samples;
+  const ratio = sourceRate / 16000;
+  const output = new Float32Array(Math.round(samples.length / ratio));
+  for (let index = 0; index < output.length; index += 1) {
+    const start = Math.floor(index * ratio);
+    const end = Math.min(Math.floor((index + 1) * ratio), samples.length);
+    let total = 0;
+    for (let sourceIndex = start; sourceIndex < end; sourceIndex += 1) total += samples[sourceIndex];
+    output[index] = total / Math.max(1, end - start);
+  }
+  return output;
+}
+
+function encodeWav(samples) {
+  const buffer = new ArrayBuffer(44 + samples.length * 2);
+  const view = new DataView(buffer);
+  const writeText = (offset, value) => {
+    for (let index = 0; index < value.length; index += 1) view.setUint8(offset + index, value.charCodeAt(index));
+  };
+  writeText(0, "RIFF");
+  view.setUint32(4, 36 + samples.length * 2, true);
+  writeText(8, "WAVE");
+  writeText(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, 16000, true);
+  view.setUint32(28, 32000, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeText(36, "data");
+  view.setUint32(40, samples.length * 2, true);
+  let offset = 44;
+  samples.forEach((sample) => {
+    const clipped = Math.max(-1, Math.min(1, sample));
+    view.setInt16(offset, clipped < 0 ? clipped * 0x8000 : clipped * 0x7fff, true);
+    offset += 2;
+  });
+  return new Blob([buffer], { type: "audio/wav" });
+}
+
+function appendTranscript(target, text) {
+  const separator = target.value.trim() ? "\n" : "";
+  const nextValue = `${target.value.trimEnd()}${separator}${text}`;
+  const maximum = Number(target.getAttribute("maxlength")) || Infinity;
+  if (nextValue.length > maximum) throw new Error(`转写后超过输入框 ${maximum} 字限制，请先整理已有文字`);
+  target.value = nextValue;
+  target.dispatchEvent(new Event("input", { bubbles: true }));
+  target.focus();
+}
+
+async function uploadRecording(recording, blob) {
+  const body = new FormData();
+  body.append("purpose", recording.purpose);
+  body.append("audio", blob, `recording-${Date.now()}.wav`);
+  const result = await api("/api/transcriptions", { method: "POST", body });
+  appendTranscript(recording.target, result.text);
+  const seconds = (result.duration_ms / 1000).toFixed(1);
+  setRecordStatus(recording, `已转写 ${seconds} 秒录音，请检查文字${recording.purpose === "classic_turn" ? "后发送" : "；可继续录音追加"}`);
+}
+
+async function stopRecording(reachedLimit = false) {
+  const recording = activeRecording;
+  if (!recording || recording.stopping) return;
+  recording.stopping = true;
+  clearInterval(recording.timer);
+  recording.processor.disconnect();
+  recording.source.disconnect();
+  recording.silentGain.disconnect();
+  recording.stream.getTracks().forEach((track) => track.stop());
+  await recording.audioContext.close();
+  recording.button.classList.remove("recording");
+  recording.button.textContent = "开始录音";
+  recordButtons.forEach((button) => { button.disabled = true; });
+  setRecordStatus(recording, reachedLimit ? "已到时间上限，正在转成文字……" : "正在转成文字……");
+
+  try {
+    const merged = mergeAudioChunks(recording.chunks);
+    const samples = resampleTo16k(merged, recording.sampleRate);
+    await uploadRecording(recording, encodeWav(samples));
+  } catch (error) {
+    setRecordStatus(recording, `转写失败：${error.message}`);
+  } finally {
+    activeRecording = null;
+    setBusy(false);
+    setIncidentBusy(false);
+  }
+}
+
+async function startRecording(button) {
+  if (activeRecording) return;
+  if (!navigator.mediaDevices?.getUserMedia || !window.AudioContext) {
+    const placeholder = { button };
+    setRecordStatus(placeholder, "当前浏览器不支持录音，请使用最新版 Chrome、Edge 或 Safari");
+    return;
+  }
+  button.disabled = true;
+  const placeholder = { button };
+  setRecordStatus(placeholder, "正在请求麦克风权限……");
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+    });
+    const audioContext = new AudioContext();
+    await audioContext.resume();
+    const source = audioContext.createMediaStreamSource(stream);
+    const processor = audioContext.createScriptProcessor(4096, 1, 1);
+    const silentGain = audioContext.createGain();
+    silentGain.gain.value = 0;
+    const recording = {
+      button,
+      target: document.querySelector(`#${button.dataset.target}`),
+      purpose: button.dataset.purpose,
+      limitSeconds: Number(button.dataset.limit),
+      stream,
+      audioContext,
+      source,
+      processor,
+      silentGain,
+      sampleRate: audioContext.sampleRate,
+      chunks: [],
+      startedAt: Date.now(),
+      timer: null,
+      stopping: false,
+    };
+    processor.onaudioprocess = (event) => {
+      recording.chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+    };
+    source.connect(processor);
+    processor.connect(silentGain);
+    silentGain.connect(audioContext.destination);
+    activeRecording = recording;
+    recordButtons.forEach((item) => { item.disabled = item !== button; });
+    button.disabled = false;
+    button.classList.add("recording");
+    button.textContent = "结束录音";
+    const updateTimer = () => {
+      const elapsed = Math.floor((Date.now() - recording.startedAt) / 1000);
+      const remaining = Math.max(0, recording.limitSeconds - elapsed);
+      setRecordStatus(recording, `正在录音 ${String(Math.floor(elapsed / 60)).padStart(2, "0")}:${String(elapsed % 60).padStart(2, "0")} · 剩余 ${remaining} 秒`);
+      if (elapsed >= recording.limitSeconds) stopRecording(true);
+    };
+    updateTimer();
+    recording.timer = setInterval(updateTimer, 250);
+  } catch (error) {
+    button.disabled = false;
+    const denied = error.name === "NotAllowedError";
+    setRecordStatus(placeholder, denied ? "没有麦克风权限，请在浏览器地址栏中允许后重试" : `无法开始录音：${error.message}`);
+  }
+}
+
+recordButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (activeRecording?.button === button) stopRecording(false);
+    else startRecording(button);
+  });
+});
 
 async function loadScenario() {
   try {

@@ -3,9 +3,10 @@ from __future__ import annotations
 import logging
 from uuid import uuid4
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 
 from .config import PROJECT_DIR, settings
 from .models import (
@@ -19,12 +20,15 @@ from .models import (
     ReviewResponse,
     ScenarioSummary,
     TrainingSession,
+    TranscriptionPurpose,
+    TranscriptionResponse,
     TurnRequest,
     TurnResponse,
 )
 from .incident_service import incident_service
 from .custom_training_service import custom_training_service
 from .training_service import training_service
+from .transcription_service import MAX_UPLOAD_BYTES, transcription_service
 
 logger = logging.getLogger(__name__)
 
@@ -68,8 +72,25 @@ def health() -> dict:
         "service": "classic-training",
         "version": "0.1.0",
         "llm_configured": settings.llm_enabled,
+        "transcription_configured": settings.transcription_enabled,
         "storage": "sqlite",
     }
+
+
+@app.post(
+    "/api/transcriptions",
+    response_model=TranscriptionResponse,
+    tags=["speech"],
+)
+async def create_transcription(
+    purpose: TranscriptionPurpose = Form(...),
+    audio: UploadFile = File(...),
+) -> TranscriptionResponse:
+    if audio.content_type not in {"audio/wav", "audio/wave", "audio/x-wav"}:
+        raise HTTPException(status_code=415, detail="只接受网页生成的 WAV 录音。")
+    content = await audio.read(MAX_UPLOAD_BYTES + 1)
+    await audio.close()
+    return await run_in_threadpool(transcription_service.transcribe, content, purpose)
 
 
 @app.get("/api/scenarios", response_model=list[ScenarioSummary], tags=["classic training"])

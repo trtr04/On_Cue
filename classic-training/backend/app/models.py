@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 
 SessionStatus = Literal["active", "completed", "user_ended"]
 IncidentStatus = Literal["clarifying", "ready", "confirmed", "safety_redirect"]
+TranscriptionPurpose = Literal["classic_turn", "incident_narration"]
 
 
 class BriefingFact(BaseModel):
@@ -84,6 +85,17 @@ class CreateSessionResponse(BaseModel):
 
 class TurnRequest(BaseModel):
     message: str = Field(min_length=1, max_length=1200)
+
+
+class TranscriptionResponse(BaseModel):
+    transcription_id: str
+    text: str
+    status: Literal["completed"] = "completed"
+    purpose: TranscriptionPurpose
+    duration_ms: int
+    provider: Literal["tencent_flash", "tencent_recording"] = "tencent_flash"
+    provider_request_id: str | None = None
+    needs_confirmation: bool = True
 
 
 class SimulatorOutput(BaseModel):

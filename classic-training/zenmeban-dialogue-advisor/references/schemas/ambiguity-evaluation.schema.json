@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ambiguity evaluation v0.2",
+  "type": "array",
+  "minItems": 20,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "ambiguity_type",
+      "context",
+      "transcript",
+      "expected_analysis",
+      "scene_read",
+      "voices",
+      "must_not_conclude",
+      "test_mode"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^U[0-9]{2}$"
+      },
+      "ambiguity_type": {
+        "type": "string"
+      },
+      "context": {
+        "type": "string"
+      },
+      "transcript": {
+        "type": "array",
+        "minItems": 3,
+        "items": {
+          "type": "object"
+        }
+      },
+      "expected_analysis": {
+        "type": "object"
+      },
+      "scene_read": {
+        "type": "string",
+        "minLength": 1
+      },
+      "voices": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "A",
+          "B",
+          "C"
+        ],
+        "properties": {
+          "A": {
+            "type": "string",
+            "minLength": 1
+          },
+          "B": {
+            "type": "string",
+            "minLength": 1
+          },
+          "C": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "must_not_conclude": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      },
+      "test_mode": {
+        "const": "static_fictional_evaluation"
+      }
+    }
+  }
+}

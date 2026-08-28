@@ -16,6 +16,7 @@ build/
 
 # logs & OS
 *.log
+.Rhistory
 .DS_Store
 Thumbs.db
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>经典训练 · 领导质问进度</title>
-    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="stylesheet" href="/static/styles.css?v=2" />
   </head>
   <body>
     <main class="app-shell">
@@ -37,6 +37,18 @@
               placeholder="例如：今天开会时，领导突然问我为什么还没完成。我当时很紧张，一直解释技术问题，最后也没说清什么时候能交……"
               required
             ></textarea>
+            <div class="voice-control">
+              <button
+                id="incident-record-button"
+                class="record-button secondary-button"
+                type="button"
+                data-purpose="incident_narration"
+                data-target="incident-description"
+                data-status="incident-record-status"
+                data-limit="180"
+              >开始录音</button>
+              <span id="incident-record-status">单次最多 180 秒，可录多次并追加文字</span>
+            </div>
             <div class="incident-actions">
               <span id="incident-status">文字会保存在你本机的 SQLite 数据库中</span>
               <button id="incident-submit-button" type="submit">帮我整理</button>
@@ -53,7 +65,18 @@
           <form id="incident-answer-form" class="incident-answer-form">
             <label class="sr-only" for="incident-answer">补充回答</label>
             <textarea id="incident-answer" rows="3" maxlength="2500" placeholder="按真实情况回答就好……"></textarea>
-            <button id="incident-answer-button" type="submit">补充这条信息</button>
+            <div class="incident-answer-buttons">
+              <button
+                id="incident-answer-record-button"
+                class="record-button secondary-button"
+                type="button"
+                data-purpose="incident_narration"
+                data-target="incident-answer"
+                data-status="incident-status"
+                data-limit="180"
+              >开始录音</button>
+              <button id="incident-answer-button" type="submit">补充这条信息</button>
+            </div>
           </form>
         </section>
 
@@ -144,6 +167,19 @@
             placeholder="输入你的回答……"
             disabled
           ></textarea>
+          <div class="voice-control">
+            <button
+              id="classic-record-button"
+              class="record-button secondary-button"
+              type="button"
+              data-purpose="classic_turn"
+              data-target="message-input"
+              data-status="classic-record-status"
+              data-limit="90"
+              disabled
+            >开始录音</button>
+            <span id="classic-record-status">单次最多 90 秒，转写后请检查再发送</span>
+          </div>
           <aside class="hint-card" id="hint-card" aria-live="polite" hidden>
             <div class="hint-heading">
               <strong>这一轮可以这样想</strong>
@@ -203,6 +239,6 @@
         document.querySelector("#start-button").disabled = true;
       }
     </script>
-    <script src="/static/app.js" defer></script>
+    <script src="/static/app.js?v=2" defer></script>
   </body>
 </html>
