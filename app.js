@@ -466,7 +466,16 @@ function inferDirection(from, to) {
   return b > a ? "forward" : "back";
 }
 
-function showScreen(id, { scrollToSaved = false, direction } = {}) {
+function revealInbox(behavior = "smooth") {
+  const inbox = document.querySelector("#home-inbox");
+  if (!inbox) return;
+  requestAnimationFrame(() => {
+    const firstSaved = inbox.querySelector(".saved-card");
+    inbox.scrollTo({ top: firstSaved ? firstSaved.offsetTop - 12 : 0, behavior });
+  });
+}
+
+function showScreen(id, { scrollInbox = false, direction } = {}) {
   const next = screens.find((screen) => screen.dataset.screen === id);
   if (!next) return;
   const prev = screens.find((screen) => screen.classList.contains("active"));
@@ -495,9 +504,10 @@ function showScreen(id, { scrollToSaved = false, direction } = {}) {
     if (screen !== next) screen.setAttribute("aria-hidden", "true");
   });
 
-  if (!scrollToSaved) {
+  if (!scrollInbox) {
     next.querySelector(".scroll-page")?.scrollTo({ top: 0 });
     next.scrollTop = 0;
+    document.querySelector("#home-inbox")?.scrollTo({ top: 0 });
   }
 
   currentScreen = id;
@@ -505,9 +515,7 @@ function showScreen(id, { scrollToSaved = false, direction } = {}) {
   guides.forEach((guide) => guide.classList.toggle("active", guide.dataset.jump === tab || guide.dataset.jump === id));
   if (id === "recording") startTimer();
   else stopTimer();
-  if (id === "home" && scrollToSaved) {
-    requestAnimationFrame(() => document.querySelector(".home-scroll").scrollTo({ top: 844, behavior: "smooth" }));
-  }
+  if (id === "home" && scrollInbox) revealInbox();
 }
 
 guides.forEach((guide) => {
@@ -671,7 +679,7 @@ document.addEventListener("click", (event) => {
     case "save-current":
       addRecording({ id: "mentor-plan", title: COPY.savedTitle, meta: COPY.savedMeta });
       showToast(COPY.toastSaved);
-      showScreen("home", { scrollToSaved: true });
+      showScreen("home", { scrollInbox: true });
       break;
     case "save-recording":
       addRecording({
@@ -680,7 +688,7 @@ document.addEventListener("click", (event) => {
         meta: `${COPY.justNow} \u00b7 ${formatTimer(Math.max(elapsed, 18))} \u00b7 ${COPY.stored}`,
       });
       showToast(COPY.toastLiveSaved);
-      showScreen("home", { scrollToSaved: true });
+      showScreen("home", { scrollInbox: true });
       break;
     case "analyze":
       showScreen("analysis");

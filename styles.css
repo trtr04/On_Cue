@@ -179,8 +179,7 @@ button { cursor: pointer; }
   background: var(--ink);
 }
 
-.home-screen { border-radius: 40px; background: var(--brand-soft); }
-.home-scroll { width: 390px; height: 844px; background: var(--brand-soft); }
+.home-screen { border-radius: 40px; background: var(--brand-soft); overflow: hidden; }
 .home-canvas { position: relative; width: 390px; height: 844px; background: var(--brand-soft); }
 .home-bubble { position: absolute; left: 100px; top: 143px; width: 288px; height: 62px; }
 .home-bubble > img { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -212,12 +211,25 @@ button { cursor: pointer; }
 .home-record img { width: 18px; height: 18px; }
 .home-record span { font-size: 15px; font-weight: 700; }
 
-.home-conflict {
+.home-inbox {
   position: absolute;
   left: 27px;
-  top: 562px;
+  top: 536px;
   width: 340px;
-  height: 158px;
+  height: 196px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.home-inbox::-webkit-scrollbar { display: none; }
+.home-conflict {
+  position: relative;
+  width: 340px;
+  flex: none;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -276,17 +288,10 @@ button { cursor: pointer; }
   filter: invert(39%) sepia(42%) saturate(1200%) hue-rotate(295deg) brightness(1.05);
 }
 
-.saved-extension {
-  min-height: 620px;
-  padding: 34px 24px 60px;
-  border-top: 2px solid var(--ink);
-  background: var(--canvas);
-}
-.saved-extension h2 { margin: 0; font-size: 20px; }
-.saved-extension > p { margin: 6px 0 18px; color: var(--text-secondary); font-size: 11px; }
-.saved-list { display: grid; gap: 14px; }
+.saved-list { display: grid; gap: 10px; }
 .saved-card {
-  padding: 14px;
+  flex: none;
+  padding: 14px 16px;
   border: 2px solid var(--ink);
   border-radius: 20px;
   background: var(--brand-soft);
@@ -298,7 +303,6 @@ button { cursor: pointer; }
 .mini-wave i { width: 4px; height: var(--h); border-radius: 99px; background: #cfc7cc; }
 .mini-wave i.hot { background: var(--brand); }
 .saved-card .figma-button { height: 42px; font-size: 12px; }
-.return-top { width: 100%; height: 48px; margin-top: 18px; }
 
 .recording-screen { position: relative; }
 .recording-header { position: absolute; left: 24px; top: 52px; width: 342px; height: 48px; overflow: hidden; }
