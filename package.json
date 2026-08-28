@@ -1,0 +1,18 @@
+{
+  "name": "on-cue-ip-assets",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate:2d": "node scripts/generate-seedream.mjs 2d",
+    "generate:3d": "node scripts/generate-seedream.mjs 3d",
+    "generate:stickers": "node scripts/generate-seedream.mjs stickers",
+    "generate:all": "node scripts/generate-seedream.mjs all"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
+}

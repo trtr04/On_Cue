@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbeaf6" />
+    <title>On Cue Simulator</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="simulator-shell">
+      <aside class="flow-guide">
+        <span class="guide-kicker">INTERACTIVE PROTOTYPE</span>
+        <h1 data-i18n-html="guide-title"></h1>
+        <p data-i18n="guide-copy"></p>
+        <ol>
+          <li class="active" data-guide="home"><b>01</b><span data-i18n="guide-home"></span></li>
+          <li data-guide="recording"><b>02</b><span data-i18n="guide-recording"></span></li>
+          <li data-guide="analysis"><b>03</b><span data-i18n="guide-analysis"></span></li>
+        </ol>
+        <small data-i18n="guide-note"></small>
+      </aside>
+
+      <section class="device-stage">
+        <div class="phone" data-i18n-aria-label="phone-label">
+          <header class="status-bar" aria-hidden="true">
+            <strong>9:41</strong>
+            <span><i class="signal"></i><i class="wifi"></i><i class="battery"></i></span>
+          </header>
+          <div class="dynamic-island" aria-hidden="true"></div>
+
+          <div class="screens">
+            <section class="screen active" data-screen="home">
+              <div class="scroll-page home-page">
+                <header class="hero-copy">
+                  <small data-i18n="hero-kicker"></small>
+                  <h2 data-i18n-html="hero-title"></h2>
+                </header>
+                <div class="mascot" aria-hidden="true">
+                  <span class="ear left"></span><span class="ear right"></span>
+                  <span class="face"><i></i><i></i><b>u</b></span><em></em>
+                </div>
+                <button class="record-entry" data-action="record">
+                  <span></span><b data-i18n="record-cta"></b>
+                </button>
+                <article class="current-card">
+                  <div class="card-heading">
+                    <strong data-i18n="current-title"></strong>
+                    <span data-i18n="pending"></span>
+                  </div>
+                  <p data-i18n="current-quote"></p>
+                  <div class="button-row">
+                    <button class="button secondary" data-action="save-current" data-i18n="save-first"></button>
+                    <button class="button primary" data-action="analyze" data-i18n="analyze"></button>
+                  </div>
+                </article>
+                <section class="saved-section" id="saved-recordings">
+                  <h3 data-i18n="saved-title"></h3>
+                  <p data-i18n="saved-note"></p>
+                  <div class="saved-list" id="saved-list"></div>
+                </section>
+              </div>
+            </section>
+
+            <section class="screen recording-page" data-screen="recording">
+              <header class="top-actions">
+                <button class="round-button" data-action="home" data-i18n-aria-label="back">&#8592;</button>
+                <span class="live-pill"><i></i><b data-i18n="recording"></b></span>
+                <button class="plain-more" data-i18n-aria-label="more">&#8226;&#8226;&#8226;</button>
+              </header>
+              <article class="live-card">
+                <strong class="timer" id="timer">00:00</strong>
+                <p data-i18n="live-note"></p>
+                <div class="wave-orbit" data-i18n-aria-label="wave-label">
+                  <div class="wave-bars">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                </div>
+                <button class="marker" data-action="mark" data-i18n="mark"></button>
+              </article>
+              <article class="transcript-card">
+                <div class="section-title"><h3 data-i18n="transcript"></h3><span data-i18n="analyzing"></span></div>
+                <div class="speech mentor"><b data-i18n="mentor-time"></b><p data-i18n="mentor-line"></p></div>
+                <div class="speech me"><b data-i18n="me-time"></b><p data-i18n="me-line"></p></div>
+              </article>
+              <footer class="recording-actions">
+                <h3 data-i18n="after-record"></h3>
+                <div class="button-row">
+                  <button class="button secondary" data-action="save-recording" data-i18n="save-recording"></button>
+                  <button class="button primary" data-action="analyze" data-i18n="direct-analyze"></button>
+                </div>
+                <p data-i18n="privacy"></p>
+              </footer>
+            </section>
+
+            <section class="screen" data-screen="analysis">
+              <div class="scroll-page analysis-page">
+                <header class="analysis-header">
+                  <button class="round-button" data-action="home" data-i18n-aria-label="back">&#8592;</button>
+                  <span data-i18n="analysis-done"></span>
+                </header>
+                <h2 data-i18n="analysis-title"></h2>
+                <article class="score-card">
+                  <div class="score-ring"><strong>78</strong><span data-i18n="score"></span></div>
+                  <div><h3 data-i18n-html="score-title"></h3><p data-i18n="score-copy"></p></div>
+                </article>
+                <div class="dimension-grid">
+                  <label><em data-i18n="logic"></em><span><i style="--score:86%"></i></span><b>86</b></label>
+                  <label><em data-i18n="emotion"></em><span><i style="--score:74%"></i></span><b>74</b></label>
+                  <label><em data-i18n="boundary"></em><span><i style="--score:68%"></i></span><b>68</b></label>
+                  <label><em data-i18n="action"></em><span><i style="--score:81%"></i></span><b>81</b></label>
+                </div>
+                <h3 class="block-title" data-i18n="diagnosis"></h3>
+                <article class="diagnosis transcript">
+                  <strong data-i18n="peak"></strong><p data-i18n-html="key-dialogue"></p>
+                </article>
+                <article class="diagnosis good">
+                  <strong data-i18n="good"></strong><p data-i18n="good-copy"></p>
+                </article>
+                <article class="diagnosis improve">
+                  <strong data-i18n="improve"></strong><p data-i18n="improve-copy"></p>
+                </article>
+                <article class="reply-card">
+                  <small data-i18n="reply-label"></small><strong data-i18n="reply"></strong>
+                </article>
+                <article class="coach-chat">
+                  <h3 data-i18n="coach-title"></h3>
+                  <p class="coach-note" data-i18n="coach-note"></p>
+                  <div class="message ai" data-i18n="ai-message"></div>
+                  <div class="message user" data-i18n="user-message"></div>
+                  <div class="message ai response" id="ai-response" hidden></div>
+                  <form id="coach-form">
+                    <input id="coach-input" data-i18n-value="user-message" data-i18n-aria-label="ask-ai" />
+                    <button type="submit" data-i18n-aria-label="send">&#8593;</button>
+                  </form>
+                </article>
+                <button class="button primary replay-button" data-action="replay" data-i18n="replay"></button>
+              </div>
+            </section>
+          </div>
+
+          <nav class="bottom-nav" data-nav>
+            <button class="active" data-action="home"><i>&#9679;</i><span data-i18n="review"></span></button>
+            <button data-action="noop"><i>&#9650;</i><span data-i18n="practice"></span></button>
+            <button data-action="noop"><i>&#10022;</i><span data-i18n="impact"></span></button>
+            <button data-action="noop"><i>&#9632;</i><span data-i18n="settings"></span></button>
+          </nav>
+          <div class="home-indicator" aria-hidden="true"></div>
+          <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
