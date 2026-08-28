@@ -1,5 +1,8 @@
 # dependencies
 node_modules/
+.venv/
+__pycache__/
+*.pyc
 
 # build
 dist/
@@ -15,6 +18,11 @@ build/
 *.log
 .DS_Store
 Thumbs.db
+
+# local runtime data
+classic-training/data/*.db
+classic-training/data/*.db-shm
+classic-training/data/*.db-wal
 
 # editor
 .idea/

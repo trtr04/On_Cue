@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1",
+  "scenario_id": "workplace-progress",
+  "version": "0.1",
+  "title": "领导质问项目进度",
+  "short_description": "在直属领导追问延期时，用事实、方案和明确时间完成一次可决策的进度汇报。",
+  "module": "classic_training",
+  "role_id": "direct-manager",
+  "user_role": "项目执行人",
+  "briefing": {
+    "setting": "周二 10:05 · 公司小会议室",
+    "user_identity": "你是“星河会员日上线项目”的执行负责人",
+    "counterpart": "直属领导陈经理，结果导向，正在准备中午的客户同步会",
+    "situation_summary": "昨晚测试时，你发现用户付款成功后收不到会员券。项目原定今天 18:00 交给客户，陈经理刚把你叫进会议室，必须在中午的客户会议前弄清楚今晚到底能不能交。",
+    "facts": [
+      {
+        "label": "当前进度",
+        "value": "5 项主要任务完成了 3 项：登录、会员主页和积分查询已经能正常使用"
+      },
+      {
+        "label": "现在卡在哪里",
+        "value": "用户虽然付款成功，系统却没有收到“付款完成”的正确信息，所以不会自动发券"
+      },
+      {
+        "label": "为什么会出问题",
+        "value": "合作的支付公司昨天下午 16:00 改了传回付款结果的格式，技术同事需要重新适配"
+      },
+      {
+        "label": "你需要承认的部分",
+        "value": "你昨晚已经发现可能延期，却想等技术同事确认后再说，没有及时提醒领导"
+      },
+      {
+        "label": "你能提出的两个选择",
+        "value": "A：今晚 20:00 先交不含发券的基础版本；B：明天 11:00 交包含付款发券、并把全流程重新检查过的完整版本"
+      }
+    ],
+    "user_mission": "让领导获得真实状态、风险和下一步，并确认交付方案。你不需要赢过领导，只需要让这次汇报可判断、可决策。",
+    "preparation_tip": "可以先说：目前 5 项主要任务完成了 3 项，今晚 18:00 无法交完整版本。然后再补原因、你的责任、两个方案，以及请领导决定什么。"
+  },
+  "learning_spec_path": "specs/workplace-progress-learning-goals.md",
+  "learning_goal_ids": [
+    "status_first",
+    "evidence_and_impact",
+    "ownership_boundary",
+    "actionable_plan",
+    "commit_or_escalate"
+  ],
+  "response_framework": [
+    "status",
+    "reason",
+    "impact",
+    "plan",
+    "commitment_or_request"
+  ],
+  "situation": {
+    "occasion": "项目周会前的临时进度沟通",
+    "known_facts": [
+      "星河会员日上线项目原定今天 18:00 交给客户，5 项主要任务已经完成 3 项。",
+      "登录、会员主页和积分查询已经能正常使用。",
+      "当前问题是用户付款成功后，系统没有收到正确的付款结果，因此不能自动发放会员券。",
+      "合作的支付公司昨天下午 16:00 修改了传回付款结果的格式，技术同事需要重新适配。",
+      "用户昨晚已经发现可能延期，但想等技术确认后再说，没有及时提醒领导。",
+      "方案 A 是今晚 20:00 先交不含发券的基础版本；方案 B 是明天 11:00 交包含付款发券、并重新检查过全流程的完整版本。",
+      "领导此前没有收到清晰的延期预警。",
+      "领导将在中午与客户同步进度。"
+    ],
+    "user_goal": "让领导获得真实状态、风险和下一步，并确认承诺或需要领导决定的事项。",
+    "role_goal": "确认项目真实状态、新交付时间、风险和责任人。"
+  },
+  "opening_guidance": {
+    "intent": "陈经理在客户会议前确认星河会员日上线项目的真实状态。",
+    "must_reference": "第一句话自然提到项目原定今天 18:00 完成，以及当前仍未完整交付。",
+    "must_ask": "当前完成度或已完成与未完成的内容。",
+    "must_not_do": "不要在开场替用户解释原因，不要给出训练提示。"
+  },
+  "difficulty_options": [1, 2, 3],
+  "default_difficulty": 2,
+  "max_turns": 5,
+  "initial_state": {
+    "phase": "ask_actual_status",
+    "pressure_level": 2,
+    "resolved_goal_ids": [],
+    "unresolved_goal_ids": [
+      "status_first",
+      "evidence_and_impact",
+      "ownership_boundary",
+      "actionable_plan",
+      "commit_or_escalate"
+    ],
+    "end_reason": null
+  },
+  "completion_policy": {
+    "complete_when_all_goals_resolved": true,
+    "complete_at_max_turns": true,
+    "allow_user_exit": true
+  },
+  "review_status": "draft_for_human_review"
+}
