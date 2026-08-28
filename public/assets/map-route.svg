@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="320" height="230" viewBox="0 0 320 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Route">
+<path id="Vector" d="M48 52C89 68 105 112 158 104C205 97 241 62 278 81C311 98 304 135 280 150C245 173 196 142 155 157C107 174 100 213 56 204" stroke="#111111" stroke-width="10" stroke-linecap="round"/>
+<path id="Vector_2" d="M48 52C89 68 105 112 158 104C205 97 241 62 278 81C311 98 304 135 280 150C245 173 196 142 155 157C107 174 100 213 56 204" stroke="white" stroke-width="6" stroke-linecap="round"/>
+<path id="Vector_3" d="M48 52C89 68 105 112 158 104C205 97 241 62 278 81" stroke="#DD7DBF" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 8"/>
+</g>
+</svg>

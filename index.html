@@ -4,148 +4,427 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fbeaf6" />
-    <title>On Cue Simulator</title>
+    <title>On Cue</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main class="simulator-shell">
       <aside class="flow-guide">
-        <span class="guide-kicker">INTERACTIVE PROTOTYPE</span>
+        <span data-i18n="guide-kicker"></span>
         <h1 data-i18n-html="guide-title"></h1>
         <p data-i18n="guide-copy"></p>
-        <ol>
-          <li class="active" data-guide="home"><b>01</b><span data-i18n="guide-home"></span></li>
-          <li data-guide="recording"><b>02</b><span data-i18n="guide-recording"></span></li>
-          <li data-guide="analysis"><b>03</b><span data-i18n="guide-analysis"></span></li>
-        </ol>
+        <button class="guide-link" data-jump="splash"><b>00</b><i data-i18n="guide-splash"></i></button>
+        <button class="guide-link active" data-jump="home"><b>01</b><i data-i18n="guide-home"></i></button>
+        <button class="guide-link" data-jump="practice"><b>02</b><i data-i18n="guide-practice"></i></button>
+        <button class="guide-link" data-jump="vent"><b>03</b><i data-i18n="guide-vent"></i></button>
+        <button class="guide-link" data-jump="settings"><b>04</b><i data-i18n="guide-settings"></i></button>
         <small data-i18n="guide-note"></small>
       </aside>
 
       <section class="device-stage">
         <div class="phone" data-i18n-aria-label="phone-label">
-          <header class="status-bar" aria-hidden="true">
-            <strong>9:41</strong>
-            <span><i class="signal"></i><i class="wifi"></i><i class="battery"></i></span>
-          </header>
-          <div class="dynamic-island" aria-hidden="true"></div>
+          <section class="screen splash-screen active" data-screen="splash">
+            <div class="splash-inner">
+              <img class="splash-hero" src="/assets/splash-hero.png" alt="" />
+              <h1 data-i18n="app-name"></h1>
+              <p data-i18n="app-tagline"></p>
+              <div class="splash-loader" id="splash-loader">
+                <img class="loader-frame is-on" src="/assets/loader-state-1.png" alt="" data-frame="1" />
+                <img class="loader-frame" src="/assets/loader-state-2.png" alt="" data-frame="2" />
+                <img class="loader-frame" src="/assets/loader-state-3.png" alt="" data-frame="3" />
+                <img class="loader-frame" src="/assets/loader-state-4.png" alt="" data-frame="4" />
+              </div>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
 
-          <div class="screens">
-            <section class="screen active" data-screen="home">
-              <div class="scroll-page home-page">
-                <header class="hero-copy">
-                  <small data-i18n="hero-kicker"></small>
-                  <h2 data-i18n-html="hero-title"></h2>
-                </header>
-                <div class="mascot" aria-hidden="true">
-                  <span class="ear left"></span><span class="ear right"></span>
-                  <span class="face"><i></i><i></i><b>u</b></span><em></em>
+          <section class="screen home-screen" data-screen="home" data-tab="home">
+            <div class="scroll-page home-scroll">
+              <div class="home-canvas">
+                <div class="status-bar">
+                  <b>9:41</b>
+                  <div class="status-icons">
+                    <img src="/assets/ios-signal.svg" alt="" />
+                    <img src="/assets/ios-wifi.svg" alt="" />
+                    <img class="battery" src="/assets/ios-battery.svg" alt="" />
+                  </div>
                 </div>
-                <button class="record-entry" data-action="record">
-                  <span></span><b data-i18n="record-cta"></b>
+                <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+                <div class="home-bubble">
+                  <img src="/assets/bubble-bg.svg" alt="" />
+                  <p data-i18n="home-bubble"></p>
+                </div>
+                <img class="home-mascot" src="/assets/panda-lying.png" alt="" />
+                <button class="home-record" data-action="record">
+                  <img src="/assets/record-dot.svg" alt="" />
+                  <span data-i18n="record-cta"></span>
                 </button>
-                <article class="current-card">
-                  <div class="card-heading">
-                    <strong data-i18n="current-title"></strong>
-                    <span data-i18n="pending"></span>
-                  </div>
-                  <p data-i18n="current-quote"></p>
-                  <div class="button-row">
-                    <button class="button secondary" data-action="save-current" data-i18n="save-first"></button>
-                    <button class="button primary" data-action="analyze" data-i18n="analyze"></button>
-                  </div>
+                <article class="home-conflict">
+                  <strong data-i18n="current-title"></strong>
+                  <button class="figma-button secondary" data-action="save-current" data-i18n="save-first"></button>
+                  <button class="figma-button primary" data-action="analyze" data-i18n="analyze"></button>
                 </article>
-                <section class="saved-section" id="saved-recordings">
-                  <h3 data-i18n="saved-title"></h3>
-                  <p data-i18n="saved-note"></p>
-                  <div class="saved-list" id="saved-list"></div>
+                <nav class="figma-nav">
+                  <button class="active" data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+                  <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+                  <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+                  <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+                </nav>
+                <div class="home-indicator"></div>
+              </div>
+              <section class="saved-extension" id="saved-recordings">
+                <h2 data-i18n="saved-title"></h2>
+                <p data-i18n="saved-note"></p>
+                <div class="saved-list" id="saved-list"></div>
+                <button class="figma-button secondary return-top" data-action="home" data-i18n="back"></button>
+              </section>
+            </div>
+          </section>
+
+          <section class="screen practice-screen" data-screen="practice" data-tab="practice">
+            <div class="scroll-page practice-scroll">
+              <div class="practice-canvas">
+                <div class="practice-filters" id="practice-filters">
+                  <button class="chip active" data-filter="all" data-i18n="filter-all"></button>
+                  <button class="chip" data-filter="work" data-i18n="filter-work"></button>
+                  <button class="chip" data-filter="home" data-i18n="filter-home"></button>
+                  <button class="chip" data-filter="love" data-i18n="filter-love"></button>
+                  <button class="chip" data-filter="friend" data-i18n="filter-friend"></button>
+                </div>
+                <article class="practice-hero">
+                  <span data-i18n="today-rec"></span>
+                  <strong data-i18n="rec-title"></strong>
+                  <button class="figma-button secondary" data-action="open-levels" data-scene="work" data-i18n="view-levels"></button>
+                  <img src="/assets/panda-angry.png" alt="" />
+                </article>
+                <section class="scene-map">
+                  <header>
+                    <h2 data-i18n="map-title"></h2>
+                    <small data-i18n="map-progress"></small>
+                  </header>
+                  <div class="map-canvas">
+                    <img class="map-route" src="/assets/map-route.svg" alt="" />
+                    <button class="map-node home" data-map="home">
+                      <img class="node-circle" src="/assets/map-node-pink.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-home"></b>
+                      <img class="node-icon" src="/assets/map-icon-house.svg" alt="" />
+                      <img class="node-tag" src="/assets/map-label-pink.svg" alt="" />
+                      <em data-i18n="node-home-tag"></em>
+                      <i class="dots"><img src="/assets/map-dot-pink.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /></i>
+                    </button>
+                    <button class="map-node work selected" data-map="work">
+                      <img class="node-circle" src="/assets/map-node-company.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-work"></b>
+                      <img class="node-icon" src="/assets/map-icon-building.svg" alt="" />
+                      <img class="node-tag" src="/assets/map-label-pink.svg" alt="" />
+                      <em data-i18n="node-work-tag"></em>
+                      <i class="dots"><img src="/assets/map-dot-pink.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /></i>
+                    </button>
+                    <button class="map-node mall locked" data-map="mall">
+                      <img class="node-circle" src="/assets/map-node-locked.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-locked"></b>
+                      <img class="node-lock" src="/assets/map-icon-lock.svg" alt="" />
+                    </button>
+                    <button class="map-node net" data-map="net">
+                      <img class="node-circle" src="/assets/map-node-pink.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-net"></b>
+                      <img class="node-icon" src="/assets/map-icon-globe.svg" alt="" />
+                      <img class="node-tag" src="/assets/map-label-pink.svg" alt="" />
+                      <em data-i18n="node-net-tag"></em>
+                      <i class="dots"><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /></i>
+                    </button>
+                  </div>
+                  <article class="map-detail" id="map-detail"></article>
                 </section>
+                <button class="create-scene" data-action="custom-scene" data-i18n="create-scene"></button>
               </div>
-            </section>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <nav class="figma-nav">
+              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+              <button class="active" data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+              <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+              <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+            </nav>
+            <div class="home-indicator"></div>
+          </section>
 
-            <section class="screen recording-page" data-screen="recording">
-              <header class="top-actions">
-                <button class="round-button" data-action="home" data-i18n-aria-label="back">&#8592;</button>
-                <span class="live-pill"><i></i><b data-i18n="recording"></b></span>
-                <button class="plain-more" data-i18n-aria-label="more">&#8226;&#8226;&#8226;</button>
-              </header>
-              <article class="live-card">
-                <strong class="timer" id="timer">00:00</strong>
-                <p data-i18n="live-note"></p>
-                <div class="wave-orbit" data-i18n-aria-label="wave-label">
-                  <div class="wave-bars">
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <section class="screen levels-screen" data-screen="levels" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div>
+                <small id="levels-kicker"></small>
+                <h1 id="levels-title"></h1>
+              </div>
+            </div>
+            <div class="levels-list" id="levels-list"></div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen custom-screen" data-screen="custom" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div>
+                <small data-i18n="custom-kicker"></small>
+                <h1 data-i18n="custom-title"></h1>
+              </div>
+            </div>
+            <form class="custom-form" id="custom-form">
+              <label>
+                <span data-i18n="custom-role-label"></span>
+                <input id="custom-role" data-i18n-placeholder="custom-role-ph" />
+              </label>
+              <label>
+                <span data-i18n="custom-scene-label"></span>
+                <textarea id="custom-scene" rows="5" data-i18n-placeholder="custom-scene-ph"></textarea>
+              </label>
+              <button class="figma-button primary" type="submit" data-i18n="custom-start"></button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen drill-screen" data-screen="drill" data-tab="practice">
+            <div class="drill-header">
+              <button class="round-button" data-action="levels">&#8592;</button>
+              <div>
+                <small id="drill-role"></small>
+                <strong id="drill-title"></strong>
+              </div>
+              <button class="end-drill" data-action="end-drill" data-i18n="end-drill"></button>
+            </div>
+            <div class="drill-thread" id="drill-thread"></div>
+            <div class="drill-suggestions" id="drill-suggestions"></div>
+            <form class="drill-composer" id="drill-form">
+              <input id="drill-input" data-i18n-placeholder="drill-placeholder" />
+              <button type="submit">&#8593;</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen recording-screen" data-screen="recording" data-tab="home">
+            <div class="recording-header">
+              <button class="round-button" data-action="home">&#8592;</button>
+              <div class="live-status"><i></i><span data-i18n="recording"></span></div>
+              <b>&#8226;&#8226;&#8226;</b>
+            </div>
+            <article class="live-wave-card">
+              <strong id="timer">02:18</strong>
+              <p data-i18n="live-note"></p>
+              <img src="/assets/live-waveform.svg" alt="" />
+              <button class="tension-marker" data-action="mark" data-i18n="marked-initial"></button>
+            </article>
+            <article class="live-transcript">
+              <h2 data-i18n="transcript"></h2>
+              <span data-i18n="analyzing"></span>
+              <div class="transcript-row mentor">
+                <b data-i18n="mentor-time"></b><p data-i18n="mentor-line"></p>
+              </div>
+              <div class="transcript-row self">
+                <b data-i18n="me-time"></b><p data-i18n="me-line"></p>
+              </div>
+            </article>
+            <footer class="recording-footer">
+              <strong data-i18n="after-record"></strong>
+              <button class="figma-button secondary" data-action="save-recording" data-i18n="save-recording"></button>
+              <button class="figma-button primary" data-action="analyze" data-i18n="direct-analyze"></button>
+              <p data-i18n="privacy"></p>
+            </footer>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen analysis-screen" data-screen="analysis" data-tab="home">
+            <div class="scroll-page analysis-scroll">
+              <div class="analysis-content">
+                <section class="analysis-summary">
+                  <button class="round-button" data-action="home">&#8592;</button>
+                  <span class="analysis-complete" data-i18n="analysis-done"></span>
+                  <h1 data-i18n="analysis-title"></h1>
+                  <article class="score-summary">
+                    <div class="score-ring">
+                      <img src="/assets/score-ring.png" alt="" />
+                    </div>
+                    <h2 data-i18n-html="score-title"></h2>
+                    <p data-i18n="score-copy"></p>
+                  </article>
+                  <div class="dimensions">
+                    <label><span data-i18n="logic"></span><i><b style="--w:86%"></b></i><em>86</em></label>
+                    <label><span data-i18n="emotion"></span><i><b style="--w:74%"></b></i><em>74</em></label>
+                    <label><span data-i18n="boundary"></span><i><b style="--w:68%"></b></i><em>68</em></label>
+                    <label><span data-i18n="action"></span><i><b style="--w:81%"></b></i><em>81</em></label>
                   </div>
-                </div>
-                <button class="marker" data-action="mark" data-i18n="mark"></button>
-              </article>
-              <article class="transcript-card">
-                <div class="section-title"><h3 data-i18n="transcript"></h3><span data-i18n="analyzing"></span></div>
-                <div class="speech mentor"><b data-i18n="mentor-time"></b><p data-i18n="mentor-line"></p></div>
-                <div class="speech me"><b data-i18n="me-time"></b><p data-i18n="me-line"></p></div>
-              </article>
-              <footer class="recording-actions">
-                <h3 data-i18n="after-record"></h3>
-                <div class="button-row">
-                  <button class="button secondary" data-action="save-recording" data-i18n="save-recording"></button>
-                  <button class="button primary" data-action="analyze" data-i18n="direct-analyze"></button>
-                </div>
-                <p data-i18n="privacy"></p>
-              </footer>
-            </section>
-
-            <section class="screen" data-screen="analysis">
-              <div class="scroll-page analysis-page">
-                <header class="analysis-header">
-                  <button class="round-button" data-action="home" data-i18n-aria-label="back">&#8592;</button>
-                  <span data-i18n="analysis-done"></span>
-                </header>
-                <h2 data-i18n="analysis-title"></h2>
-                <article class="score-card">
-                  <div class="score-ring"><strong>78</strong><span data-i18n="score"></span></div>
-                  <div><h3 data-i18n-html="score-title"></h3><p data-i18n="score-copy"></p></div>
-                </article>
-                <div class="dimension-grid">
-                  <label><em data-i18n="logic"></em><span><i style="--score:86%"></i></span><b>86</b></label>
-                  <label><em data-i18n="emotion"></em><span><i style="--score:74%"></i></span><b>74</b></label>
-                  <label><em data-i18n="boundary"></em><span><i style="--score:68%"></i></span><b>68</b></label>
-                  <label><em data-i18n="action"></em><span><i style="--score:81%"></i></span><b>81</b></label>
-                </div>
-                <h3 class="block-title" data-i18n="diagnosis"></h3>
-                <article class="diagnosis transcript">
-                  <strong data-i18n="peak"></strong><p data-i18n-html="key-dialogue"></p>
-                </article>
-                <article class="diagnosis good">
-                  <strong data-i18n="good"></strong><p data-i18n="good-copy"></p>
-                </article>
-                <article class="diagnosis improve">
-                  <strong data-i18n="improve"></strong><p data-i18n="improve-copy"></p>
-                </article>
-                <article class="reply-card">
-                  <small data-i18n="reply-label"></small><strong data-i18n="reply"></strong>
-                </article>
-                <article class="coach-chat">
-                  <h3 data-i18n="coach-title"></h3>
-                  <p class="coach-note" data-i18n="coach-note"></p>
-                  <div class="message ai" data-i18n="ai-message"></div>
-                  <div class="message user" data-i18n="user-message"></div>
-                  <div class="message ai response" id="ai-response" hidden></div>
+                </section>
+                <section class="diagnosis-section">
+                  <h2 data-i18n="diagnosis"></h2>
+                  <article class="diagnosis-card key">
+                    <strong data-i18n="peak"></strong><p data-i18n-html="key-dialogue"></p>
+                  </article>
+                  <article class="diagnosis-card good">
+                    <strong data-i18n="good"></strong><p data-i18n-html="good-copy"></p>
+                  </article>
+                  <article class="diagnosis-card improve">
+                    <strong data-i18n="improve"></strong><p data-i18n="improve-copy"></p>
+                  </article>
+                  <article class="reply-card">
+                    <small data-i18n="reply-label"></small><strong data-i18n="reply"></strong>
+                  </article>
+                </section>
+                <section class="coach-section">
+                  <h2 data-i18n="coach-title"></h2>
+                  <p data-i18n="coach-note"></p>
+                  <div class="coach-message ai" data-i18n-html="ai-message"></div>
+                  <div class="coach-message user" data-i18n="user-message"></div>
+                  <div class="coach-message ai response" id="ai-response" hidden></div>
                   <form id="coach-form">
-                    <input id="coach-input" data-i18n-value="user-message" data-i18n-aria-label="ask-ai" />
-                    <button type="submit" data-i18n-aria-label="send">&#8593;</button>
+                    <input id="coach-input" data-i18n-placeholder="coach-placeholder" data-i18n-aria-label="ask-ai" />
+                    <button type="submit">&#8593;</button>
                   </form>
-                </article>
-                <button class="button primary replay-button" data-action="replay" data-i18n="replay"></button>
+                </section>
+                <button class="figma-button primary replay" data-action="replay" data-i18n="replay"></button>
               </div>
-            </section>
-          </div>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
 
-          <nav class="bottom-nav" data-nav>
-            <button class="active" data-action="home"><i>&#9679;</i><span data-i18n="review"></span></button>
-            <button data-action="noop"><i>&#9650;</i><span data-i18n="practice"></span></button>
-            <button data-action="noop"><i>&#10022;</i><span data-i18n="impact"></span></button>
-            <button data-action="noop"><i>&#9632;</i><span data-i18n="settings"></span></button>
-          </nav>
-          <div class="home-indicator" aria-hidden="true"></div>
+          <section class="screen vent-screen" data-screen="vent" data-tab="vent">
+            <div class="vent-header">
+              <h1 data-i18n="vent-title"></h1>
+              <p data-i18n="vent-copy"></p>
+            </div>
+            <button class="vent-stage" id="vent-stage" type="button" data-i18n-aria-label="vent-label">
+              <img class="vent-mascot" id="vent-mascot" src="/assets/panda-jump.png" alt="" />
+              <span class="vent-bang" id="vent-bang" data-i18n="bang"></span>
+              <span class="vent-charge" id="vent-charge"></span>
+            </button>
+            <div class="vent-counter" id="vent-counter"></div>
+            <div class="vent-cue" data-i18n="vent-cue"></div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <nav class="figma-nav">
+              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+              <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+              <button class="active" data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+              <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+            </nav>
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-screen" data-screen="settings" data-tab="settings">
+            <div class="settings-header">
+              <h1 data-i18n="settings-title"></h1>
+            </div>
+            <div class="settings-scroll">
+              <article class="settings-profile">
+                <div class="settings-avatar"><img src="/assets/icon-user.svg" alt="" /></div>
+                <div>
+                  <strong>Juni</strong>
+                  <small>138****0000</small>
+                </div>
+                <button class="settings-edit" data-action="settings-item" data-item="profile">
+                  <img src="/assets/icon-chevron.svg" alt="" />
+                </button>
+              </article>
+              <article class="settings-summary">
+                <strong data-i18n="settings-summary-title"></strong>
+                <p data-i18n="settings-summary-copy"></p>
+              </article>
+              <button class="settings-row" data-action="settings-item" data-item="device"><span data-i18n="set-device"></span><em data-i18n="set-device-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="haptics"><span data-i18n="set-haptics"></span><em data-i18n="set-haptics-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="notify"><span data-i18n="set-notify"></span><em data-i18n="set-notify-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="privacy"><span data-i18n="set-privacy"></span><em data-i18n="set-privacy-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="export"><span data-i18n="set-export"></span><em>&rsaquo;</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="about"><span data-i18n="set-about"></span><em>v1.0  &rsaquo;</em></button>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <nav class="figma-nav">
+              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+              <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+              <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+              <button class="active" data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+            </nav>
+            <div class="home-indicator"></div>
+          </section>
+
           <div class="toast" id="toast" role="status" aria-live="polite"></div>
         </div>
       </section>

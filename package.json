@@ -13,6 +13,11 @@
     "generate:all": "node scripts/generate-seedream.mjs all"
   },
   "devDependencies": {
+    "playwright-core": "^1.62.1",
     "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/noto-sans-sc": "^5.3.0"
   }
 }
