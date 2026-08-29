@@ -20,6 +20,7 @@ from backend.app.database import Database
 from backend.app.incident_service import IncidentService
 from backend.app.custom_training_service import CustomTrainingService
 from backend.app.models import (
+    AdvisorFeedback,
     CreateSessionRequest,
     CreateIncidentRequest,
     HintOutput,
@@ -115,6 +116,70 @@ class TranscriptionContractTests(unittest.TestCase):
 
 
 class ContentContractTests(unittest.TestCase):
+    def test_incident_output_normalizes_user_actions_returned_as_a_list(self) -> None:
+        parsed = LLMService._parse_incident_output(
+            {
+                "acknowledgement": "我先帮你还原经过。",
+                "draft": {
+                    "title": "年夜饭被催婚",
+                    "user_words_or_actions": [
+                        "这是我的个人安排。",
+                        "希望您不要替我做决定。",
+                    ],
+                },
+                "missing_fields": [],
+                "next_question": None,
+                "ready_for_confirmation": True,
+            }
+        )
+
+        self.assertEqual(
+            parsed.draft.user_words_or_actions,
+            "这是我的个人安排。\n希望您不要替我做决定。",
+        )
+
+    def test_advisor_contract_requires_and_preserves_three_distinct_voices(self) -> None:
+        feedback = AdvisorFeedback.model_validate(
+            {
+                "scene_read": {
+                    "opening": "姑妈把关心变成了对个人选择的评价。",
+                    "key_detail": "用户已经表达这是个人安排。",
+                    "where_it_is_stuck": "对方继续用不懂事施压。",
+                    "need_to_confirm": "是否希望当场结束话题。",
+                },
+                "ambiguity_analysis": {
+                    "ambiguity_level": "low",
+                    "observable_facts": ["对方连续追问婚育"],
+                    "primary_interpretation": {
+                        "statement": "边界被忽视",
+                        "confidence": "high",
+                        "evidence": ["我都是为你好"],
+                    },
+                    "alternative_interpretations": [],
+                    "missing_information": [],
+                    "verification_move": "请确认您是否愿意停止这个话题？",
+                    "update_rule": "若停止追问，则降低风险判断。",
+                },
+                "primary_voice": "B",
+                "voice_order": ["B", "A", "C"],
+                "voice_versions": {
+                    voice: {
+                        "voice_id": voice,
+                        "display_name": f"反馈 {voice}",
+                        "headline": f"角度 {voice}",
+                        "analysis": "只根据已确认的逐句稿判断。",
+                        "direct_reply": "这个话题到这里，请不要继续追问。",
+                        "next_steps": ["重复边界"],
+                        "style_intensity": "strong",
+                    }
+                    for voice in ("A", "B", "C")
+                },
+            }
+        )
+
+        self.assertEqual(set(feedback.voice_versions), {"A", "B", "C"})
+        self.assertEqual(feedback.primary_voice, "B")
+
     def test_scenario_role_and_learning_goals_are_compatible(self) -> None:
         scenario = content_repository.get_scenario("workplace-progress")
         role = content_repository.get_role(scenario["role_id"])

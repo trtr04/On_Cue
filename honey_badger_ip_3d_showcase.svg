@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <radialGradient id="bg" cx=".5" cy=".35" r=".75"><stop stop-color="#fffdfb"/><stop offset=".7" stop-color="#e8dedc"/><stop offset="1" stop-color="#cabdc0"/></radialGradient>
+    <radialGradient id="fur" cx=".3" cy=".18" r=".85"><stop stop-color="#555762"/><stop offset=".42" stop-color="#2c2d34"/><stop offset="1" stop-color="#15161a"/></radialGradient>
+    <linearGradient id="silver" x2=".75" y2="1"><stop stop-color="#faf9f2"/><stop offset=".28" stop-color="#d9d8d1"/><stop offset=".7" stop-color="#a9a8a3"/><stop offset="1" stop-color="#777974"/></linearGradient>
+    <radialGradient id="pink" cx=".25" cy=".18" r=".9"><stop stop-color="#ffc3d9"/><stop offset=".48" stop-color="#f58db7"/><stop offset="1" stop-color="#b94f78"/></radialGradient>
+    <radialGradient id="eye" cx=".3" cy=".22" r=".8"><stop stop-color="#737680"/><stop offset=".15" stop-color="#22242a"/><stop offset="1" stop-color="#050506"/></radialGradient>
+    <linearGradient id="cream" x2=".7" y2="1"><stop stop-color="#fffef8"/><stop offset=".65" stop-color="#eee6da"/><stop offset="1" stop-color="#c9bdb2"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="18"/><feOffset dy="22"/><feColorMatrix values="0 0 0 0 .14 0 0 0 0 .09 0 0 0 0 .12 0 0 0 .28 0"/><feBlend in="SourceGraphic"/></filter>
+    <filter id="plush" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2"/><feSpecularLighting in="noise" surfaceScale="1" specularConstant=".16" specularExponent="10" lighting-color="#fff" result="spec"><feDistantLight azimuth="225" elevation="55"/></feSpecularLighting><feComposite in="spec" in2="SourceGraphic" operator="in" result="spec2"/><feBlend in="SourceGraphic" in2="spec2" mode="screen"/></filter>
+    <filter id="floor"><feGaussianBlur stdDeviation="16"/></filter>
+    <g id="bow3d">
+      <path d="M4 31C-29-10-78-10-73 29-69 67-29 72 3 47 31 74 74 65 77 27 80-12 35-11 4 31Z" fill="url(#pink)" stroke="#a7476a" stroke-width="4"/>
+      <ellipse cx="4" cy="38" rx="21" ry="19" fill="url(#pink)" stroke="#a7476a" stroke-width="4"/>
+      <path d="M-53 16q25 5 40 25M61 14Q33 20 18 42" fill="none" stroke="#ffd0e1" stroke-opacity=".62" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <g id="hero">
+      <ellipse cx="0" cy="367" rx="164" ry="35" fill="#604d56" opacity=".22" filter="url(#floor)"/>
+      <path d="M-155 167C-165 44-113-73 0-81 116-70 164 47 155 169l-8 113c-8 95-68 127-147 127s-139-32-147-127Z" fill="url(#fur)" stroke="#15161a" stroke-width="6" filter="url(#plush)"/>
+      <path d="M-145 78C-123-23-72-80 1-81c74 2 124 58 145 159-42-25-89-38-146-38S-104 53-145 78Z" fill="url(#silver)" stroke="#85847f" stroke-width="5" filter="url(#plush)"/>
+      <circle cx="-118" cy="41" r="37" fill="url(#fur)" stroke="#15161a" stroke-width="6"/><circle cx="118" cy="41" r="37" fill="url(#fur)" stroke="#15161a" stroke-width="6"/>
+      <ellipse cx="0" cy="141" rx="116" ry="101" fill="url(#fur)"/>
+      <ellipse cx="-46" cy="119" rx="40" ry="51" fill="url(#cream)"/><ellipse cx="46" cy="119" rx="40" ry="51" fill="url(#cream)"/>
+      <ellipse cx="-40" cy="128" rx="21" ry="31" fill="url(#eye)"/><ellipse cx="40" cy="128" rx="21" ry="31" fill="url(#eye)"/>
+      <ellipse cx="-33" cy="116" rx="7" ry="10" fill="#fff"/><ellipse cx="47" cy="116" rx="7" ry="10" fill="#fff"/>
+      <path d="M-77 60q31-21 58 0M19 60q28-20 58 0" fill="none" stroke="#111216" stroke-width="10" stroke-linecap="round"/>
+      <path d="M-75 52l-14-17M-60 46l-6-23M-44 44l3-22M75 52l14-17M60 46l6-23M44 44l-3-22" stroke="#111216" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="0" cy="170" rx="28" ry="21" fill="#111216"/><ellipse cx="-9" cy="163" rx="9" ry="5" fill="#fff" opacity=".28"/>
+      <path d="M-42 202q42 34 84 0" fill="none" stroke="#efa0ba" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="-87" cy="178" r="22" fill="#f79fbd" opacity=".4"/><circle cx="87" cy="178" r="22" fill="#f79fbd" opacity=".4"/>
+      <path d="M-140 222q-92 38-103 104c-5 30 35 43 50 15l55-65M140 222q92 38 103 104c5 30-35 43-50 15l-55-65" fill="url(#fur)" stroke="#15161a" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="-82" cy="363" rx="76" ry="48" fill="url(#fur)" stroke="#15161a" stroke-width="7"/><ellipse cx="82" cy="363" rx="76" ry="48" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <path d="M0 239l27 25-27 31-27-31Z" fill="url(#pink)" stroke="#a7476a" stroke-width="4"/>
+      <use href="#bow3d" transform="translate(111 3) rotate(7) scale(.78)"/>
+    </g>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <ellipse cx="800" cy="795" rx="690" ry="62" fill="#6f5c64" opacity=".16" filter="url(#floor)"/>
+  <text x="70" y="78" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#493f44">PINK BOW HONEY BADGER · 3D COLLECTIBLE STUDY</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(270 325) scale(.67)"><use href="#hero"/></g>
+    <g transform="translate(665 330) scale(.66)">
+      <ellipse cx="0" cy="367" rx="155" ry="35" fill="#604d56" opacity=".22"/>
+      <path d="M-121 168C-129 26-67-79 30-77 126-75 159 41 148 184l-8 100c-9 91-66 124-144 124-73 0-114-38-119-126Z" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <path d="M-103 76C-73-42-3-91 74-57c49 22 72 69 74 136-49-26-103-37-159-28-37 6-67 15-92 25Z" fill="url(#silver)" stroke="#85847f" stroke-width="5"/>
+      <circle cx="53" cy="39" r="37" fill="url(#fur)" stroke="#15161a" stroke-width="6"/>
+      <ellipse cx="-111" cy="146" rx="59" ry="77" fill="url(#fur)"/>
+      <ellipse cx="-133" cy="132" rx="30" ry="41" fill="url(#cream)"/><ellipse cx="-138" cy="138" rx="16" ry="25" fill="url(#eye)"/><circle cx="-133" cy="126" r="6" fill="#fff"/>
+      <path d="M-150 82l-10-22M-139 77l-2-23M-128 79l7-22" stroke="#111216" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="-171" cy="169" rx="28" ry="21" fill="#111216"/>
+      <path d="M-160 201q28 18 51-2" fill="none" stroke="#efa0ba" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="-90" cy="181" r="21" fill="#f79fbd" opacity=".4"/>
+      <path d="M-77 229q-65 44-30 105c16 28 47 6 42-22" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <path d="M58 230q72 37 85 94c8 32-31 45-48 18l-44-60" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <ellipse cx="-70" cy="365" rx="72" ry="46" fill="url(#fur)" stroke="#15161a" stroke-width="7"/><ellipse cx="70" cy="365" rx="72" ry="46" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <use href="#bow3d" transform="translate(58 -1) scale(.78)"/>
+    </g>
+    <g transform="translate(1040 330) scale(.66)">
+      <ellipse cx="0" cy="367" rx="164" ry="35" fill="#604d56" opacity=".22"/>
+      <path d="M-155 167C-165 44-113-73 0-81 116-70 164 47 155 169l-8 113c-8 95-68 127-147 127s-139-32-147-127Z" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <path d="M-145 78C-123-23-72-80 1-81c74 2 124 58 145 159v178c-38 42-86 63-145 63-58 0-107-21-146-63Z" fill="url(#silver)" stroke="#85847f" stroke-width="5"/>
+      <circle cx="-118" cy="41" r="37" fill="url(#fur)" stroke="#15161a" stroke-width="6"/><circle cx="118" cy="41" r="37" fill="url(#fur)" stroke="#15161a" stroke-width="6"/>
+      <path d="M-140 232q-72 42-50 104c10 29 45 17 49-12M140 232q72 42 50 104c-10 29-45 17-49-12" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <ellipse cx="-82" cy="363" rx="76" ry="48" fill="url(#fur)" stroke="#15161a" stroke-width="7"/><ellipse cx="82" cy="363" rx="76" ry="48" fill="url(#fur)" stroke="#15161a" stroke-width="7"/>
+      <use href="#bow3d" transform="translate(-113 3) rotate(-7) scale(.78)"/>
+    </g>
+    <g transform="translate(1390 355) rotate(-4) scale(.78)"><use href="#hero"/></g>
+  </g>
+  <g font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#75666d" text-anchor="middle">
+    <text x="270" y="770">FRONT</text><text x="665" y="770">PROFILE</text><text x="1040" y="770">BACK</text><text x="1390" y="820">IM HERE</text>
+  </g>
+</svg>

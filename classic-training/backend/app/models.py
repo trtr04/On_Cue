@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 SessionStatus = Literal["active", "completed", "user_ended"]
@@ -183,6 +183,15 @@ class SceneDraft(BaseModel):
     learning_focus: list[str] = Field(default_factory=list)
     role_behavior: list[str] = Field(default_factory=list)
 
+    @field_validator("user_words_or_actions", mode="before")
+    @classmethod
+    def normalize_user_words_or_actions(cls, value: object) -> object:
+        """Accept the occasional string-array returned by structured LLM output."""
+        if isinstance(value, list):
+            parts = [str(item).strip() for item in value if str(item).strip()]
+            return "\n".join(parts) or None
+        return value
+
 
 class IncidentMessage(BaseModel):
     speaker: Literal["user", "assistant"]
@@ -200,6 +209,74 @@ class IncidentAnalysisOutput(BaseModel):
     safety_message: str | None = None
 
 
+class DialogueSegment(BaseModel):
+    segment_id: str = Field(min_length=1, max_length=80)
+    speaker_id: Literal["user", "counterpart", "other"]
+    speaker_label: str = Field(min_length=1, max_length=40)
+    content: str = Field(min_length=1, max_length=1200)
+    confidence: Literal["low", "medium", "high"] = "high"
+
+
+class SceneRead(BaseModel):
+    opening: str
+    key_detail: str
+    where_it_is_stuck: str
+    need_to_confirm: str
+
+
+class Interpretation(BaseModel):
+    statement: str
+    confidence: Literal["low", "medium", "high"]
+    evidence: list[str]
+    distinguishing_signal: str | None = None
+
+
+class AmbiguityAnalysis(BaseModel):
+    ambiguity_level: Literal["low", "medium", "high"]
+    observable_facts: list[str]
+    primary_interpretation: Interpretation
+    alternative_interpretations: list[Interpretation]
+    missing_information: list[str]
+    verification_move: str
+    update_rule: str
+
+
+class AdvisorVoice(BaseModel):
+    voice_id: Literal["A", "B", "C"]
+    display_name: str
+    headline: str
+    analysis: str
+    direct_reply: str
+    next_steps: list[str] = Field(min_length=1, max_length=3)
+    style_intensity: Literal["strong"] = "strong"
+    safety_override: bool = False
+
+
+class AdvisorFeedback(BaseModel):
+    scene_read: SceneRead
+    ambiguity_analysis: AmbiguityAnalysis
+    primary_voice: Literal["A", "B", "C"]
+    voice_order: list[Literal["A", "B", "C"]]
+    voice_versions: dict[Literal["A", "B", "C"], AdvisorVoice]
+    risk_level: Literal["none", "attention", "urgent"] = "none"
+    risk_signals: list[str] = Field(default_factory=list)
+    recommended_safety_action: str | None = None
+
+    @model_validator(mode="after")
+    def validate_three_voices(self) -> "AdvisorFeedback":
+        expected = {"A", "B", "C"}
+        if set(self.voice_order) != expected or len(self.voice_order) != 3:
+            raise ValueError("voice_order 必须恰好包含 A、B、C")
+        if set(self.voice_versions) != expected:
+            raise ValueError("voice_versions 必须同时包含 A、B、C")
+        return self
+
+
+class DialogueAdvisorRequest(BaseModel):
+    transcript_confirmed: bool
+    segments: list[DialogueSegment] = Field(min_length=2, max_length=100)
+
+
 class IncidentRecord(BaseModel):
     incident_id: str
     status: IncidentStatus
@@ -210,6 +287,8 @@ class IncidentRecord(BaseModel):
     acknowledgement: str = ""
     next_question: str | None = None
     safety_message: str | None = None
+    dialogue_segments: list[DialogueSegment] = Field(default_factory=list)
+    advisor_feedback: AdvisorFeedback | None = None
 
 
 class CreateIncidentRequest(BaseModel):

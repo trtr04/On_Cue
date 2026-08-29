@@ -4,15 +4,16 @@ import logging
 from uuid import uuid4
 
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.concurrency import run_in_threadpool
 
-from .config import PROJECT_DIR, settings
+from .config import settings
 from .models import (
+    AdvisorFeedback,
     CreateSessionRequest,
     CreateSessionResponse,
     CreateIncidentRequest,
+    DialogueAdvisorRequest,
     CustomTrainingStartResponse,
     HintResponse,
     IncidentAnswerRequest,
@@ -39,10 +40,6 @@ app = FastAPI(
     description="经典冲突场景的角色模拟与训练会话接口。",
 )
 
-frontend_dir = PROJECT_DIR / "frontend"
-app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-
-
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     error_id = uuid4().hex[:8]
@@ -61,8 +58,9 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 
 
 @app.get("/", include_in_schema=False)
-def index() -> FileResponse:
-    return FileResponse(frontend_dir / "index.html")
+def index() -> RedirectResponse:
+    """The backend is API-only; the merged product UI lives in the team app."""
+    return RedirectResponse(url=settings.team_ui_origin, status_code=307)
 
 
 @app.get("/api/health", tags=["system"])
@@ -95,7 +93,7 @@ async def create_transcription(
 
 @app.get("/api/scenarios", response_model=list[ScenarioSummary], tags=["classic training"])
 def list_scenarios() -> list[ScenarioSummary]:
-    return training_service.list_scenarios()
+    return [scenario for scenario in training_service.list_scenarios() if scenario.training_mode == "pua_response"]
 
 
 @app.post(
@@ -133,6 +131,15 @@ def answer_incident(incident_id: str, request: IncidentAnswerRequest) -> Inciden
 )
 def confirm_incident(incident_id: str) -> IncidentRecord:
     return incident_service.confirm(incident_id)
+
+
+@app.post(
+    "/api/incidents/{incident_id}/advisor",
+    response_model=AdvisorFeedback,
+    tags=["dialogue advisor"],
+)
+def analyze_incident_dialogue(incident_id: str, request: DialogueAdvisorRequest) -> AdvisorFeedback:
+    return incident_service.analyze_dialogue(incident_id, request)
 
 
 @app.post(

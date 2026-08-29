@@ -1,13 +1,23 @@
 # dependencies
 node_modules/
-.venv/
-__pycache__/
-*.pyc
 
 # build
 dist/
 build/
 .vite/
+.next/
+.vinext/
+.wrangler/
+frontend-dist/
+public/oncue.html
+public/knowledge/
+public/assets/oncue.css
+public/assets/oncue.js
+public/assets/index-*
+public/assets/*.woff
+public/assets/*.woff2
+styles 2.css
+next-env.d.ts
 
 # env / secrets
 .env
@@ -16,14 +26,13 @@ build/
 
 # logs & OS
 *.log
-.Rhistory
 .DS_Store
 Thumbs.db
 
-# local runtime data
-classic-training/data/*.db
-classic-training/data/*.db-shm
-classic-training/data/*.db-wal
+# Python / local runtime data
+__pycache__/
+*.py[cod]
+classic-training/data/
 
 # editor
 .idea/

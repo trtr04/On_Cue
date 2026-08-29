@@ -15,6 +15,8 @@ from .config import PROJECT_DIR, settings
 from .dialogue_policy import build_allowed_moves
 from .expression_retriever import expression_retriever
 from .models import (
+    AdvisorFeedback,
+    DialogueAdvisorRequest,
     HintOutput,
     IncidentAnalysisOutput,
     IncidentRecord,
@@ -36,6 +38,7 @@ class LLMService:
         self.review_prompt = (PROJECT_DIR / "prompts" / "review-system.md").read_text(encoding="utf-8")
         self.hint_prompt = (PROJECT_DIR / "prompts" / "hint-system.md").read_text(encoding="utf-8")
         self.incident_intake_prompt = (PROJECT_DIR / "prompts" / "incident-intake-system.md").read_text(encoding="utf-8")
+        self.dialogue_advisor_prompt = (PROJECT_DIR / "prompts" / "dialogue-advisor-system.md").read_text(encoding="utf-8")
         self.training_blueprint_prompt = (PROJECT_DIR / "prompts" / "training-blueprint-system.md").read_text(encoding="utf-8")
 
     def generate_opening(self, session: TrainingSession, scenario: dict, role: dict) -> SimulatorOutput:
@@ -470,6 +473,54 @@ class LLMService:
                 raise HTTPException(status_code=502, detail="真实经历整理失败或返回格式无效。") from exc
         raise HTTPException(status_code=503, detail=f"智谱模型暂时繁忙：{last_rate_limit_message}")
 
+    def analyze_confirmed_dialogue(
+        self,
+        incident: IncidentRecord,
+        request_data: DialogueAdvisorRequest,
+    ) -> AdvisorFeedback:
+        if not settings.llm_enabled:
+            raise HTTPException(status_code=503, detail="智谱 API 尚未配置，请设置 ZHIPU_API_KEY。")
+        context = {
+            "incident_id": incident.incident_id,
+            "confirmed_scene": incident.draft.model_dump(),
+            "transcript_confirmed": request_data.transcript_confirmed,
+            "transcript": {"segments": [segment.model_dump() for segment in request_data.segments]},
+            "output_contract": {"voices": ["A", "B", "C"], "style_intensity": "strong"},
+        }
+        last_rate_limit_message = "该模型当前访问量过大，请稍后再试。"
+        for model_index, model in enumerate(settings.zhipu_models):
+            payload = {
+                "model": model,
+                "temperature": 0.45,
+                "max_tokens": 2600,
+                "stream": False,
+                "response_format": {"type": "json_object"},
+                "request_id": f"{incident.incident_id}-advisor-{uuid4().hex[:12]}-m{model_index}",
+                "messages": [
+                    {"role": "system", "content": self.dialogue_advisor_prompt},
+                    {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+                ],
+            }
+            provider_request = urllib.request.Request(
+                settings.zhipu_api_url,
+                data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                headers={"Authorization": f"Bearer {settings.zhipu_api_key}", "Content-Type": "application/json"},
+                method="POST",
+            )
+            try:
+                with urllib.request.urlopen(provider_request, timeout=settings.zhipu_timeout_seconds) as response:
+                    body = json.loads(response.read().decode("utf-8"))
+                return self._parse_advisor_output(body["choices"][0]["message"]["content"])
+            except urllib.error.HTTPError as exc:
+                provider_message = self._provider_error_message(exc)
+                if exc.code != 429:
+                    raise HTTPException(status_code=502, detail=f"智谱 API 返回 HTTP {exc.code}：{provider_message}") from exc
+                last_rate_limit_message = provider_message
+            except (urllib.error.URLError, KeyError, ValueError, json.JSONDecodeError) as exc:
+                logger.warning("三路反馈请求或结构化输出失败：%s", exc)
+                raise HTTPException(status_code=502, detail="三路反馈生成失败或返回结构无效。") from exc
+        raise HTTPException(status_code=503, detail=f"智谱模型暂时繁忙：{last_rate_limit_message}")
+
     def generate_training_blueprint(self, incident: IncidentRecord) -> TrainingBlueprintOutput:
         if not settings.llm_enabled:
             raise HTTPException(status_code=503, detail="智谱 API 尚未配置，请设置 ZHIPU_API_KEY。")
@@ -756,6 +807,19 @@ class LLMService:
         if cleaned.endswith("```"):
             cleaned = cleaned[:-3]
         return IncidentAnalysisOutput.model_validate_json(cleaned.strip())
+
+    @staticmethod
+    def _parse_advisor_output(content: str | dict) -> AdvisorFeedback:
+        if isinstance(content, dict):
+            return AdvisorFeedback.model_validate(content)
+        cleaned = content.strip()
+        if cleaned.startswith("```json"):
+            cleaned = cleaned[7:]
+        elif cleaned.startswith("```"):
+            cleaned = cleaned[3:]
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3]
+        return AdvisorFeedback.model_validate_json(cleaned.strip())
 
     @staticmethod
     def _parse_training_blueprint(content: str | dict) -> TrainingBlueprintOutput:
