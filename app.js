@@ -154,7 +154,7 @@ const COPY = {
   "transcriptPlaceholder": "转写内容会显示在这里，可逐句修改后再分析。",
   "transcriptLoading": "正在整理录音转写…",
   "transcriptEmptyAudio": "没有录到音频，请重新录音，或直接在这里输入文字。",
-  "transcriptStatusReady": "停录后先核对转写，再补充对话背景",
+  "transcriptStatusReady": "停录后先核对转写，再补充当前情况",
   "transcriptStatusLoading": "正在整理录音转写",
   "transcriptStatusDone": "请确认每句话及其说话人",
   "transcriptStatusError": "转写失败，请手动输入或重试",
@@ -438,7 +438,7 @@ const recordingStatus = document.querySelector("#recording-status");
 const recordingStatusLabel = document.querySelector("#recording-status-label");
 const recordingHelper = document.querySelector("#recording-helper");
 const startRecordingButton = document.querySelector("#start-recording");
-const recordingControls = document.querySelector("#recording-controls");
+const recordingControls = document.querySelector("#home-recording-controls");
 const recordingAudioCard = document.querySelector("#recording-audio-card");
 const recordingAudio = document.querySelector("#recording-audio");
 const recordingSheetAudio = document.querySelector("#recording-sheet-audio");
@@ -636,7 +636,7 @@ function renderTranscriptTurns() {
             <small class="turn-number">第 ${index + 1} 句</small>
             <header>
               <label class="turn-speaker-label" for="speaker-${turn.id}">这句话是谁说的？</label>
-              <input id="speaker-${turn.id}" data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "待确认")}" ${readOnly ? "readonly" : ""} aria-label="说话人，可输入自定义称呼" />
+              <input id="speaker-${turn.id}" data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "待确认")}" placeholder="输入自定义称呼，如客户、姐姐" maxlength="24" ${readOnly ? "readonly" : ""} aria-label="自定义说话人称呼" />
               <button type="button" class="turn-delete" data-action="delete-turn" data-turn-id="${turn.id}" ${readOnly ? "hidden" : ""} aria-label="删除这句">×</button>
             </header>
             <div class="turn-speakers">${speakerChips}</div>
@@ -648,6 +648,13 @@ function renderTranscriptTurns() {
     .join("");
 }
 
+function normalizeSpeakerName(value) {
+  return String(value || "")
+    .replace(/[\r\n]/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .slice(0, 24);
+}
+
 function findTurn(turnId) {
   return transcriptTurns.find((turn) => turn.id === turnId);
 }
@@ -655,7 +662,12 @@ function findTurn(turnId) {
 function updateTurn(turnId, patch) {
   const turn = findTurn(turnId);
   if (!turn || transcriptMode === "original") return;
-  Object.assign(turn, patch, { isUserEdited: true });
+  const nextPatch = { ...patch };
+  if (Object.prototype.hasOwnProperty.call(nextPatch, "speaker")) {
+    nextPatch.speaker = normalizeSpeakerName(nextPatch.speaker) || "待确认";
+    nextPatch.speakerId = nextPatch.speaker;
+  }
+  Object.assign(turn, nextPatch, { isUserEdited: true });
   syncTranscriptFromTurns();
   renderTranscriptTurns();
 }
@@ -680,11 +692,13 @@ function deleteTranscriptTurn(turnId) {
 }
 
 function collectAnalysisContext() {
+  const situation = document.querySelector("#context-situation")?.value.trim() || "";
   const relationship = document.querySelector("#context-relationship")?.value.trim() || "";
   const occasion = document.querySelector("#context-occasion")?.value.trim() || "";
   const feeling = document.querySelector("#context-feeling")?.value.trim() || "";
   const goal = document.querySelector("#context-goal")?.value.trim() || "";
   return [
+    situation ? `当前情况：${situation}` : "",
     relationship ? `关系：${relationship}` : "",
     occasion ? `场合：${occasion}` : "",
     feeling ? `感受：${feeling}` : "",
@@ -924,9 +938,9 @@ function stopTimer() {
 function setRecordingState(nextState) {
   recordingState = nextState;
   const content = {
-    ready: ["点击开始录音", "说完后再点一次结束，会保留原音频并生成转写"],
-    recording: ["正在录音，点击结束", "结束后可以核对转写或先保存"],
-    paused: ["已暂停", "录音已暂停，点击继续会接着写入同一段音频"],
+    ready: ["开始录音", "开始后可随时暂停或结束"],
+    recording: ["正在录音", "可以暂停，或点击“结束录音”完成本段"],
+    paused: ["录音已暂停", "点击继续接着录，或直接结束本段"],
     processing: ["处理中", "正在生成可回放的原音频，请稍等"],
     stopped: ["录音已结束", "可以核对转写，也可以先保存到录音记录"],
   }[nextState] || ["准备录音", I18N["live-note"]];
@@ -934,9 +948,10 @@ function setRecordingState(nextState) {
   if (homeRecordLabel) homeRecordLabel.textContent = content[0];
   if (homeRecordHelper) homeRecordHelper.textContent = content[1];
   homeRecordButton?.classList.toggle("is-recording", nextState === "recording");
+  homeRecordButton?.classList.toggle("is-paused", nextState === "paused");
   homeRecordButton?.classList.toggle("is-stopped", nextState === "stopped");
   homeRecordButton?.setAttribute("aria-pressed", String(nextState === "recording"));
-  if (homeRecordButton) homeRecordButton.disabled = nextState === "processing";
+  if (homeRecordButton) homeRecordButton.disabled = ["recording", "paused", "processing"].includes(nextState);
 
   if (recordingStatusLabel) recordingStatusLabel.textContent = content[0];
   if (recordingHelper) recordingHelper.textContent = content[1];
@@ -946,8 +961,12 @@ function setRecordingState(nextState) {
   if (startRecordingButton) startRecordingButton.hidden = nextState !== "ready";
   if (recordingControls) {
     recordingControls.hidden = !["recording", "paused"].includes(nextState);
-    recordingControls.querySelector('[data-action="pause-recording"]').disabled = nextState !== "recording";
-    recordingControls.querySelector('[data-action="resume-recording"]').disabled = nextState !== "paused";
+    const pauseButton = recordingControls.querySelector('[data-action="pause-recording"]');
+    const resumeButton = recordingControls.querySelector('[data-action="resume-recording"]');
+    pauseButton.hidden = nextState !== "recording";
+    pauseButton.disabled = nextState !== "recording";
+    resumeButton.hidden = nextState !== "paused";
+    resumeButton.disabled = nextState !== "paused";
     recordingControls.querySelector('[data-action="stop-recording"]').disabled = !["recording", "paused"].includes(nextState);
   }
   if (saveRecordingButton) saveRecordingButton.disabled = nextState !== "stopped";
@@ -1170,6 +1189,10 @@ async function startRecording() {
 
 function pauseRecording() {
   if (recordingState !== "recording") return;
+  if (!mediaRecorder || mediaRecorder.state !== "recording") {
+    showToast("麦克风正在连接，请稍候");
+    return;
+  }
   if (mediaRecorder?.state === "recording") mediaRecorder.pause();
   stopTimer();
   setRecordingState("paused");
@@ -1194,7 +1217,9 @@ function stopRecording({ silent = false } = {}) {
   if (mediaRecorder && mediaRecorder.state !== "inactive") {
     mediaRecorder.addEventListener("stop", () => finalizeRecordedAudio({ silent }), { once: true });
     mediaRecorder.stop();
+    releaseAudioStream();
   } else {
+    releaseAudioStream();
     finalizeRecordedAudio({ silent });
   }
 }
@@ -1218,7 +1243,6 @@ function revealInbox(behavior = "smooth") {
 function showScreen(id, { scrollInbox = false } = {}) {
   const next = screens.find((screen) => screen.dataset.screen === id);
   if (!next) return;
-  const previousScreen = currentScreen;
   const prev = screens.find((screen) => screen.classList.contains("active"));
 
   if (prev && prev !== next) prev.classList.remove("active");
@@ -1237,7 +1261,7 @@ function showScreen(id, { scrollInbox = false } = {}) {
   currentScreen = id;
   const tab = next.dataset.tab || id;
   guides.forEach((guide) => guide.classList.toggle("active", guide.dataset.jump === tab || guide.dataset.jump === id));
-  if (previousScreen === "home" && id !== "home" && ["recording", "paused"].includes(recordingState)) {
+  if (id !== "home" && ["recording", "paused"].includes(recordingState)) {
     stopRecording({ silent: true });
   } else if (id !== "home") {
     stopTimer();
@@ -1884,14 +1908,6 @@ document.addEventListener("click", async (event) => {
       prepareRecordingSession();
       await startRecording();
       break;
-    case "toggle-recording":
-      if (["recording", "paused"].includes(recordingState)) {
-        stopRecording();
-      } else if (recordingState !== "processing") {
-        prepareRecordingSession();
-        await startRecording();
-      }
-      break;
     case "history-list":
       showScreen("history");
       break;
@@ -1936,7 +1952,10 @@ document.addEventListener("click", async (event) => {
       await transcribeAndFill(recordedAudioBlob, { force: true });
       break;
     case "start-recording":
-      await startRecording();
+      if (!["recording", "paused", "processing"].includes(recordingState)) {
+        prepareRecordingSession();
+        await startRecording();
+      }
       break;
     case "pause-recording":
       pauseRecording();
@@ -1980,6 +1999,10 @@ document.addEventListener("click", async (event) => {
       {
         if (recordingState !== "stopped") {
           showToast(COPY.toastRecordingRequired);
+          break;
+        }
+        if (currentScreen !== "context") {
+          openContextScreen();
           break;
         }
         const transcript = getTranscriptText();
@@ -2071,12 +2094,19 @@ document.addEventListener("input", (event) => {
     if (transcriptMode === "original") return;
     const turn = findTurn(turnField.dataset.turnId);
     if (!turn) return;
-    turn[turnField.dataset.turnField] = turnField.value;
+    const nextValue = turnField.dataset.turnField === "speaker"
+      ? normalizeSpeakerName(turnField.value)
+      : turnField.value;
+    if (turnField.value !== nextValue) turnField.value = nextValue;
+    turn[turnField.dataset.turnField] = nextValue;
+    if (turnField.dataset.turnField === "speaker") turn.speakerId = nextValue;
     syncTranscriptFromTurns();
     if (turnField.dataset.turnField !== "speaker") return;
     const card = turnField.closest(".transcript-turn");
     const avatar = card?.querySelector(".turn-avatar");
     if (avatar) avatar.textContent = (turnField.value || "我").slice(0, 1);
+    const dialogueField = card?.querySelector('[data-turn-field="text"]');
+    dialogueField?.setAttribute("aria-label", `${turnField.value || "待确认"}的对话`);
     card?.querySelectorAll("[data-action='set-turn-speaker']").forEach((chip) => {
       chip.classList.toggle("active", chip.dataset.speaker === turnField.value.trim());
     });
@@ -2089,6 +2119,17 @@ document.addEventListener("input", (event) => {
   document.querySelectorAll(`[data-context-group="${group}"] .chip`).forEach((chip) => {
     chip.classList.toggle("active", chip.dataset.contextValue === contextField.value.trim());
   });
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && ["recording", "paused"].includes(recordingState)) {
+    stopRecording({ silent: true });
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  if (["recording", "paused"].includes(recordingState)) stopRecording({ silent: true });
+  releaseAudioStream();
 });
 
 installPhoneViewportFitting();

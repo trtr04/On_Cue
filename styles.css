@@ -239,6 +239,27 @@ button { cursor: pointer; }
 .home-record small { color: var(--text-secondary); font-size: 11px; font-weight: 700; }
 .home-record.is-recording small { color: var(--text-secondary); }
 .home-record b { font-family: "Inter", sans-serif; font-size: 28px; line-height: 1; }
+.home-recording-controls {
+  position: absolute;
+  z-index: 20;
+  left: 58px;
+  top: 692px;
+  width: 274px;
+  height: 42px;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 8px;
+}
+.home-recording-controls[hidden] { display: none; }
+.home-recording-controls button {
+  height: 42px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--canvas);
+  font-size: 13px;
+  font-weight: 900;
+}
+.home-recording-controls button.finish { background: var(--brand); }
 .recording-review-sheet {
   position: absolute;
   z-index: 35;
@@ -544,6 +565,7 @@ button { cursor: pointer; }
   font-size: 12px;
   font-weight: 900;
 }
+.turn-card header input::placeholder { color: var(--text-tertiary); font-weight: 700; }
 .turn-delete {
   width: 28px;
   height: 28px;
@@ -649,6 +671,13 @@ button { cursor: pointer; }
   box-shadow: 3px 3px 0 var(--ink);
 }
 .context-card > strong { display: block; font-size: 15px; }
+.context-card > small {
+  display: block;
+  margin-top: 5px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 15px;
+}
 .context-chips {
   display: flex;
   flex-wrap: wrap;
@@ -666,6 +695,19 @@ button { cursor: pointer; }
   background: transparent;
   font-size: 14px;
   font-weight: 800;
+}
+.context-situation-card textarea {
+  width: 100%;
+  min-height: 104px;
+  margin-top: 12px;
+  padding: 12px;
+  resize: vertical;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 13px;
+  line-height: 19px;
 }
 .context-toggle-card {
   display: grid;

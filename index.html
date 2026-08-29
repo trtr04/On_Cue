@@ -38,15 +38,20 @@
               <div class="home-chat-bubble">
                 <p data-i18n="home-bubble"></p>
               </div>
-              <button class="home-record" id="home-record-control" data-action="toggle-recording" aria-pressed="false">
+              <button class="home-record" id="home-record-control" data-action="start-recording" aria-pressed="false">
                 <span class="home-record-icon">
                   <img class="mic-icon idle" src="/assets/mic-record-large.svg" alt="" />
                   <img class="mic-icon live" src="/assets/record-dot.svg" alt="" />
                 </span>
                 <strong id="home-record-label" data-i18n="record-cta"></strong>
-                <small id="home-record-helper">点击开始，说完再点一次结束</small>
+                <small id="home-record-helper">点击开始，录音中可暂停或结束</small>
                 <b id="timer">00:00</b>
               </button>
+              <div class="home-recording-controls" id="home-recording-controls" hidden aria-label="录音控制">
+                <button type="button" data-action="pause-recording">暂停</button>
+                <button type="button" data-action="resume-recording" hidden>继续</button>
+                <button type="button" class="finish" data-action="stop-recording">结束录音</button>
+              </div>
               <div class="recording-review-sheet" id="recording-review-sheet" hidden>
                 <article>
                   <small>录音完成</small>
@@ -322,7 +327,7 @@
             </div>
             <footer class="transcript-footer">
               <button class="figma-button secondary" id="save-recording" data-action="save-recording" data-i18n="save-recording"></button>
-              <button class="figma-button primary" id="analyze-recording" data-action="open-context">确认转写，补充背景</button>
+              <button class="figma-button primary" id="analyze-recording" data-action="open-context">确认对话，补充当前情况</button>
             </footer>
             <div class="status-bar">
               <b>9:41</b>
@@ -340,14 +345,20 @@
             <div class="subpage-header">
               <button class="round-button" data-action="transcript">&#8592;</button>
               <div>
-                <small>分析设置</small>
-                <h1>补充对话背景</h1>
+                <small>分析前确认</small>
+                <h1>补充当前情况</h1>
               </div>
             </div>
             <div class="scroll-page context-scroll">
-              <span class="context-step">第 2 步 · 补充背景</span>
+              <span class="context-step">第 3 步 · 补充当前情况</span>
               <h2>同一句话，放在不同关系里不一样</h2>
               <p class="context-lead">只填你愿意提供的内容；这些信息能让建议更贴近现场。</p>
+
+              <article class="context-card context-situation-card">
+                <strong>当前最需要补充的情况</strong>
+                <small>例如前因后果、最近发生的变化，或录音里没有说清的限制。</small>
+                <textarea id="context-situation" maxlength="600" placeholder="写下会影响判断的当前情况（可选）"></textarea>
+              </article>
 
               <article class="context-card">
                 <strong>与对方的关系</strong>
@@ -359,7 +370,7 @@
                   <button type="button" class="chip" data-context-value="领导">领导</button>
                   <button type="button" class="chip" data-context-value="陌生人">陌生人</button>
                 </div>
-                <input id="context-relationship" type="text" placeholder="可以写得更具体，比如母女 / 师生" />
+                <input id="context-relationship" type="text" maxlength="80" placeholder="可以写得更具体，比如母女 / 师生" />
               </article>
 
               <article class="context-card">
@@ -371,7 +382,7 @@
                   <button type="button" class="chip" data-context-value="通话">通话</button>
                   <button type="button" class="chip" data-context-value="公共场合">公共场合</button>
                 </div>
-                <input id="context-occasion" type="text" placeholder="也可以自己写场合" />
+                <input id="context-occasion" type="text" maxlength="80" placeholder="也可以自己写场合" />
               </article>
 
               <article class="context-card">
@@ -384,7 +395,7 @@
                   <button type="button" class="chip" data-context-value="有压力">有压力</button>
                   <button type="button" class="chip" data-context-value="困惑">困惑</button>
                 </div>
-                <input id="context-feeling" type="text" placeholder="当时最明显的感觉" />
+                <input id="context-feeling" type="text" maxlength="80" placeholder="当时最明显的感觉" />
               </article>
 
               <article class="context-card">
@@ -396,7 +407,7 @@
                   <button type="button" class="chip" data-context-value="停止联系">停止联系</button>
                   <button type="button" class="chip" data-context-value="争取具体行动">争取具体行动</button>
                 </div>
-                <input id="context-goal" type="text" placeholder="这次复盘最想拿到的结果" />
+                <input id="context-goal" type="text" maxlength="120" placeholder="这次复盘最想拿到的结果" />
               </article>
 
               <article class="context-card context-toggle-card">

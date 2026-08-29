@@ -19,7 +19,8 @@ test("the home layout centers one large recording action and moves history to th
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const css = await readFile(new URL("styles.css", projectRoot), "utf8");
 
-  assert.match(html, /data-action="toggle-recording"/);
+  assert.match(html, /data-action="start-recording"/);
+  assert.match(html, /id="home-recording-controls"/);
   assert.match(html, /class="history-button" data-action="history-list"/);
   assert.match(html, /\/assets\/mic-record-large\.svg/);
   assert.doesNotMatch(html, /今日主要任务|记录一次没说完的话/);
@@ -236,13 +237,15 @@ test("current confirmed dialogue drives all three packaged role analyses", async
   assert.equal(result.voices.C.roleLabel, "位置、系统与结果操盘");
 });
 
-test("the home recording flow supports toggle recording, review sheet, storage, transcription, and audio replay", async () => {
+test("the home recording flow supports explicit controls, review sheet, storage, transcription, and audio replay", async () => {
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
   const transcription = await readFile(new URL("transcription.js", projectRoot), "utf8");
   const route = await readFile(new URL("app/api/transcribe/route.ts", projectRoot), "utf8");
 
-  assert.match(html, /data-action="toggle-recording"/);
+  assert.match(html, /data-action="start-recording"/);
+  assert.match(html, /data-action="pause-recording"/);
+  assert.match(html, /data-action="stop-recording"/);
   assert.match(html, /id="recording-review-sheet"/);
   assert.match(html, /data-action="review-transcript"/);
   assert.match(html, /id="recording-audio" controls/);
@@ -262,6 +265,38 @@ test("the home recording flow supports toggle recording, review sheet, storage, 
   assert.match(route, /ONCUE_API_KEY/);
   assert.match(route, /ONCUE_STT_MODEL/);
   assert.match(route, /whisper-large-v3-turbo/);
+});
+
+test("recording has explicit start pause resume and finish controls and stops when leaving", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+
+  assert.match(html, /id="home-record-control"[^>]+data-action="start-recording"/);
+  assert.match(html, /id="home-recording-controls"/);
+  assert.match(html, /data-action="pause-recording"[^>]*>暂停<\/button>/);
+  assert.match(html, /data-action="resume-recording"[^>]*>继续<\/button>/);
+  assert.match(html, /data-action="stop-recording"[^>]*>结束录音<\/button>/);
+  assert.doesNotMatch(html, /data-action="toggle-recording"/);
+  assert.match(script, /function stopRecording[\s\S]*mediaRecorder\.stop\(\);[\s\S]*releaseAudioStream\(\)/);
+  assert.match(script, /id !== "home"[\s\S]*\["recording", "paused"\]\.includes\(recordingState\)[\s\S]*stopRecording\(\{ silent: true \}\)/);
+  assert.match(script, /document\.addEventListener\("visibilitychange"[\s\S]*document\.hidden[\s\S]*stopRecording\(\{ silent: true \}\)/);
+});
+
+test("analysis requires a current-situation step and every sentence accepts a custom speaker", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+
+  assert.match(html, /<h1>补充当前情况<\/h1>/);
+  assert.match(html, /id="context-situation"/);
+  assert.match(html, /当前最需要补充的情况/);
+  assert.match(script, /const situation = document\.querySelector\("#context-situation"\)/);
+  assert.match(script, /situation \? `当前情况：\$\{situation\}`/);
+  assert.match(script, /case "analyze":[\s\S]*currentScreen !== "context"[\s\S]*openContextScreen\(\)/);
+  assert.match(html, /data-action="open-context">确认对话，补充当前情况<\/button>/);
+  assert.match(script, /placeholder="输入自定义称呼，如客户、姐姐"/);
+  assert.match(script, /maxlength="24"/);
+  assert.match(script, /normalizeSpeakerName/);
+  assert.match(script, /turn\.speakerId = nextValue/);
 });
 
 test("returning from transcript keeps the finished recording and edited sentence cards", async () => {
@@ -542,7 +577,7 @@ test("user-facing copy is concise and team API setup is shareable without secret
   const readme = await readFile(new URL("README.md", projectRoot), "utf8");
 
   assert.match(html, /核对转写/);
-  assert.match(html, /确认转写，补充背景/);
+  assert.match(html, /确认对话，补充当前情况/);
   assert.match(html, /生成对话分析/);
   assert.match(html, /三个技能角色/);
   assert.match(html, /建议回复/);
