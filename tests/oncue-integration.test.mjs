@@ -240,6 +240,9 @@ test("the live practice UI uses the new_classic_mode backend contract", async ()
   const proxy = await readFile(new URL("app/api/classic/[...path]/route.ts", projectRoot), "utf8");
 
   assert.match(html, /id="classic-difficulty"/);
+  assert.match(html, /id="new-classic-features"/);
+  assert.match(html, /11 个新版场景/);
+  assert.match(html, /三视角对话顾问/);
   assert.match(script, /createClassicTrainingSession/);
   assert.match(script, /sendClassicTrainingTurn/);
   assert.doesNotMatch(script, /submitTrainingTurn\(currentTrainingSession/);

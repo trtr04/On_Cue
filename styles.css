@@ -988,6 +988,25 @@ button { cursor: pointer; }
   white-space: nowrap;
 }
 .chip.active { background: var(--brand); }
+.new-classic-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.new-classic-features button {
+  min-height: 64px;
+  padding: 10px 11px;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: #fff;
+  text-align: left;
+}
+.new-classic-features button:first-child { background: var(--brand); }
+.new-classic-features b,
+.new-classic-features span { display: block; }
+.new-classic-features b { font-size: 12px; }
+.new-classic-features span { margin-top: 4px; color: var(--text-secondary); font-size: 9px; line-height: 1.35; }
 .practice-hero {
   position: relative;
   height: 120px;
