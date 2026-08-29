@@ -236,6 +236,18 @@
           </section>
 
           <section class="screen drill-screen" data-screen="drill" data-tab="practice">
+            <div class="scene-stage family-dinner-stage" aria-hidden="true">
+              <div class="family-dinner-shade"></div>
+              <img class="family-dinner-auntie auntie-fierce" src="./game-assets/auntie-cutout.png" alt="" />
+              <img class="family-dinner-auntie auntie-calm" src="./game-assets/auntie-calm.png" alt="" />
+              <div class="family-dinner-caption">除夕 · 家庭聚餐</div>
+            </div>
+            <div class="scene-stage workplace-stage" aria-hidden="true">
+              <div class="workplace-shade"></div>
+              <img class="workplace-boss boss-one" src="./game-assets/boss1-cutout.png" alt="" />
+              <img class="workplace-boss boss-two" src="./game-assets/boss2-cutout.png" alt="" />
+              <div class="workplace-caption">会议室 · 一对一沟通</div>
+            </div>
             <div class="drill-header">
               <button class="round-button" data-action="levels">&#8592;</button>
               <div>
@@ -249,8 +261,27 @@
             <div class="drill-suggestions" id="drill-suggestions"></div>
             <form class="drill-composer" id="drill-form">
               <input id="drill-input" data-i18n-placeholder="drill-placeholder" />
-              <button type="submit">&#8593;</button>
+              <button class="drill-hint" type="button" id="drill-hint" aria-label="获取提示">?</button>
+              <button class="drill-send" type="submit">&#8593;</button>
             </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen review-screen" data-screen="review" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div><small>训练复盘</small><h1>这次你是怎么应对的</h1></div>
+            </div>
+            <div class="review-scroll" id="training-review"></div>
             <div class="status-bar">
               <b>9:41</b>
               <div class="status-icons">
@@ -400,18 +431,6 @@
                   <h1>我听下来的现场</h1>
                   <p id="kb-match-title"></p>
                 </section>
-                <article class="kb-scene-card">
-                  <p id="kb-scene-opening"></p>
-                  <dl>
-                    <div><dt>关键变化</dt><dd id="kb-key-detail"></dd></div>
-                    <div><dt>卡住的位置</dt><dd id="kb-stuck"></dd></div>
-                    <div><dt>还需确认</dt><dd id="kb-confirm"></dd></div>
-                  </dl>
-                </article>
-                <section class="kb-evidence-section">
-                  <h2>知识库依据</h2>
-                  <ul id="kb-evidence"></ul>
-                </section>
                 <section class="kb-voices-section">
                   <header><h2>三种朋友视角</h2><small>同一事实底盘，不同处理方向</small></header>
                   <nav class="kb-voice-tabs" aria-label="选择回答视角">
@@ -426,12 +445,7 @@
                     <div><span>可以直接说</span><strong id="kb-direct-reply"></strong></div>
                   </article>
                 </section>
-                <section class="kb-next-section">
-                  <h2>匹配到的模式与策略</h2>
-                  <div id="kb-tags"></div>
-                  <p id="kb-uncertainty"></p>
-                </section>
-                <button class="figma-button primary kb-replay" data-action="replay">把这个场景再演练一遍 →</button>
+                <button class="figma-button primary kb-replay" data-action="save-personal-scene">纳入用户专属场景</button>
               </div>
             </div>
             <div class="status-bar">

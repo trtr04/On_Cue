@@ -8,6 +8,7 @@ import {
 import {
   createClassicTrainingSession,
   finishClassicTrainingSession,
+  getClassicTrainingHint,
   sendClassicTrainingTurn,
 } from "./classic-training-api.js";
 import {
@@ -522,6 +523,7 @@ let drillOrigin = "levels";
 let currentDrill = null;
 let currentTrainingSession = null;
 let drillStep = 0;
+let boundaryWins = 0;
 let selectedClassicDifficulty = 1;
 let knowledgePromise = null;
 let currentKnowledgeAnalysis = null;
@@ -1556,37 +1558,21 @@ function renderKnowledgeAnalysis(result) {
   const riskLabel = result.riskLevel === "urgent" ? " · 安全优先" : "";
   setKnowledgeText(
     "#kb-status",
-    `${confidenceLabel} · ${result.sourceStats.scenes} 场景${riskLabel}`,
+    `${result.source === "knowledge+model" ? "知识库增强" : "本地知识库"} · ${confidenceLabel}${riskLabel}`,
   );
   setKnowledgeText("#kb-match-title", `匹配场景：${result.scene.title}`);
-  setKnowledgeText("#kb-scene-opening", result.sceneRead.opening);
-  setKnowledgeText("#kb-key-detail", result.sceneRead.key_detail);
-  setKnowledgeText("#kb-stuck", result.sceneRead.where_it_is_stuck);
-  setKnowledgeText("#kb-confirm", result.sceneRead.need_to_confirm);
-  setKnowledgeText("#kb-uncertainty", `不确定性说明：${result.uncertainty}`);
-
-  const evidence = document.querySelector("#kb-evidence");
-  evidence.replaceChildren(
-    ...result.evidence.map((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      return li;
-    }),
-  );
-
-  const tags = document.querySelector("#kb-tags");
-  const items = [
-    ...result.patterns.map((item) => `模式：${item.name}`),
-    ...result.strategies.map((item) => `策略：${item.name}`),
-  ];
-  tags.replaceChildren(
-    ...items.slice(0, 6).map((item) => {
-      const tag = document.createElement("span");
-      tag.textContent = item;
-      return tag;
-    }),
-  );
   renderKnowledgeVoice(result.primaryVoice);
+}
+
+async function requestGroundedKnowledgeAnalysis(transcript, context) {
+  const response = await fetch("/api/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ transcript, context }),
+  });
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(payload?.error || `analysis_${response.status}`);
+  return payload;
 }
 
 async function runKnowledgeAnalysis(transcript) {
@@ -1597,10 +1583,22 @@ async function runKnowledgeAnalysis(transcript) {
   }
   showScreen("analysis");
   analysisScreen.classList.add("is-loading");
-  setKnowledgeText("#kb-status", "正在检索 120 个场景…");
+  setKnowledgeText("#kb-status", "正在检索知识库并整理三种视角…");
   try {
+    const context = collectAnalysisContext();
+    if (settingsState.privacy.analysisConsent) {
+      try {
+        renderKnowledgeAnalysis(await requestGroundedKnowledgeAnalysis(text, context));
+        return;
+      } catch {
+        // Continue with the packaged on-device knowledge base when the model endpoint is unavailable.
+      }
+    }
     const knowledge = await knowledgeBase();
-    renderKnowledgeAnalysis(analyzeConfirmedTranscript(text, knowledge, { extra: collectAnalysisContext() }));
+    renderKnowledgeAnalysis({
+      ...analyzeConfirmedTranscript(text, knowledge, { extra: context }),
+      source: "knowledge-local",
+    });
   } catch (error) {
     console.error("Knowledge analysis failed", error);
     setKnowledgeText("#kb-status", "知识库读取失败");
@@ -1654,7 +1652,14 @@ function openLevels(scene) {
 function appendDrill(role, text) {
   const bubble = document.createElement("div");
   bubble.className = `drill-bubble ${role}`;
-  bubble.textContent = text;
+  if (role === "ai") {
+    const speaker = document.createElement("small");
+    speaker.textContent = currentDrill?.role || "对方";
+    bubble.appendChild(speaker);
+  }
+  const message = document.createElement("p");
+  message.textContent = text;
+  bubble.appendChild(message);
   drillThread.appendChild(bubble);
   drillThread.scrollTop = drillThread.scrollHeight;
 }
@@ -1672,21 +1677,73 @@ function updateDrillProgress() {
   drillProgress.textContent = `new_classic_mode · ${difficulty} · 第 ${Math.min(currentTrainingSession.turn + 1, currentTrainingSession.maxTurns)} / ${currentTrainingSession.maxTurns} 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
 }
 
-function appendTrainingReview(review) {
+function listCard(title, values) {
   const card = document.createElement("article");
-  card.className = "drill-review";
-  const title = document.createElement("strong");
-  title.textContent = "AI 训练复盘";
-  const achieved = document.createElement("p");
-  achieved.textContent = review.summary || "本轮训练已经结束。";
-  const next = document.createElement("p");
-  next.textContent = `下一步：${review.next_practice || "换一个场景继续练习。"}`;
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  const list = document.createElement("ul");
+  (values?.length ? values : ["这轮对话较短，暂时没有足够证据。"] ).forEach((value) => {
+    const item = document.createElement("li");
+    item.textContent = value;
+    list.appendChild(item);
+  });
+  card.append(heading, list);
+  return card;
+}
+
+function renderClassicTrainingReview(review) {
+  const target = document.querySelector("#training-review");
+  target.replaceChildren();
+
+  const summary = document.createElement("section");
+  summary.className = "review-summary-card";
+  const summaryText = document.createElement("p");
+  summaryText.textContent = review.summary || "本轮训练已经结束。";
+  summary.appendChild(summaryText);
+
+  const columns = document.createElement("div");
+  columns.className = "review-columns";
+  columns.append(
+    listCard("做得好的地方", review.strengths),
+    listCard("优先改进", review.priority_improvements),
+  );
+
+  const dimensions = document.createElement("div");
+  dimensions.className = "review-dimensions";
+  (review.dimensions || []).forEach((dimension) => {
+    const card = document.createElement("article");
+    const header = document.createElement("header");
+    const name = document.createElement("strong");
+    name.textContent = dimension.name;
+    const score = document.createElement("span");
+    score.textContent = dimension.score == null ? "证据不足" : `${dimension.score}/5`;
+    header.append(name, score);
+    const evidence = document.createElement("small");
+    evidence.textContent = `对话证据：${dimension.evidence || "暂无"}`;
+    const feedback = document.createElement("p");
+    feedback.textContent = dimension.feedback || "";
+    card.append(header, evidence, feedback);
+    dimensions.appendChild(card);
+  });
+
+  const next = document.createElement("article");
+  next.className = "review-next";
+  const betterTitle = document.createElement("strong");
+  betterTitle.textContent = "换一种更清楚的说法";
   const better = document.createElement("p");
-  better.textContent = review.better_response ? `可以换成：${review.better_response}` : "";
-  card.append(title, achieved, next);
-  if (better.textContent) card.append(better);
-  drillThread.appendChild(card);
-  drillThread.scrollTop = drillThread.scrollHeight;
+  better.textContent = review.better_response || "下一轮先把事实、边界和下一步说具体。";
+  const practiceTitle = document.createElement("strong");
+  practiceTitle.textContent = "下一次只练这一点";
+  const practice = document.createElement("p");
+  practice.textContent = review.next_practice || "换一个场景继续练习。";
+  const back = document.createElement("button");
+  back.className = "figma-button primary";
+  back.dataset.action = "practice";
+  back.textContent = "返回训练地图";
+  next.append(betterTitle, better, practiceTitle, practice, back);
+
+  target.append(summary, columns, dimensions, next);
+  showScreen("review");
 }
 
 async function startDrill(id, extra = {}) {
@@ -1704,6 +1761,13 @@ async function startDrill(id, extra = {}) {
   }
   drillOrigin = extra.origin || "levels";
   drillStep = 0;
+  boundaryWins = 0;
+  const isFamily = id.includes("family");
+  const drillScreen = document.querySelector(".drill-screen");
+  drillScreen?.classList.toggle("scene-family", isFamily);
+  drillScreen?.classList.toggle("scene-workplace", !isFamily);
+  drillScreen?.classList.toggle("use-boss-two", /general|overtime|emotional|gender/.test(id));
+  document.querySelector(".family-dinner-stage")?.classList.remove("is-softened");
   document.querySelector("#drill-role").textContent = currentDrill.role;
   document.querySelector("#drill-title").textContent = extra.title || currentDrill.title;
   drillThread.innerHTML = "";
@@ -1745,6 +1809,9 @@ async function sendDrill(text) {
   if (!currentDrill || !text.trim()) return;
   appendDrill("me", text.trim());
   if (currentTrainingSession) {
+    if (/请.{0,8}(尊重|不要|别)|我(会|想|决定|安排).{0,12}(自己|以后|再说)|不想.{0,8}(讨论|回答)/.test(text)) {
+      boundaryWins += 1;
+    }
     drillForm.classList.add("is-disabled");
     document.querySelector("#drill-input").disabled = true;
     drillProgress.textContent = "对方正在回应…";
@@ -1758,13 +1825,16 @@ async function sendDrill(text) {
         finished: data.end_session,
       };
       appendDrill("ai", data.opponent_message);
+      if (boundaryWins >= 2 && currentDrill?.role && currentDrill.title.includes("家庭")) {
+        document.querySelector(".family-dinner-stage")?.classList.add("is-softened");
+      }
       updateDrillProgress();
       if (data.end_session) {
         renderSuggestions([]);
         drillProgress.textContent = "正在生成 AI 复盘…";
         const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
-        appendTrainingReview(review);
-        drillProgress.textContent = "训练与复盘已完成";
+        currentTrainingSession = null;
+        renderClassicTrainingReview(review);
         return;
       }
       renderSuggestions(getTrainingHints(currentTrainingSession));
@@ -1787,10 +1857,43 @@ async function sendDrill(text) {
   }, 420);
 }
 
+async function finishClassicTraining() {
+  if (!currentTrainingSession?.sessionId) return;
+  drillForm.classList.add("is-disabled");
+  drillProgress.textContent = "正在生成 AI 复盘…";
+  try {
+    const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
+    currentTrainingSession = null;
+    renderClassicTrainingReview(review);
+  } catch (error) {
+    appendDrill("ai", `复盘生成失败：${error.message}`);
+    drillForm.classList.remove("is-disabled");
+  }
+}
+
+async function showClassicTrainingHint() {
+  if (!currentTrainingSession?.sessionId) return;
+  drillProgress.textContent = "正在整理这一轮提示…";
+  try {
+    const hint = await getClassicTrainingHint(currentTrainingSession.sessionId);
+    const lines = [hint.sentence_starter, hint.communication_move, ...(hint.facts_to_use || []).slice(0, 1)].filter(Boolean);
+    renderSuggestions(lines);
+    drillProgress.textContent = "提示不会占用训练轮数";
+  } catch (error) {
+    showToast(`提示生成失败：${error.message}`);
+    updateDrillProgress();
+  }
+}
+
 document.addEventListener("click", async (event) => {
   const voiceTab = event.target.closest("[data-voice]");
   if (voiceTab) {
     renderKnowledgeVoice(voiceTab.dataset.voice);
+    return;
+  }
+
+  if (event.target.closest("#drill-hint")) {
+    await showClassicTrainingHint();
     return;
   }
 
@@ -1970,6 +2073,16 @@ document.addEventListener("click", async (event) => {
       showToast(COPY.toastReplay);
       openLevels("work");
       break;
+    case "save-personal-scene": {
+      const role = document.querySelector("#context-relationship")?.value.trim() || "对方";
+      const sceneTitle = currentKnowledgeAnalysis?.scene?.title || "我的专属场景";
+      const sceneText = [sceneTitle, getTranscriptText(), collectAnalysisContext()].filter(Boolean).join("\n");
+      document.querySelector("#custom-role").value = role;
+      document.querySelector("#custom-scene").value = sceneText;
+      showToast("已纳入用户专属场景");
+      showScreen("custom");
+      break;
+    }
     case "open-levels":
       openLevels(control.dataset.scene || selectedMap);
       break;
@@ -1980,8 +2093,8 @@ document.addEventListener("click", async (event) => {
       await startDrill(control.dataset.drill);
       break;
     case "end-drill":
-      showToast(COPY.toastEndDrill);
-      showScreen("practice");
+      if (currentTrainingSession?.sessionId) await finishClassicTraining();
+      else showScreen("practice");
       break;
     case "levels":
       showScreen(drillOrigin === "custom" ? "custom" : "levels");

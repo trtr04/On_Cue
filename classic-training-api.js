@@ -1,10 +1,11 @@
 const CLASSIC_API_BASE = "/api/classic";
 
 async function requestClassic(path, options = {}) {
+  const isFormData = options.body instanceof FormData;
   const response = await fetch(`${CLASSIC_API_BASE}${path}`, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(options.headers || {}),
     },
   });
@@ -46,4 +47,40 @@ export function getClassicTrainingHint(sessionId) {
 
 export function finishClassicTrainingSession(sessionId) {
   return requestClassic(`/training/sessions/${encodeURIComponent(sessionId)}/finish`, { method: "POST" });
+}
+
+export function createClassicIncident(description) {
+  return requestClassic("/incidents", {
+    method: "POST",
+    body: JSON.stringify({ description }),
+  });
+}
+
+export function answerClassicIncident(incidentId, answer) {
+  return requestClassic(`/incidents/${encodeURIComponent(incidentId)}/answers`, {
+    method: "POST",
+    body: JSON.stringify({ answer }),
+  });
+}
+
+export function confirmClassicIncident(incidentId) {
+  return requestClassic(`/incidents/${encodeURIComponent(incidentId)}/confirm`, { method: "POST" });
+}
+
+export function adviseClassicIncident(incidentId, segments) {
+  return requestClassic(`/incidents/${encodeURIComponent(incidentId)}/advisor`, {
+    method: "POST",
+    body: JSON.stringify({ transcript_confirmed: true, segments }),
+  });
+}
+
+export function trainClassicIncident(incidentId) {
+  return requestClassic(`/incidents/${encodeURIComponent(incidentId)}/training`, { method: "POST" });
+}
+
+export function transcribeClassicAudio(purpose, audio) {
+  const body = new FormData();
+  body.append("purpose", purpose);
+  body.append("audio", audio, `recording-${Date.now()}.wav`);
+  return requestClassic("/transcriptions", { method: "POST", body });
 }

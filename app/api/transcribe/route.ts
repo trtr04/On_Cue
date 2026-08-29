@@ -11,9 +11,21 @@ type Provider = {
 };
 
 function providers(): Provider[] {
+  const oncueKey = process.env.ONCUE_API_KEY?.trim();
   const groqKey = process.env.GROQ_API_KEY?.trim();
   const openaiKey = process.env.OPENAI_API_KEY?.trim();
   const list: Provider[] = [];
+  if (oncueKey) {
+    const base = new URL((process.env.ONCUE_API_BASE_URL || "https://api.openai.com/v1").trim());
+    if (base.protocol !== "https:") throw new Error("ONCUE_API_BASE_URL must use https");
+    base.pathname = `${base.pathname.replace(/\/$/, "")}/audio/transcriptions`;
+    list.push({
+      source: "oncue",
+      url: base.toString(),
+      key: oncueKey,
+      model: process.env.ONCUE_STT_MODEL?.trim() || "gpt-4o-mini-transcribe",
+    });
+  }
   if (groqKey) {
     list.push({
       source: "groq",

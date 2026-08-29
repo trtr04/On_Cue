@@ -1,11 +1,17 @@
+import { handleInternalClassicRequest } from "@/lib/classic-service";
+
 const LOCAL_CLASSIC_ORIGIN = "http://127.0.0.1:8000";
 const SESSION_ID = "[A-Za-z0-9_-]{1,80}";
 const ALLOWED_PATHS = [
   /^scenarios$/,
   /^health$/,
+  /^incidents$/,
+  /^transcriptions$/,
   /^training\/sessions$/,
   new RegExp(`^training\\/sessions\\/${SESSION_ID}$`),
   new RegExp(`^training\\/sessions\\/${SESSION_ID}\\/(turns|hint|finish)$`),
+  new RegExp(`^incidents\\/${SESSION_ID}$`),
+  new RegExp(`^incidents\\/${SESSION_ID}\\/(answers|confirm|advisor|training)$`),
 ];
 
 function backendOrigin(): string | null {
@@ -19,14 +25,13 @@ function backendOrigin(): string | null {
 }
 
 async function proxy(request: Request, context: { params: Promise<{ path?: string[] }> }) {
-  const origin = backendOrigin();
-  if (!origin) return Response.json({ error: "classic_backend_not_configured" }, { status: 503 });
-
   const params = await context.params;
   const path = (params.path || []).join("/");
   if (!ALLOWED_PATHS.some((pattern) => pattern.test(path))) {
     return Response.json({ error: "classic_route_not_allowed" }, { status: 404 });
   }
+  const origin = backendOrigin();
+  if (!origin) return handleInternalClassicRequest(request, path);
 
   const headers = new Headers();
   const contentType = request.headers.get("content-type");

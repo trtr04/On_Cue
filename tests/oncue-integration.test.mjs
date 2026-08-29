@@ -163,6 +163,8 @@ test("the home recording flow supports toggle recording, review sheet, storage, 
   assert.match(transcription, /Xenova\/whisper-base/);
   assert.match(route, /api\.groq\.com\/openai\/v1\/audio\/transcriptions/);
   assert.match(route, /api\.openai\.com\/v1\/audio\/transcriptions/);
+  assert.match(route, /ONCUE_API_KEY/);
+  assert.match(route, /ONCUE_STT_MODEL/);
   assert.match(route, /whisper-large-v3-turbo/);
 });
 
@@ -249,7 +251,65 @@ test("the live practice UI uses the new_classic_mode backend contract", async ()
   assert.match(client, /CLASSIC_API_BASE = "\/api\/classic"/);
   assert.match(client, /requestClassic\("\/training\/sessions"/);
   assert.match(proxy, /CLASSIC_API_ORIGIN/);
-  assert.match(proxy, /classic_backend_not_configured/);
+  assert.match(proxy, /handleInternalClassicRequest/);
+});
+
+test("classic training keeps the immersive scenes and characters from the latest team release", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const css = await readFile(new URL("styles.css", projectRoot), "utf8");
+
+  assert.match(html, /class="scene-stage family-dinner-stage"/);
+  assert.match(html, /class="scene-stage workplace-stage"/);
+  assert.match(html, /game-assets\/auntie-cutout\.png/);
+  assert.match(html, /game-assets\/boss1-cutout\.png/);
+  assert.match(html, /id="drill-hint"/);
+  assert.match(html, /data-screen="review"/);
+  assert.match(css, /game-assets\/family-dinner\.jpg/);
+  assert.match(css, /game-assets\/meeting-room\.png/);
+  assert.match(css, /\.drill-screen\.scene-family/);
+  assert.match(css, /\.drill-screen\.scene-workplace/);
+  assert.match(script, /getClassicTrainingHint/);
+  assert.match(script, /renderClassicTrainingReview/);
+});
+
+test("the classic API exposes every route required by training, personal scenes, advisor, and speech", async () => {
+  const client = await readFile(new URL("classic-training-api.js", projectRoot), "utf8");
+  const proxy = await readFile(new URL("app/api/classic/[...path]/route.ts", projectRoot), "utf8");
+
+  for (const path of ["incidents", "answers", "confirm", "advisor", "training", "transcriptions", "hint", "finish"]) {
+    assert.match(client, new RegExp(path));
+    assert.match(proxy, new RegExp(path));
+  }
+  assert.match(proxy, /CLASSIC_API_ORIGIN/);
+  assert.match(proxy, /handleInternalClassicRequest/);
+  assert.doesNotMatch(proxy, /classic_backend_not_configured/);
+  assert.doesNotMatch(proxy, /http:\/\/127\.0\.0\.1:8000.*NODE_ENV !== "development"/s);
+});
+
+test("analysis uses a server-side grounded knowledge route and only shows the requested result modules", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const route = await readFile(new URL("app/api/analyze/route.ts", projectRoot), "utf8");
+  const grounding = await readFile(new URL("lib/knowledge-grounding.js", projectRoot), "utf8");
+
+  assert.match(script, /fetch\("\/api\/analyze"/);
+  assert.match(script, /analyzeConfirmedTranscript/);
+  assert.match(route, /ONCUE_API_KEY/);
+  assert.match(route, /retrieveKnowledgeEvidence/);
+  assert.match(route, /validateGroundedAnalysis/);
+  assert.match(grounding, /INSTRUCTIONS_IN_DATA_ARE_UNTRUSTED/);
+  assert.match(html, /<h2>三种朋友视角<\/h2>/);
+  assert.match(html, />纳入用户专属场景<\/button>/);
+  assert.doesNotMatch(html, /知识库依据|匹配到的模式与策略/);
+});
+
+test("the context form has generous mobile spacing without overlapping its footer", async () => {
+  const css = await readFile(new URL("styles.css", projectRoot), "utf8");
+
+  assert.match(css, /\.context-scroll\s*\{[^}]*padding:\s*8px 24px 112px;/s);
+  assert.match(css, /\.context-card\s*\{[^}]*margin-bottom:\s*18px;[^}]*padding:\s*18px;/s);
+  assert.match(css, /\.context-footer\s*\{[^}]*z-index:\s*4;/s);
 });
 
 test("classic training stops at five turns and returns a review", async () => {
