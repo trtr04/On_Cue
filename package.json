@@ -1,9 +1,14 @@
 {
-  "name": "on-cue-ip-assets",
+  "name": "on-cue",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "main": "index.js",
   "scripts": {
+    "start": "npm run sync:simulator && expo start",
+    "web": "npm run sync:simulator && expo start --web",
+    "ios": "npm run sync:simulator && expo start --ios",
+    "android": "npm run sync:simulator && expo start --android",
+    "sync:simulator": "node scripts/sync-simulator.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -12,12 +17,21 @@
     "generate:stickers": "node scripts/generate-seedream.mjs stickers",
     "generate:all": "node scripts/generate-seedream.mjs all"
   },
+  "dependencies": {
+    "@expo/metro-runtime": "~57.0.14",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/noto-sans-sc": "^5.3.0",
+    "babel-preset-expo": "~57.0.0",
+    "expo": "~57.0.18",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-web": "^0.21.2",
+    "react-native-webview": "13.16.1"
+  },
   "devDependencies": {
     "playwright-core": "^1.62.1",
     "vite": "^8.2.2"
-  },
-  "dependencies": {
-    "@fontsource/inter": "^5.3.0",
-    "@fontsource/noto-sans-sc": "^5.3.0"
   }
 }

@@ -1,6 +1,15 @@
 # dependencies
 node_modules/
 
+# Expo
+.expo/
+web-build/
+expo-env.d.ts
+nativeHtml.js
+public/simulator/
+/ios
+/android
+
 # build
 dist/
 build/
