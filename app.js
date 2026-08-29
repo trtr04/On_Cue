@@ -607,6 +607,7 @@ function syncTranscriptFromTurns() {
   if (confirmedTranscript) confirmedTranscript.value = text;
   transcriptEditedByUser = Boolean(text);
   syncContinueButton();
+  persistCurrentDraft();
 }
 
 function renderTranscriptTurns() {
@@ -1034,6 +1035,7 @@ async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
     if (token !== transcriptionToken) return false;
     const applied = applyTranscribedResult(result, { force });
     setTranscriptStatus(COPY.transcriptStatusDone, "done");
+    persistCurrentDraft();
     if (applied) showToast(COPY.toastTranscribed);
     return true;
   } catch (error) {
@@ -1084,15 +1086,18 @@ async function finalizeRecordedAudio({ silent = false } = {}) {
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
   setRecordingState("stopped");
+  persistCurrentDraft();
   setTranscribing(false);
   if (retranscribeButton) retranscribeButton.disabled = !recordedAudioBlob;
   if (currentScreen === "home") recordingReviewSheet.hidden = false;
   if (!silent) showToast(COPY.toastRecordingStopped);
   if (audioBlob && settingsState.device.autoTranscribe) {
     await transcribeAndFill(audioBlob, { silent: true });
+    persistCurrentDraft();
   } else if (!audioBlob) {
     setTranscriptText(COPY.transcriptEmptyAudio);
     setTranscriptStatus(COPY.transcriptStatusError, "error");
+    persistCurrentDraft();
   }
 }
 
@@ -1238,6 +1243,9 @@ function showScreen(id, { scrollInbox = false } = {}) {
     stopTimer();
   }
   if (id === "home" && scrollInbox) revealInbox();
+  if (id === "home" && recordingState === "stopped" && currentDraftRecordingId) {
+    recordingReviewSheet.hidden = false;
+  }
   if (id === "vent") sendVentIdentity();
 }
 
@@ -1401,6 +1409,12 @@ function buildCurrentRecording() {
   };
 }
 
+function persistCurrentDraft() {
+  if (recordingState !== "stopped" || !currentDraftRecordingId) return false;
+  addRecording(buildCurrentRecording());
+  return true;
+}
+
 function saveCurrentRecording({ navigateToHistory = true } = {}) {
   if (recordingState !== "stopped") {
     showToast(COPY.toastRecordingRequired);
@@ -1457,7 +1471,9 @@ function renderKnowledgeVoice(voiceId) {
   document.querySelectorAll("[data-voice]").forEach((button) => {
     button.classList.toggle("active", button.dataset.voice === voiceId);
   });
-  setKnowledgeText("#kb-voice-label", `${voice.display_name} · ${voice.tone_tags.join(" · ")}`);
+  const roleName = voice.roleLabel || voice.display_name;
+  const tone = voice.tone_tags.length ? ` · ${voice.tone_tags.join(" · ")}` : "";
+  setKnowledgeText("#kb-voice-label", `${roleName}${tone}`);
   setKnowledgeText("#kb-voice-headline", voice.headline);
   setKnowledgeText("#kb-voice-analysis", `${voice.position} ${voice.analysis}`);
   setKnowledgeText("#kb-direct-reply", voice.direct_reply);
@@ -1469,17 +1485,29 @@ function renderKnowledgeAnalysis(result) {
   const riskLabel = result.riskLevel === "urgent" ? " · 安全优先" : "";
   setKnowledgeText(
     "#kb-status",
-    `智能分析 · ${confidenceLabel}${riskLabel}`,
+    `当前对话分析 · ${confidenceLabel}${riskLabel}`,
   );
-  setKnowledgeText("#kb-match-title", `匹配场景：${result.scene.title}`);
+  setKnowledgeText(
+    "#kb-match-title",
+    result.currentDialogue?.title || result.sceneRead?.opening || "当前对话分析",
+  );
   renderKnowledgeVoice(result.primaryVoice);
 }
 
 async function requestGroundedKnowledgeAnalysis(transcript, context) {
+  const segments = transcriptTurns.map((turn) => ({
+    id: turn.id,
+    speakerId: turn.speakerId || turn.speaker || "待确认",
+    text: turn.text,
+    startMs: Number(turn.startMs) || 0,
+    endMs: Number(turn.endMs) || 0,
+    confidence: Number.isFinite(Number(turn.confidence)) ? Number(turn.confidence) : null,
+    isUserEdited: Boolean(turn.isUserEdited || transcriptEditedByUser),
+  }));
   const response = await fetch("/api/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ transcript, context }),
+    body: JSON.stringify({ transcript, context, segments }),
   });
   const payload = await response.json().catch(() => null);
   if (!response.ok) throw new Error(payload?.error || `analysis_${response.status}`);

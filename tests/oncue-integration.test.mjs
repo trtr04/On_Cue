@@ -140,6 +140,102 @@ test("the recording analysis UI confirms text, original audio, speakers, and all
   assert.match(script, /openContextScreen/);
 });
 
+test("current confirmed dialogue drives all three packaged role analyses", async () => {
+  const profiles = JSON.parse(
+    await readFile(
+      new URL(
+        "../classic-training/zenmeban-dialogue-advisor/references/core/voice-profiles.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const router = JSON.parse(
+    await readFile(
+      new URL(
+        "../classic-training/zenmeban-dialogue-advisor/references/core/voice-router.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const { buildGroundedPrompt, validateGroundedAnalysis } = await import("../lib/knowledge-grounding.js");
+  const retrieved = [{
+    score: 88,
+    scene: {
+      id: "scene-reference-only",
+      title: "历史参考场景",
+      scene_category: "职场",
+      scene_archetype: "参考卡",
+      observable_facts: ["历史材料里的句子"],
+      possible_interpretations: [],
+      missing_information: [],
+      pattern_refs: [],
+      strategy_refs: [],
+      risk_level: "none",
+      avoid: [],
+    },
+  }];
+  const transcript = "领导：这份方案全部重做。\n我：请先说明需要修改的具体部分。";
+  const prompt = buildGroundedPrompt({
+    transcript,
+    context: "关系：直属领导",
+    segments: [
+      { id: "seg-1", speakerId: "领导", text: "这份方案全部重做。", startMs: 0, endMs: 1000, confidence: 1, isUserEdited: true },
+      { id: "seg-2", speakerId: "我", text: "请先说明需要修改的具体部分。", startMs: 1000, endMs: 2000, confidence: 1, isUserEdited: true },
+    ],
+    retrieved,
+    voiceProfiles: profiles,
+    voiceRouter: router,
+  });
+
+  assert.match(prompt, /当前确认对话是唯一的事实来源/);
+  assert.ok(prompt.indexOf(transcript) < prompt.indexOf("历史知识卡"));
+  assert.match(prompt, /价值交换型强判断/);
+  assert.match(prompt, /人情世故与高情商话术/);
+  assert.match(prompt, /位置、系统与结果操盘/);
+
+  const voice = (id) => ({
+    voice_id: id,
+    display_name: id,
+    headline: `${id} 对当前对话的判断`,
+    position: `${id} 的独立立场`,
+    analysis: `${id} 只分析刚才的对话`,
+    direct_reply: `${id} 的建议回复`,
+    tone_tags: [id],
+    style_intensity: "strong",
+    safety_override: false,
+  });
+  const result = validateGroundedAnalysis({
+    title: "本次方案修改沟通",
+    scene: "直属领导要求全部重做",
+    summary: "双方需要把修改范围说清楚",
+    evidence: ["这份方案全部重做"],
+    scene_read: {
+      opening: "我听下来，你们卡在修改范围没有被说清楚。",
+      key_detail: "对方要求全部重做，但没有说明具体部分。",
+      where_it_is_stuck: "修改标准不明确。",
+      need_to_confirm: "需要确认修改范围和验收标准。",
+    },
+    ambiguity_analysis: {
+      observable_facts: ["这份方案全部重做", "请先说明需要修改的具体部分"],
+      primary_interpretation: { confidence: "medium" },
+    },
+    voice_versions: { A: voice("A"), B: voice("B"), C: voice("C") },
+    primary_voice: "C",
+    voice_order: ["C", "A", "B"],
+    uncertainty: "尚未看到具体修改清单。",
+    risk_level: "none",
+  }, retrieved, { patterns: [], strategies: [] }, { transcript, voiceProfiles: profiles });
+
+  assert.equal(result.currentDialogue.title, "本次方案修改沟通");
+  assert.deepEqual(result.evidence, ["这份方案全部重做", "请先说明需要修改的具体部分"]);
+  assert.equal(result.referenceScene.id, "scene-reference-only");
+  assert.equal(result.voices.A.roleLabel, "价值交换型强判断");
+  assert.equal(result.voices.B.roleLabel, "人情世故与高情商话术");
+  assert.equal(result.voices.C.roleLabel, "位置、系统与结果操盘");
+});
+
 test("the home recording flow supports toggle recording, review sheet, storage, transcription, and audio replay", async () => {
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
@@ -166,6 +262,16 @@ test("the home recording flow supports toggle recording, review sheet, storage, 
   assert.match(route, /ONCUE_API_KEY/);
   assert.match(route, /ONCUE_STT_MODEL/);
   assert.match(route, /whisper-large-v3-turbo/);
+});
+
+test("returning from transcript keeps the finished recording and edited sentence cards", async () => {
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+
+  assert.match(script, /function persistCurrentDraft/);
+  assert.match(script, /persistCurrentDraft\(\);[\s\S]*await transcribeAndFill/);
+  assert.match(script, /syncTranscriptFromTurns\(\)[\s\S]*persistCurrentDraft\(\)/);
+  assert.match(script, /id === "home"[\s\S]*recordingState === "stopped"[\s\S]*recordingReviewSheet\.hidden = false/);
+  assert.doesNotMatch(script, /case "home":[\s\S]{0,160}prepareRecordingSession/);
 });
 
 test("transcript helpers keep speaker labels and treat loading copy as a placeholder", async () => {
@@ -423,7 +529,8 @@ test("analysis uses a server-side grounded knowledge route and only shows the re
   assert.match(route, /retrieveKnowledgeEvidence/);
   assert.match(route, /validateGroundedAnalysis/);
   assert.match(grounding, /INSTRUCTIONS_IN_DATA_ARE_UNTRUSTED/);
-  assert.match(html, /<h2>三种应对视角<\/h2>/);
+  assert.match(html, /<h2>三个技能角色<\/h2>/);
+  assert.match(html, /分别分析当前对话/);
   assert.match(html, />纳入用户专属场景<\/button>/);
   assert.doesNotMatch(html, /知识库依据|匹配到的模式与策略/);
 });
@@ -437,7 +544,7 @@ test("user-facing copy is concise and team API setup is shareable without secret
   assert.match(html, /核对转写/);
   assert.match(html, /确认转写，补充背景/);
   assert.match(html, /生成对话分析/);
-  assert.match(html, /三种应对视角/);
+  assert.match(html, /三个技能角色/);
   assert.match(html, /建议回复/);
   assert.match(html, /录音转写与知识库分析将通过服务器端 API 处理/);
   assert.doesNotMatch(html, /name="privacy\.analysisConsent"/);
