@@ -190,6 +190,25 @@ test("transcript helpers keep speaker labels and treat loading copy as a placeho
   );
 });
 
+test("cloud transcription requires explicit privacy consent", async () => {
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const { transcriptionPlan } = await import("../transcription.js");
+
+  assert.deepEqual(transcriptionPlan({ allowCloud: false }), ["local"]);
+  assert.deepEqual(transcriptionPlan(), ["local"]);
+  assert.deepEqual(transcriptionPlan({ allowCloud: true }), ["cloud", "local"]);
+  assert.match(script, /allowCloud:\s*settingsState\.privacy\.analysisConsent/);
+});
+
+test("personal settings stay device-local until account sync exists", async () => {
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const route = await readFile(new URL("app/api/settings/route.ts", projectRoot), "utf8");
+
+  assert.doesNotMatch(script, /fetch\("\/api\/settings"/);
+  assert.doesNotMatch(route, /let settingsStore/);
+  assert.match(route, /mergeSettings\(DEFAULT_SETTINGS, patch\)/);
+});
+
 test("the packaged classic training has ten interactive PUA modules", async () => {
   const {
     TRAINING_MODULES,

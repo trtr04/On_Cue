@@ -210,15 +210,23 @@ async function transcribeViaLocalWhisper(blob) {
   return { text, source: "whisper-local" };
 }
 
-export async function transcribeAudioBlob(blob, { onStatus } = {}) {
+export function transcriptionPlan({ allowCloud = false } = {}) {
+  return allowCloud ? ["cloud", "local"] : ["local"];
+}
+
+export async function transcribeAudioBlob(blob, { onStatus, allowCloud = false } = {}) {
   if (!(blob instanceof Blob) || blob.size === 0) {
     throw new Error("missing_audio");
   }
-  onStatus?.("cloud");
-  try {
-    return await transcribeViaApi(blob);
-  } catch {
-    onStatus?.("local");
-    return await transcribeViaLocalWhisper(blob);
+
+  let lastError = null;
+  for (const mode of transcriptionPlan({ allowCloud })) {
+    onStatus?.(mode);
+    try {
+      return mode === "cloud" ? await transcribeViaApi(blob) : await transcribeViaLocalWhisper(blob);
+    } catch (error) {
+      lastError = error;
+    }
   }
+  throw lastError || new Error("transcription_failed");
 }

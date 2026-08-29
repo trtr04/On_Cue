@@ -770,17 +770,9 @@ function collectSettingsForm(form) {
 }
 
 async function loadSettings({ silent = false } = {}) {
-  try {
-    const response = await fetch("/api/settings", { headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`settings ${response.status}`);
-    const payload = await response.json();
-    settingsState = mergeAppSettings(DEFAULT_APP_SETTINGS, payload.settings);
-    persistSettings();
-  } catch {
-    settingsState = loadCachedSettings();
-    if (!silent) showToast(COPY.toastSettingsLoadedLocal);
-  }
+  settingsState = loadCachedSettings();
   renderSettings();
+  if (!silent) showToast(COPY.toastSettingsLoadedLocal);
   return settingsState;
 }
 
@@ -788,33 +780,13 @@ async function saveSettings(patch) {
   settingsState = mergeAppSettings(settingsState, patch);
   persistSettings();
   renderSettings();
-
-  try {
-    const response = await fetch("/api/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ settings: settingsState }),
-    });
-    if (!response.ok) throw new Error(`settings ${response.status}`);
-    const payload = await response.json();
-    settingsState = mergeAppSettings(DEFAULT_APP_SETTINGS, payload.settings);
-    persistSettings();
-    renderSettings();
-    showToast(COPY.toastSettingsSaved);
-  } catch {
-    showToast(COPY.toastSettingsLocal);
-  }
+  showToast(COPY.toastSettingsSaved);
 }
 
 async function resetSettings() {
   settingsState = cloneSettings();
   persistSettings();
   renderSettings();
-  try {
-    await fetch("/api/settings", { method: "DELETE" });
-  } catch {
-    // Local settings have already been reset; backend sync can be retried later.
-  }
   showToast(COPY.toastSettingsReset);
 }
 
@@ -1017,6 +989,7 @@ async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
 
   try {
     const result = await transcribeAudioBlob(blob, {
+      allowCloud: settingsState.privacy.analysisConsent,
       onStatus: (status) => {
         if (token !== transcriptionToken) return;
         if (status === "local") {
