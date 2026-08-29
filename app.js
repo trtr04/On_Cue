@@ -1,5 +1,4 @@
 import { installPhoneViewportFitting } from "./responsive.js";
-import { createVentState, registerVentHit, resetVentRound, VENT_GOAL } from "./vent-game.js";
 import { analyzeConfirmedTranscript, loadKnowledgeBase } from "./knowledge-analysis.js";
 import {
   TRAINING_MODULES,
@@ -386,20 +385,11 @@ const drillThread = document.querySelector("#drill-thread");
 const drillSuggestions = document.querySelector("#drill-suggestions");
 const drillProgress = document.querySelector("#drill-progress");
 const drillForm = document.querySelector("#drill-form");
-const ventStage = document.querySelector("#vent-stage");
-const ventCounter = document.querySelector("#vent-counter");
-const ventBang = document.querySelector("#vent-bang");
-const ventMascot = document.querySelector("#vent-mascot");
-const ventTotal = document.querySelector("#vent-total");
-const ventBest = document.querySelector("#vent-best");
-const ventProgress = document.querySelector("#vent-progress");
-const ventProgressBar = document.querySelector("#vent-progress-bar");
-const ventParticles = document.querySelector("#vent-particles");
+const mouseGameFrame = document.querySelector("#mouse-game-frame");
 const confirmedTranscript = document.querySelector("#confirmed-transcript");
 const analysisScreen = document.querySelector(".analysis-screen");
 
 const STORAGE_KEY = "on-cue-demo-recordings";
-const VENT_STORAGE_KEY = "on-cue-vent-game";
 const DEFAULT_TRANSCRIPT = `${I18N["mentor-line"] ? `导师：${I18N["mentor-line"]}` : ""}\n我：${I18N["me-line"]}`;
 const seedRecordings = [{ id: "family-dinner", title: COPY.seedTitle, meta: COPY.seedMeta, transcript: DEFAULT_TRANSCRIPT }];
 const TAB_ORDER = { home: 0, recording: 0, analysis: 0, practice: 1, levels: 1, custom: 1, drill: 1, vent: 2, settings: 3 };
@@ -415,8 +405,6 @@ let drillOrigin = "levels";
 let currentDrill = null;
 let currentTrainingSession = null;
 let drillStep = 0;
-let chargeTimer = null;
-let ventState = loadVentState();
 let knowledgePromise = null;
 let currentKnowledgeAnalysis = null;
 let selectedKnowledgeVoice = "A";
@@ -428,21 +416,6 @@ function loadRecordings() {
   } catch {
     return seedRecordings;
   }
-}
-
-function loadVentState() {
-  try {
-    return createVentState(JSON.parse(localStorage.getItem(VENT_STORAGE_KEY)) || {});
-  } catch {
-    return createVentState();
-  }
-}
-
-function persistVentState() {
-  localStorage.setItem(
-    VENT_STORAGE_KEY,
-    JSON.stringify({ totalHits: ventState.totalHits, bestCombo: ventState.bestCombo }),
-  );
 }
 
 function persistRecordings() {
@@ -560,6 +533,18 @@ function showScreen(id, { scrollInbox = false, direction } = {}) {
   else stopTimer();
   if (id === "home" && scrollInbox) revealInbox();
 }
+
+function connectMouseGame() {
+  mouseGameFrame?.contentWindow?.addEventListener("tumbler:event", (event) => {
+    if (event.detail?.type !== "CLOSE_REQUESTED") return;
+    showScreen("practice");
+    window.setTimeout(() => {
+      mouseGameFrame.src = "/mouse-game.html";
+    }, 0);
+  });
+}
+
+mouseGameFrame?.addEventListener("load", connectMouseGame);
 
 guides.forEach((guide) => {
   guide.addEventListener("click", () => {
@@ -788,62 +773,6 @@ function sendDrill(text) {
   }, 420);
 }
 
-function renderVentGame() {
-  ventCounter.textContent = ventState.complete
-    ? COPY.ventComplete
-    : COPY.combo.replace("{n}", String(ventState.combo));
-  ventTotal.textContent = String(Math.min(ventState.totalHits, VENT_GOAL));
-  ventBest.textContent = String(ventState.bestCombo);
-  ventProgress.setAttribute("aria-valuenow", String(Math.min(ventState.totalHits, VENT_GOAL)));
-  ventProgressBar.style.width = `${ventState.progress * 100}%`;
-  ventStage.classList.toggle("is-complete", ventState.complete);
-}
-
-function createVentParticles(power) {
-  const count = power > 1 ? 9 : 5;
-  ventParticles.replaceChildren();
-  for (let index = 0; index < count; index += 1) {
-    const particle = document.createElement("i");
-    particle.style.setProperty("--angle", `${(360 / count) * index}deg`);
-    particle.style.setProperty("--distance", `${52 + (index % 3) * 14}px`);
-    ventParticles.appendChild(particle);
-  }
-}
-
-function playVentFeedback(power) {
-  navigator.vibrate?.(power > 1 ? [34, 24, 56] : 24);
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) return;
-  const context = new AudioContextClass();
-  const oscillator = context.createOscillator();
-  const gain = context.createGain();
-  oscillator.type = "triangle";
-  oscillator.frequency.setValueAtTime(power > 1 ? 96 : 128, context.currentTime);
-  oscillator.frequency.exponentialRampToValueAtTime(52, context.currentTime + 0.09);
-  gain.gain.setValueAtTime(0.0001, context.currentTime);
-  gain.gain.exponentialRampToValueAtTime(power > 1 ? 0.19 : 0.11, context.currentTime + 0.006);
-  gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.1);
-  oscillator.connect(gain).connect(context.destination);
-  oscillator.start();
-  oscillator.stop(context.currentTime + 0.11);
-  oscillator.addEventListener("ended", () => context.close(), { once: true });
-}
-
-function hitVent(power = 1) {
-  const wasComplete = ventState.complete;
-  ventState = registerVentHit(ventState, { power, now: Date.now() });
-  persistVentState();
-  renderVentGame();
-  ventBang.textContent = power > 1 ? COPY.bangBig : I18N.bang;
-  createVentParticles(power);
-  playVentFeedback(power);
-  ventStage.classList.remove("is-hit");
-  void ventStage.offsetWidth;
-  ventStage.classList.add("is-hit");
-  window.setTimeout(() => ventStage.classList.remove("is-hit"), 460);
-  if (!wasComplete && ventState.complete) showToast(COPY.ventComplete);
-}
-
 document.addEventListener("click", async (event) => {
   const voiceTab = event.target.closest("[data-voice]");
   if (voiceTab) {
@@ -948,12 +877,6 @@ document.addEventListener("click", async (event) => {
     case "levels":
       showScreen(drillOrigin === "custom" ? "custom" : "levels");
       break;
-    case "reset-vent":
-      ventState = resetVentRound(ventState);
-      persistVentState();
-      renderVentGame();
-      showToast(COPY.ventReset);
-      break;
     case "settings-item":
       showToast(COPY.toastSettings[control.dataset.item] || COPY.toastNoop);
       break;
@@ -975,37 +898,6 @@ document.querySelector("#drill-form").addEventListener("submit", (event) => {
   input.value = "";
 });
 
-ventStage.addEventListener("pointerdown", (event) => {
-  event.preventDefault();
-  ventStage.classList.add("is-charge");
-  chargeTimer = window.setTimeout(() => {
-    chargeTimer = "ready";
-  }, 640);
-});
-
-function releaseVent() {
-  const charged = chargeTimer === "ready";
-  window.clearTimeout(chargeTimer);
-  chargeTimer = null;
-  ventStage.classList.remove("is-charge");
-  hitVent(charged ? 3 : 1);
-}
-
-ventStage.addEventListener("pointerup", releaseVent);
-ventStage.addEventListener("pointerleave", () => {
-  if (chargeTimer && chargeTimer !== "ready") {
-    window.clearTimeout(chargeTimer);
-    chargeTimer = null;
-    ventStage.classList.remove("is-charge");
-  }
-});
-ventStage.addEventListener("pointercancel", () => {
-  window.clearTimeout(chargeTimer);
-  chargeTimer = null;
-  ventStage.classList.remove("is-charge");
-});
-
 installPhoneViewportFitting();
 renderRecordings();
 renderMapDetail("work");
-renderVentGame();

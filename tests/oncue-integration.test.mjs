@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -37,43 +38,24 @@ test("phone scaling fits every viewport without cropping", async () => {
   assert.equal(computePhoneScale(844, 390), 390 / 844);
 });
 
-test("the emotion impact game tracks hits, combos, and completion", async () => {
-  const { createVentState, registerVentHit } = await import("../vent-game.js");
-  const initial = createVentState();
-  const first = registerVentHit(initial, { power: 1, now: 1_000 });
-  const charged = registerVentHit(first, { power: 3, now: 1_500 });
-  const resetCombo = registerVentHit(charged, { power: 1, now: 3_000 });
-
-  assert.deepEqual(first, {
-    totalHits: 1,
-    combo: 1,
-    bestCombo: 1,
-    lastHit: 1_000,
-    progress: 1 / 30,
-    complete: false,
-  });
-  assert.equal(charged.totalHits, 4);
-  assert.equal(charged.combo, 4);
-  assert.equal(charged.bestCombo, 4);
-  assert.equal(resetCombo.combo, 1);
-
-  let state = createVentState();
-  for (let index = 0; index < 30; index += 1) {
-    state = registerVentHit(state, { power: 1, now: index * 100 });
-  }
-  assert.equal(state.progress, 1);
-  assert.equal(state.complete, true);
-});
-
-test("the emotion game is wired into the vent screen", async () => {
+test("the emotion game embeds the supplied standalone game without the replacement UI", async () => {
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
 
-  assert.match(html, /id="vent-progress-bar"/);
-  assert.match(html, /id="vent-total"/);
-  assert.match(html, /data-action="reset-vent"/);
-  assert.match(script, /registerVentHit/);
-  assert.match(script, /navigator\.vibrate/);
+  assert.match(html, /<iframe[^>]+id="mouse-game-frame"[^>]+src="\/mouse-game\.html"/);
+  assert.doesNotMatch(html, /id="vent-stage"|id="vent-total"|honey-badger-game\.svg/);
+  assert.doesNotMatch(script, /registerVentHit|createVentState|VENT_GOAL/);
+});
+
+test("the hosted mouse game is byte-identical to the supplied package", async () => {
+  const game = await readFile(new URL("public/mouse-game.html", projectRoot));
+  const digest = createHash("sha256").update(game).digest("hex");
+  const text = game.toString("utf8");
+
+  assert.equal(digest, "202c776e16d00e2b0002bf3792e561d3580d79fadbdcb1d1c1c388c8a63ef7c1");
+  assert.match(text, /拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏/);
+  assert.match(text, /window\.MouseTumbler = Object\.freeze/);
+  assert.match(text, /耐久值/);
 });
 
 test("confirmed transcripts are grounded in the packaged knowledge base", async () => {
@@ -128,15 +110,6 @@ test("the recording analysis UI confirms text and exposes all three knowledge vo
   assert.match(html, /data-voice="C"/);
   assert.match(script, /analyzeConfirmedTranscript/);
   assert.match(script, /loadKnowledgeBase/);
-});
-
-test("the emotion game uses the packaged bow character IP", async () => {
-  const html = await readFile(new URL("index.html", projectRoot), "utf8");
-  const script = await readFile(new URL("app.js", projectRoot), "utf8");
-
-  assert.match(html, /id="vent-mascot"[^>]+honey-badger-game\.svg/);
-  assert.doesNotMatch(html, /id="vent-mascot"[^>]+panda-jump\.png/);
-  assert.doesNotMatch(script, /ventMascot\.src\s*=\s*[^;]*panda-(?:happy|jump)/);
 });
 
 test("the packaged classic training has ten interactive PUA modules", async () => {

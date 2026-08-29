@@ -313,50 +313,13 @@
           </section>
 
           <section class="screen vent-screen" data-screen="vent" data-tab="vent">
-            <div class="vent-header">
-              <h1 data-i18n="vent-title"></h1>
-              <p data-i18n="vent-copy"></p>
-            </div>
-            <div class="vent-hud" aria-label="情绪暴击进度">
-              <div>
-                <small data-i18n="vent-round"></small>
-                <strong><span id="vent-total">0</span><i>/ 30</i></strong>
-              </div>
-              <div>
-                <small data-i18n="vent-best"></small>
-                <strong id="vent-best">0</strong>
-              </div>
-            </div>
-            <button class="vent-stage" id="vent-stage" type="button" data-i18n-aria-label="vent-label">
-              <img class="vent-mascot" id="vent-mascot" src="/assets/honey-badger-game.svg" alt="粉蝴蝶结黑灰角色" />
-              <span class="vent-bang" id="vent-bang" data-i18n="bang"></span>
-              <span class="vent-charge" id="vent-charge"></span>
-              <span class="vent-particles" id="vent-particles" aria-hidden="true"></span>
-            </button>
-            <div class="vent-counter" id="vent-counter"></div>
-            <div class="vent-progress" id="vent-progress" role="progressbar" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0">
-              <i id="vent-progress-bar"></i>
-            </div>
-            <div class="vent-actions">
-              <div class="vent-cue" data-i18n="vent-cue"></div>
-              <button class="vent-reset" type="button" data-action="reset-vent" data-i18n="vent-reset"></button>
-            </div>
-            <div class="status-bar">
-              <b>9:41</b>
-              <div class="status-icons">
-                <img src="/assets/ios-signal.svg" alt="" />
-                <img src="/assets/ios-wifi.svg" alt="" />
-                <img class="battery" src="/assets/ios-battery.svg" alt="" />
-              </div>
-            </div>
-            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
-            <nav class="figma-nav">
-              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
-              <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
-              <button class="active" data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
-              <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
-            </nav>
-            <div class="home-indicator"></div>
+            <iframe
+              id="mouse-game-frame"
+              class="mouse-game-frame"
+              src="/mouse-game.html"
+              title="鼠鼠不倒翁｜解压小游戏"
+              allow="autoplay"
+            ></iframe>
           </section>
 
           <section class="screen settings-screen" data-screen="settings" data-tab="settings">
