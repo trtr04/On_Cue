@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -16,17 +15,24 @@ test("the app starts on home with the 00 splash removed", async () => {
   assert.doesNotMatch(script, /playSplash\(\)/);
 });
 
-test("the home layout prioritizes the lower action area", async () => {
+test("the home layout centers one large recording action and moves history to the header", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const css = await readFile(new URL("styles.css", projectRoot), "utf8");
 
-  assert.match(css, /\.home-mascot\s*\{[^}]*width:\s*256px;[^}]*height:\s*210px;/s);
-  assert.match(css, /\.home-inbox\s*\{[^}]*top:\s*438px;[^}]*height:\s*294px;/s);
+  assert.match(html, /data-action="toggle-recording"/);
+  assert.match(html, /class="history-button" data-action="history-list"/);
+  assert.match(html, /\/assets\/mic-record-large\.svg/);
+  assert.doesNotMatch(html, /今日主要任务|记录一次没说完的话/);
+  assert.doesNotMatch(html, /id="home-inbox"/);
+  assert.match(css, /\.home-chat-bubble\s*\{/);
+  assert.match(css, /\.home-record\s*\{[^}]*width:\s*274px;[^}]*height:\s*230px;/s);
+  assert.match(css, /\.recording-review-sheet\s*\{/);
 });
 
-test("recording and analysis screens remain stacked inside the phone", async () => {
+test("transcript and analysis screens remain stacked inside the phone", async () => {
   const css = await readFile(new URL("styles.css", projectRoot), "utf8");
 
-  assert.match(css, /\.recording-screen,\s*\.analysis-screen\s*\{\s*position:\s*absolute;/s);
+  assert.match(css, /\.transcript-screen,\s*\.analysis-screen,\s*\.context-screen\s*\{\s*position:\s*absolute;/s);
 });
 
 test("phone scaling fits every viewport without cropping", async () => {
@@ -38,24 +44,33 @@ test("phone scaling fits every viewport without cropping", async () => {
   assert.equal(computePhoneScale(844, 390), 390 / 844);
 });
 
-test("the emotion game embeds the supplied standalone game without the replacement UI", async () => {
+test("the emotion game is a first-level tab with face and name import around the original play mode", async () => {
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const css = await readFile(new URL("styles.css", projectRoot), "utf8");
 
   assert.match(html, /<iframe[^>]+id="mouse-game-frame"[^>]+src="\/mouse-game\.html"/);
+  assert.match(html, /id="vent-face-input"/);
+  assert.match(html, /id="vent-name-input"/);
+  assert.match(html, /data-screen="vent"[\s\S]*data-action="tab-vent"/);
+  assert.match(css, /\.vent-screen\s*\{\s*background:\s*var\(--brand-soft\)/);
+  assert.match(script, /tumbler:identity/);
   assert.doesNotMatch(html, /id="vent-stage"|id="vent-total"|honey-badger-game\.svg/);
   assert.doesNotMatch(script, /registerVentHit|createVentState|VENT_GOAL/);
 });
 
-test("the hosted mouse game is byte-identical to the supplied package", async () => {
+test("the hosted mouse game keeps the supplied play mode and accepts an identity overlay", async () => {
   const game = await readFile(new URL("public/mouse-game.html", projectRoot));
-  const digest = createHash("sha256").update(game).digest("hex");
   const text = game.toString("utf8");
 
-  assert.equal(digest, "202c776e16d00e2b0002bf3792e561d3580d79fadbdcb1d1c1c388c8a63ef7c1");
   assert.match(text, /拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏/);
   assert.match(text, /window\.MouseTumbler = Object\.freeze/);
   assert.match(text, /耐久值/);
+  assert.match(text, /function classifyGesture/);
+  assert.match(text, /function stepWobble/);
+  assert.match(text, /tumbler:identity/);
+  assert.match(text, /importedFaceImage/);
+  assert.doesNotMatch(text, /registerVentHit|createVentState|VENT_GOAL/);
 });
 
 test("confirmed transcripts are grounded in the packaged knowledge base", async () => {
@@ -100,16 +115,79 @@ test("confirmed transcripts are grounded in the packaged knowledge base", async 
   assert.ok(result.evidence.length > 0);
 });
 
-test("the recording analysis UI confirms text and exposes all three knowledge voices", async () => {
+test("the recording analysis UI confirms text, original audio, speakers, and all three knowledge voices", async () => {
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
 
   assert.match(html, /id="confirmed-transcript"/);
+  assert.match(html, /id="recording-audio" controls/);
+  assert.match(html, /id="transcript-turns"/);
+  assert.match(html, /data-transcript-mode="draft"/);
+  assert.match(html, /data-transcript-mode="original"/);
+  assert.match(html, /data-action="add-turn"/);
+  assert.match(html, /data-action="open-context"/);
+  assert.match(html, /data-screen="context"/);
+  assert.match(html, /id="context-relationship"/);
+  assert.match(html, /id="context-humor"/);
+  assert.match(html, /data-action="analyze"/);
   assert.match(html, /data-voice="A"/);
   assert.match(html, /data-voice="B"/);
   assert.match(html, /data-voice="C"/);
+  assert.doesNotMatch(html, /id="speaker-select"/);
   assert.match(script, /analyzeConfirmedTranscript/);
   assert.match(script, /loadKnowledgeBase/);
+  assert.match(script, /collectAnalysisContext/);
+  assert.match(script, /openContextScreen/);
+});
+
+test("the home recording flow supports toggle recording, review sheet, storage, transcription, and audio replay", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const transcription = await readFile(new URL("transcription.js", projectRoot), "utf8");
+  const route = await readFile(new URL("app/api/transcribe/route.ts", projectRoot), "utf8");
+
+  assert.match(html, /data-action="toggle-recording"/);
+  assert.match(html, /id="recording-review-sheet"/);
+  assert.match(html, /data-action="review-transcript"/);
+  assert.match(html, /id="recording-audio" controls/);
+  assert.match(html, /data-action="retranscribe"/);
+  assert.match(html, /id="confirmed-transcript"/);
+  assert.doesNotMatch(html, /id="transcript-live-bar"/);
+  assert.match(script, /MediaRecorder/);
+  assert.match(script, /SpeechRecognition/);
+  assert.match(script, /audioDataUrl/);
+  assert.match(script, /saveCurrentRecording/);
+  assert.match(script, /transcribeAndFill/);
+  assert.match(script, /case "review-transcript"/);
+  assert.match(transcription, /\/api\/transcribe/);
+  assert.match(transcription, /Xenova\/whisper-base/);
+  assert.match(route, /api\.groq\.com\/openai\/v1\/audio\/transcriptions/);
+  assert.match(route, /api\.openai\.com\/v1\/audio\/transcriptions/);
+  assert.match(route, /whisper-large-v3-turbo/);
+});
+
+test("transcript helpers keep speaker labels and treat loading copy as a placeholder", async () => {
+  const {
+    formatTranscriptText,
+    isTranscriptPlaceholder,
+    parseTranscriptTurns,
+    serializeTranscriptTurns,
+  } = await import("../transcription.js");
+
+  assert.equal(formatTranscriptText("今天先把模板对齐"), "我：今天先把模板对齐");
+  assert.equal(formatTranscriptText("导师：这个格式我不是说过了吗？"), "导师：这个格式我不是说过了吗？");
+  assert.equal(isTranscriptPlaceholder("正在整理这次录音的逐字稿…"), true);
+  assert.equal(isTranscriptPlaceholder("我：今天先把模板对齐"), false);
+
+  const turns = parseTranscriptTurns("妈妈：你打算什么时候结婚？\n我：我想按自己的节奏来。");
+  assert.deepEqual(turns, [
+    { speaker: "妈妈", text: "你打算什么时候结婚？" },
+    { speaker: "我", text: "我想按自己的节奏来。" },
+  ]);
+  assert.equal(
+    serializeTranscriptTurns(turns),
+    "妈妈：你打算什么时候结婚？\n我：我想按自己的节奏来。",
+  );
 });
 
 test("the packaged classic training has ten interactive PUA modules", async () => {

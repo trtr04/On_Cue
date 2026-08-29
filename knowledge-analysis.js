@@ -71,15 +71,17 @@ function resolveReferences(references, collection, key = "id") {
   return (collection || []).filter((item) => wanted.has(item[key]));
 }
 
-export function analyzeConfirmedTranscript(transcript, knowledge) {
+export function analyzeConfirmedTranscript(transcript, knowledge, options = {}) {
   const confirmedText = String(transcript || "").trim();
   if (!confirmedText) throw new Error("TRANSCRIPT_REQUIRED");
   if (!knowledge || !Array.isArray(knowledge.scenes) || knowledge.scenes.length === 0) {
     throw new Error("KNOWLEDGE_BASE_UNAVAILABLE");
   }
+  const extra = String(options.extra || "").trim();
+  const query = extra ? `${confirmedText}\n${extra}` : confirmedText;
 
   const ranked = knowledge.scenes
-    .map((scene) => ({ scene, score: scoreScene(confirmedText, scene) }))
+    .map((scene) => ({ scene, score: scoreScene(query, scene) }))
     .sort((left, right) => right.score - left.score || left.scene.id.localeCompare(right.scene.id));
   const best = ranked[0].scene;
   const voices = best.voice_versions || {};

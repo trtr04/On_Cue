@@ -34,22 +34,30 @@
                 </div>
               </div>
               <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
-              <div class="home-bubble">
-                <img src="/assets/bubble-bg.svg" alt="" />
+              <button class="history-button" data-action="history-list" aria-label="打开历史记录">历史</button>
+              <img class="home-mascot" src="/assets/panda-lying.png" alt="" />
+              <div class="home-chat-bubble">
                 <p data-i18n="home-bubble"></p>
               </div>
-              <img class="home-mascot" src="/assets/panda-lying.png" alt="" />
-              <button class="home-record" data-action="record">
-                <img src="/assets/record-dot.svg" alt="" />
-                <span data-i18n="record-cta"></span>
+              <button class="home-record" id="home-record-control" data-action="toggle-recording" aria-pressed="false">
+                <span class="home-record-icon">
+                  <img class="mic-icon idle" src="/assets/mic-record-large.svg" alt="" />
+                  <img class="mic-icon live" src="/assets/record-dot.svg" alt="" />
+                </span>
+                <strong id="home-record-label" data-i18n="record-cta"></strong>
+                <small id="home-record-helper">点击开始，说完再点一次结束</small>
+                <b id="timer">00:00</b>
               </button>
-              <div class="home-inbox" id="home-inbox">
-                <article class="home-conflict">
-                  <strong data-i18n="current-title"></strong>
-                  <button class="figma-button secondary" data-action="save-current" data-i18n="save-first"></button>
-                  <button class="figma-button primary" data-action="analyze" data-i18n="analyze"></button>
+              <div class="recording-review-sheet" id="recording-review-sheet" hidden>
+                <article>
+                  <small>刚刚的原音频</small>
+                  <strong>要现在分析，还是先存起来？</strong>
+                  <audio id="recording-sheet-audio" controls></audio>
+                  <div>
+                    <button class="figma-button secondary" data-action="save-recording">储存</button>
+                    <button class="figma-button primary" data-action="review-transcript">现在分析</button>
+                  </div>
                 </article>
-                <div class="saved-list" id="saved-list"></div>
               </div>
               <nav class="figma-nav">
                 <button class="active" data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
@@ -59,6 +67,27 @@
               </nav>
               <div class="home-indicator"></div>
             </div>
+          </section>
+
+          <section class="screen history-screen" data-screen="history" data-tab="home">
+            <div class="subpage-header">
+              <button class="round-button" data-action="home">&#8592;</button>
+              <div>
+                <small>本机保存</small>
+                <h1>历史记录</h1>
+              </div>
+            </div>
+            <div class="history-list" id="saved-list"></div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
           </section>
 
           <section class="screen practice-screen" data-screen="practice" data-tab="practice">
@@ -221,30 +250,121 @@
             <div class="home-indicator"></div>
           </section>
 
-          <section class="screen recording-screen" data-screen="recording" data-tab="home">
-            <div class="recording-header">
+          <section class="screen transcript-screen" data-screen="transcript" data-tab="home">
+            <div class="subpage-header">
               <button class="round-button" data-action="home">&#8592;</button>
-              <div class="live-status"><i></i><span data-i18n="recording"></span></div>
-              <b>&#8226;&#8226;&#8226;</b>
+              <div>
+                <small>复盘前确认</small>
+                <h1>逐字稿分析</h1>
+              </div>
             </div>
-            <article class="live-wave-card">
-              <strong id="timer">02:18</strong>
-              <p data-i18n="live-note"></p>
-              <img src="/assets/live-waveform.svg" alt="" />
-              <button class="tension-marker" data-action="mark" data-i18n="marked-initial"></button>
-            </article>
-            <article class="live-transcript">
-              <h2>确认逐字稿</h2>
-              <span>可以修改文字与说话人</span>
-              <textarea id="confirmed-transcript" aria-label="确认后的逐字稿">导师：这个格式我不是说过了吗？你到底有没有认真做？
-我：我改过了，但是这次模板和上次不一样。</textarea>
-              <p class="transcript-consent">只有点击“用知识库分析”后，确认文字才会进入分析流程。</p>
-            </article>
-            <footer class="recording-footer">
-              <strong data-i18n="after-record"></strong>
-              <button class="figma-button secondary" data-action="save-recording" data-i18n="save-recording"></button>
-              <button class="figma-button primary" data-action="analyze">用知识库分析</button>
-              <p data-i18n="privacy"></p>
+            <div class="scroll-page transcript-scroll">
+              <article class="transcript-audio-card">
+                <div>
+                  <small>原音频</small>
+                  <strong>先听一遍，再按句修正</strong>
+                </div>
+                <button type="button" class="transcript-retry" id="retranscribe-button" data-action="retranscribe">重新转文字</button>
+                <audio id="recording-audio" controls></audio>
+              </article>
+              <nav class="transcript-mode-tabs" aria-label="逐字稿版本">
+                <button type="button" class="active" data-transcript-mode="draft">整理稿 · 可编辑</button>
+                <button type="button" data-transcript-mode="original">原始稿 · 只读</button>
+              </nav>
+              <p id="transcript-status">停录后点「现在分析」，会按说话人拆开逐字稿</p>
+              <div id="transcript-turns" class="transcript-turns"></div>
+              <button type="button" class="transcript-add" data-action="add-turn">+ 添加一句</button>
+              <textarea id="confirmed-transcript" class="sr-only" aria-hidden="true" tabindex="-1"></textarea>
+            </div>
+            <footer class="transcript-footer">
+              <button class="figma-button secondary" id="save-recording" data-action="save-recording" data-i18n="save-recording"></button>
+              <button class="figma-button primary" id="analyze-recording" data-action="open-context">逐字稿确认无误，继续</button>
+            </footer>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen context-screen" data-screen="context" data-tab="home">
+            <div class="subpage-header">
+              <button class="round-button" data-action="transcript">&#8592;</button>
+              <div>
+                <small>分析前设置</small>
+                <h1>补充背景</h1>
+              </div>
+            </div>
+            <div class="scroll-page context-scroll">
+              <span class="context-step">分析前 · 补充背景</span>
+              <h2>同一句话，放在不同关系里不一样</h2>
+              <p class="context-lead">只填你愿意提供的内容；这些信息能让建议更贴近现场。</p>
+
+              <article class="context-card">
+                <strong>你们的关系</strong>
+                <div class="context-chips" data-context-group="relationship">
+                  <button type="button" class="chip" data-context-value="父母">父母</button>
+                  <button type="button" class="chip" data-context-value="伴侣">伴侣</button>
+                  <button type="button" class="chip" data-context-value="朋友">朋友</button>
+                  <button type="button" class="chip" data-context-value="同事">同事</button>
+                  <button type="button" class="chip" data-context-value="领导">领导</button>
+                  <button type="button" class="chip" data-context-value="陌生人">陌生人</button>
+                </div>
+                <input id="context-relationship" type="text" placeholder="可以写得更具体，比如母女 / 师生" />
+              </article>
+
+              <article class="context-card">
+                <strong>发生场合</strong>
+                <div class="context-chips" data-context-group="occasion">
+                  <button type="button" class="chip" data-context-value="家庭聚餐">家庭聚餐</button>
+                  <button type="button" class="chip" data-context-value="私信">私信</button>
+                  <button type="button" class="chip" data-context-value="工作会议">工作会议</button>
+                  <button type="button" class="chip" data-context-value="通话">通话</button>
+                  <button type="button" class="chip" data-context-value="公共场合">公共场合</button>
+                </div>
+                <input id="context-occasion" type="text" placeholder="也可以自己写场合" />
+              </article>
+
+              <article class="context-card">
+                <strong>你当时的感受</strong>
+                <div class="context-chips" data-context-group="feeling">
+                  <button type="button" class="chip" data-context-value="委屈">委屈</button>
+                  <button type="button" class="chip" data-context-value="尴尬">尴尬</button>
+                  <button type="button" class="chip" data-context-value="生气">生气</button>
+                  <button type="button" class="chip" data-context-value="害怕">害怕</button>
+                  <button type="button" class="chip" data-context-value="有压力">有压力</button>
+                  <button type="button" class="chip" data-context-value="困惑">困惑</button>
+                </div>
+                <input id="context-feeling" type="text" placeholder="当时最明显的感觉" />
+              </article>
+
+              <article class="context-card">
+                <strong>你现在最想做到什么</strong>
+                <div class="context-chips" data-context-group="goal">
+                  <button type="button" class="chip" data-context-value="维持关系">维持关系</button>
+                  <button type="button" class="chip" data-context-value="说清边界">说清边界</button>
+                  <button type="button" class="chip" data-context-value="结束话题">结束话题</button>
+                  <button type="button" class="chip" data-context-value="停止联系">停止联系</button>
+                  <button type="button" class="chip" data-context-value="争取具体行动">争取具体行动</button>
+                </div>
+                <input id="context-goal" type="text" placeholder="这次复盘最想拿到的结果" />
+              </article>
+
+              <article class="context-card context-toggle-card">
+                <div>
+                  <strong>低风险时提供幽默回复</strong>
+                  <small>一旦检测到安全风险会自动关闭</small>
+                </div>
+                <button type="button" class="ink-switch is-on" id="context-humor" data-action="toggle-humor" aria-pressed="true" aria-label="低风险时提供幽默回复"></button>
+              </article>
+            </div>
+            <footer class="context-footer">
+              <button class="figma-button primary" id="start-analysis" data-action="analyze">开始整理与分析</button>
             </footer>
             <div class="status-bar">
               <b>9:41</b>
@@ -262,7 +382,7 @@
             <div class="scroll-page analysis-scroll">
               <div class="analysis-content">
                 <section class="kb-analysis-header">
-                  <button class="round-button" data-action="home">&#8592;</button>
+                  <button class="round-button" data-action="context">&#8592;</button>
                   <span class="kb-status" id="kb-status">正在读取知识库…</span>
                   <h1>我听下来的现场</h1>
                   <p id="kb-match-title"></p>
@@ -314,13 +434,63 @@
           </section>
 
           <section class="screen vent-screen" data-screen="vent" data-tab="vent">
-            <iframe
-              id="mouse-game-frame"
-              class="mouse-game-frame"
-              src="/mouse-game.html"
-              title="鼠鼠不倒翁｜解压小游戏"
-              allow="autoplay"
-            ></iframe>
+            <div class="vent-canvas">
+              <header class="vent-header">
+                <h1>鼠鼠不倒翁</h1>
+                <p data-i18n="vent-copy"></p>
+              </header>
+              <article class="vent-identity">
+                <label class="vent-face-picker" for="vent-face-input">
+                  <input id="vent-face-input" type="file" accept="image/*" hidden />
+                  <span class="vent-face-preview" id="vent-face-preview">
+                    <img id="vent-face-preview-image" alt="" hidden />
+                    <small>导入人脸</small>
+                  </span>
+                </label>
+                <label class="vent-identity-fields">
+                  <span>姓名</span>
+                  <input
+                    id="vent-name-input"
+                    type="text"
+                    maxlength="12"
+                    placeholder="给TA起个名字"
+                    autocomplete="off"
+                  />
+                </label>
+                <button
+                  type="button"
+                  class="vent-identity-clear"
+                  id="vent-identity-clear"
+                  data-action="clear-vent-identity"
+                  hidden
+                >
+                  清除
+                </button>
+              </article>
+              <iframe
+                id="mouse-game-frame"
+                class="mouse-game-frame"
+                src="/mouse-game.html"
+                title="鼠鼠不倒翁｜解压小游戏"
+                allow="autoplay"
+              ></iframe>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <nav class="figma-nav">
+              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+              <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+              <button class="active" data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+              <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+            </nav>
+            <div class="home-indicator"></div>
           </section>
 
           <section class="screen settings-screen" data-screen="settings" data-tab="settings">
@@ -331,8 +501,8 @@
               <article class="settings-profile">
                 <div class="settings-avatar"><img src="/assets/icon-user.svg" alt="" /></div>
                 <div>
-                  <strong>Juni</strong>
-                  <small>138****0000</small>
+                  <strong data-settings-value="profile.displayName">Juni</strong>
+                  <small data-settings-value="profile.phoneMasked">138****0000</small>
                 </div>
                 <button class="settings-edit" data-action="settings-item" data-item="profile">
                   <img src="/assets/icon-chevron.svg" alt="" />
@@ -342,11 +512,11 @@
                 <strong data-i18n="settings-summary-title"></strong>
                 <p data-i18n="settings-summary-copy"></p>
               </article>
-              <button class="settings-row" data-action="settings-item" data-item="device"><span data-i18n="set-device"></span><em data-i18n="set-device-v"></em></button>
-              <button class="settings-row" data-action="settings-item" data-item="haptics"><span data-i18n="set-haptics"></span><em data-i18n="set-haptics-v"></em></button>
-              <button class="settings-row" data-action="settings-item" data-item="notify"><span data-i18n="set-notify"></span><em data-i18n="set-notify-v"></em></button>
-              <button class="settings-row" data-action="settings-item" data-item="privacy"><span data-i18n="set-privacy"></span><em data-i18n="set-privacy-v"></em></button>
-              <button class="settings-row" data-action="settings-item" data-item="export"><span data-i18n="set-export"></span><em>&rsaquo;</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="device"><span data-i18n="set-device"></span><em data-settings-value="device.input">已连接  ›</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="haptics"><span data-i18n="set-haptics"></span><em data-settings-value="haptics.intensity">标准  ›</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="notify"><span data-i18n="set-notify"></span><em data-settings-value="notify.enabled">已开启  ›</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="privacy"><span data-i18n="set-privacy"></span><em data-settings-value="privacy.storage">仅本机  ›</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="export"><span data-i18n="set-export"></span><em data-settings-value="export.format">Markdown  ›</em></button>
               <button class="settings-row" data-action="settings-item" data-item="about"><span data-i18n="set-about"></span><em>v1.0  &rsaquo;</em></button>
             </div>
             <div class="status-bar">
@@ -364,6 +534,309 @@
               <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
               <button class="active" data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
             </nav>
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-profile" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>账号资料</small>
+                <h1>个人资料</h1>
+              </div>
+            </div>
+            <form class="settings-detail-form" data-settings-form="profile">
+              <label>
+                <span>昵称</span>
+                <input name="profile.displayName" type="text" placeholder="Juni" />
+              </label>
+              <label>
+                <span>手机号展示</span>
+                <input name="profile.phoneMasked" type="text" placeholder="138****0000" />
+              </label>
+              <label>
+                <span>训练目标</span>
+                <textarea name="profile.trainingGoal" rows="4" placeholder="写下你想练习的表达目标"></textarea>
+              </label>
+              <button class="figma-button primary" type="submit">保存资料</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-device" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>录音前检查</small>
+                <h1>录音设备</h1>
+              </div>
+            </div>
+            <form class="settings-detail-form" data-settings-form="device">
+              <label>
+                <span>默认输入</span>
+                <select name="device.input">
+                  <option value="system">系统默认麦克风</option>
+                  <option value="headset">耳机麦克风</option>
+                  <option value="phone">手机麦克风</option>
+                  <option value="bluetooth">蓝牙线下设备</option>
+                </select>
+              </label>
+              <article class="settings-note-card bluetooth-device-card">
+                <strong>蓝牙连接线下设备</strong>
+                <p>预留给后续硬件连接，例如随身录音夹、桌面麦克风或训练按键。当前先保存连接偏好。</p>
+                <button class="figma-button secondary" type="button" data-action="settings-bluetooth-scan">扫描附近设备</button>
+              </article>
+              <label>
+                <span>硬件名称</span>
+                <input name="device.bluetoothDevice" type="text" placeholder="On Cue Clip / On Cue Button" />
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>打开应用时自动重连</b>
+                  <small>适合后续搭配固定线下设备使用</small>
+                </span>
+                <input name="device.hardwareAutoConnect" type="checkbox" />
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>降噪处理</b>
+                  <small>录音转写前弱化背景声</small>
+                </span>
+                <input name="device.noiseSuppression" type="checkbox" />
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>停录后自动转文字</b>
+                  <small>进入复盘前先生成逐字稿</small>
+                </span>
+                <input name="device.autoTranscribe" type="checkbox" />
+              </label>
+              <button class="figma-button primary" type="submit">保存设备设置</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-haptics" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>练习反馈</small>
+                <h1>声音与震动</h1>
+              </div>
+            </div>
+            <form class="settings-detail-form" data-settings-form="haptics">
+              <label class="settings-toggle">
+                <span>
+                  <b>提示音</b>
+                  <small>开始录音、保存时播放轻提示</small>
+                </span>
+                <input name="haptics.sound" type="checkbox" />
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>震动反馈</b>
+                  <small>标记紧张点与完成对练时震动</small>
+                </span>
+                <input name="haptics.vibration" type="checkbox" />
+              </label>
+              <label>
+                <span>反馈强度</span>
+                <select name="haptics.intensity">
+                  <option value="soft">轻柔</option>
+                  <option value="standard">标准</option>
+                  <option value="strong">强烈</option>
+                </select>
+              </label>
+              <button class="figma-button primary" type="submit">保存反馈设置</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-notify" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>练习节奏</small>
+                <h1>通知提醒</h1>
+              </div>
+            </div>
+            <form class="settings-detail-form" data-settings-form="notify">
+              <label class="settings-toggle">
+                <span>
+                  <b>开启提醒</b>
+                  <small>到时间提醒你做一次表达训练</small>
+                </span>
+                <input name="notify.enabled" type="checkbox" />
+              </label>
+              <label>
+                <span>提醒时间</span>
+                <input name="notify.reminderTime" type="time" />
+              </label>
+              <label>
+                <span>提醒频率</span>
+                <select name="notify.frequency">
+                  <option value="daily">每天</option>
+                  <option value="weekday">工作日</option>
+                  <option value="weekly">每周一次</option>
+                </select>
+              </label>
+              <button class="figma-button primary" type="submit">保存提醒设置</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-privacy" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>数据边界</small>
+                <h1>录音隐私</h1>
+              </div>
+            </div>
+            <form class="settings-detail-form" data-settings-form="privacy">
+              <label>
+                <span>保存位置</span>
+                <select name="privacy.storage">
+                  <option value="local">仅本机</option>
+                  <option value="cloud">同步到后端</option>
+                </select>
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>保留原音频</b>
+                  <small>关闭后只保存逐字稿和分析结果</small>
+                </span>
+                <input name="privacy.keepAudio" type="checkbox" />
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>允许用于分析改进</b>
+                  <small>用于后续个性化建议，需要你主动开启</small>
+                </span>
+                <input name="privacy.analysisConsent" type="checkbox" />
+              </label>
+              <button class="figma-button primary" type="submit">保存隐私设置</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-export" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>本机记录</small>
+                <h1>数据与导出</h1>
+              </div>
+            </div>
+            <form class="settings-detail-form" data-settings-form="export">
+              <label>
+                <span>导出格式</span>
+                <select name="export.format">
+                  <option value="markdown">Markdown 复盘</option>
+                  <option value="txt">纯文本逐字稿</option>
+                  <option value="json">JSON 数据包</option>
+                </select>
+              </label>
+              <label class="settings-toggle">
+                <span>
+                  <b>包含原音频</b>
+                  <small>导出文件会更大，适合长期备份</small>
+                </span>
+                <input name="export.includeAudio" type="checkbox" />
+              </label>
+              <article class="settings-note-card">
+                <strong>当前可导出内容</strong>
+                <p>历史录音、逐字稿、知识库分析结果与练习进度会从本机记录中生成。</p>
+              </article>
+              <button class="figma-button primary" type="submit">保存导出偏好</button>
+              <button class="figma-button secondary" type="button" data-action="settings-export-preview">生成导出预览</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen settings-detail-screen" data-screen="settings-about" data-tab="settings">
+            <div class="subpage-header">
+              <button class="round-button" data-action="settings">&#8592;</button>
+              <div>
+                <small>错不起我对了</small>
+                <h1>关于与帮助</h1>
+              </div>
+            </div>
+            <div class="settings-detail-form">
+              <article class="settings-about-card">
+                <img src="/assets/icon-home.svg" alt="" />
+                <strong>错不起我对了 v1.0</strong>
+                <p>一个帮你把冲突现场记录下来、重新组织表达和边界的训练助手。</p>
+              </article>
+              <article class="settings-note-card">
+                <strong>下一步可以继续补</strong>
+                <p>账号登录、云端同步、导出下载、帮助中心和订阅入口都可以从这里继续扩展。</p>
+              </article>
+              <button class="figma-button secondary" type="button" data-action="settings-reset">恢复默认设置</button>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
             <div class="home-indicator"></div>
           </section>
 

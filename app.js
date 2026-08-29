@@ -8,6 +8,14 @@ import {
   getTrainingModule,
   submitTrainingTurn,
 } from "./training-game.js";
+import {
+  blobFromDataUrl,
+  formatTranscriptText,
+  isTranscriptPlaceholder,
+  parseTranscriptTurns,
+  serializeTranscriptTurns,
+  transcribeAudioBlob,
+} from "./transcription.js";
 
 const I18N = {
   "title": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86",
@@ -18,31 +26,31 @@ const I18N = {
   "guide-practice": "\u7ecf\u5178\u5bf9\u7ec3\u4e0e\u573a\u666f\u5730\u56fe",
   "guide-vent": "\u60c5\u7eea\u66b4\u51fb",
   "guide-settings": "\u8bbe\u7f6e",
-  "guide-note": "\u672c\u6a21\u62df\u5668\u4f7f\u7528\u6f14\u793a\u6570\u636e\uff0c\u4e0d\u4f1a\u8c03\u7528\u9ea6\u514b\u98ce\u6216\u4e0a\u4f20\u771f\u5b9e\u5f55\u97f3\u3002",
+  "guide-note": "录音页会请求麦克风权限；原音频与逐字稿只保存在本机演示记录里。",
   "phone-label": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86 \u79fb\u52a8\u7aef\u6a21\u62df\u5668",
   "app-name": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86",
   "app-tagline": "\u8868\u8fbe\u4e0e\u60c5\u7eea\u8bad\u7ec3\u52a9\u624b",
   "home-bubble": "\u68c0\u6d4b\u5230\u4f60\u4eca\u5929\u6709\u53d1\u751f\u4e00\u6b21\u77db\u76fe\uff0c\u8981\u4e0d\u8981\u6f14\u7ec3\u4e00\u4e0b\uff1f",
-  "record-cta": "\u6309\u4f4f\u8bb0\u5f55\u4eca\u5929\u7684\u51b2\u7a81",
+  "record-cta": "点击开始录音",
   "current-title": "\u4eca\u5929 14:20 \u00b7 \u548c\u5bfc\u5e08\u8ba8\u8bba\u65b9\u6848",
   "save-first": "\u5148\u8bb0\u4e0b\u6765",
   "analyze": "\u5206\u6790\u4e00\u4e0b",
   "saved-title": "\u5f85\u5206\u6790\u7684\u5f55\u97f3",
   "saved-note": "\u5df2\u5b58\u5165\u540e\u7aef\uff0c\u53ef\u968f\u65f6\u56de\u6765\u7ee7\u7eed\u5206\u6790",
   "back": "\u8fd4\u56de\u9996\u9875",
-  "recording": "\u6b63\u5728\u8bb0\u5f55",
-  "live-note": "\u5f55\u97f3\u7ed3\u675f\u540e\uff0c\u8bf7\u5728\u4e0b\u65b9\u786e\u8ba4\u8bf4\u8bdd\u4eba\u548c\u6587\u5b57",
-  "marked-initial": "\uff0b \u5df2\u6807\u8bb0\u7d27\u5f20\u70b9 02:16",
+  "recording": "正在录音",
+  "live-note": "点击开始录音；停录后点「现在分析」，才会进入逐字稿复盘。",
+  "marked-initial": "＋ 标记紧张点",
   "transcript": "\u5b9e\u65f6\u8f6c\u5199",
   "analyzing": "AI \u5b9e\u65f6\u5206\u6790\u4e2d\u2026",
   "mentor-time": "\u5bfc\u5e08 \u00b7 02:08",
   "mentor-line": "\u8fd9\u4e2a\u683c\u5f0f\u6211\u4e0d\u662f\u8bf4\u8fc7\u4e86\u5417\uff1f\u4f60\u5230\u5e95\u6709\u6ca1\u6709\u8ba4\u771f\u505a\uff1f",
   "me-time": "\u6211 \u00b7 02:16",
   "me-line": "\u6211\u6539\u8fc7\u4e86\uff0c\u4f46\u662f\u8fd9\u6b21\u6a21\u677f\u548c\u4e0a\u6b21\u4e0d\u4e00\u6837\u2026\u2026",
-  "after-record": "\u7ed3\u675f\u5f55\u97f3\u540e",
-  "save-recording": "\u5b58\u50a8\u540e\u518d\u5206\u6790",
+  "after-record": "停止录音后",
+  "save-recording": "储存",
   "direct-analyze": "\u76f4\u63a5\u5206\u6790",
-  "privacy": "\ud83d\udd12 \u5b58\u50a8\u540e\u4f1a\u51fa\u73b0\u5728\u9996\u9875\u4e0b\u65b9\uff1b\u53ea\u6709\u4e3b\u52a8\u70b9\u51fb\u65f6\u624d\u5f00\u59cb\u77e5\u8bc6\u5e93\u5206\u6790\u3002",
+  "privacy": "原音频与文字会出现在首页待分析记录；只有主动点击时才开始知识库分析。",
   "analysis-done": "\u5f55\u97f3\u5206\u6790\u5b8c\u6210",
   "analysis-title": "\u8fd9\u6bb5\u5bf9\u8bdd\uff0c\u5361\u5728\u54ea\u91cc\uff1f",
   "score-title": "\u903b\u8f91\u662f\u6e05\u695a\u7684\uff0c<br>\u4f46\u8fb9\u754c\u8fd8\u53ef\u4ee5\u66f4\u5177\u4f53\u3002",
@@ -124,12 +132,31 @@ const COPY = {
   "savedTitle": "\u5bfc\u5e08\u529e\u516c\u5ba4 \u00b7 \u65b9\u6848\u4fee\u6539",
   "savedMeta": "\u4eca\u5929 14:20 \u00b7 03:42 \u00b7 \u5df2\u5b58\u50a8",
   "toastSaved": "\u5f55\u97f3\u5df2\u5b58\u50a8\uff0c\u53ef\u968f\u65f6\u56de\u6765\u5206\u6790",
-  "liveTitle": "\u521a\u521a\u7684\u51b2\u7a81 \u00b7 \u5b9e\u65f6\u5f55\u97f3",
+  "liveTitle": "刚刚的冲突 · 原音频记录",
   "justNow": "\u521a\u521a",
   "stored": "\u5df2\u5b58\u50a8",
-  "toastLiveSaved": "\u5df2\u5b58\u50a8\u5230\u5f85\u5206\u6790\u5f55\u97f3",
+  "toastLiveSaved": "已保存原音频和逐字稿",
   "marked": "\u2713 \u5df2\u6807\u8bb0\u7d27\u5f20\u70b9",
   "toastMarked": "\u7d27\u5f20\u65f6\u523b\u5df2\u6807\u8bb0",
+  "toastRecordingStarted": "开始录音了，说完后再点一次结束",
+  "toastRecordingPaused": "录音已暂停",
+  "toastRecordingResumed": "继续录音",
+  "toastRecordingStopped": "录音已停止，可以现在分析或先储存",
+  "toastRecordingRequired": "请先开始并停止一次录音",
+  "toastTranscriptionFallback": "当前浏览器不能边说边转文字，停止后会根据录音生成逐字稿",
+  "toastTranscribing": "正在把这次录音转成逐字稿…",
+  "toastTranscribeLocal": "正在加载本地识别模型，第一次会稍慢",
+  "toastTranscribed": "逐字稿已生成，复盘时可以再改",
+  "toastTranscribeFailed": "自动转写暂时失败，可手动输入或点重新转文字",
+  "toastTranscribeNoAudio": "没有可转写的音频",
+  "transcriptPlaceholder": "这里会填入这次录音的逐字稿，复盘时可以修改后再分析。",
+  "transcriptLoading": "正在整理这次录音的逐字稿…",
+  "transcriptLocalLoading": "首次转写需要加载识别模型，请稍等…",
+  "transcriptEmptyAudio": "没有录到音频，请重新录音，或直接在这里输入文字。",
+  "transcriptStatusReady": "停录后点「现在分析」，会进入这段录音的逐字稿",
+  "transcriptStatusLoading": "正在整理这次录音的逐字稿",
+  "transcriptStatusDone": "这是这次录音的逐字稿，复盘时可以修改",
+  "transcriptStatusError": "转写失败，请手动输入或重试",
   "toastReplay": "\u5df2\u8fdb\u5165\u5bf9\u5e94\u573a\u666f\u5bf9\u7ec3",
   "toastNoop": "\u672c\u6b21\u6a21\u62df\u5668\u805a\u7126\u5f55\u97f3\u590d\u76d8\u6d41\u7a0b",
   "toastLocked": "\u8fd9\u4e2a\u573a\u666f\u8fd8\u5728\u89e3\u9501\u4e2d",
@@ -152,7 +179,16 @@ const COPY = {
     "privacy": "\u5f55\u97f3\u4ec5\u4fdd\u5b58\u5728\u672c\u673a",
     "export": "\u5bfc\u51fa\u529f\u80fd\u5c06\u5728\u4e0b\u4e00\u9636\u6bb5\u63a5\u5165",
     "about": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86 v1.0 \u00b7 \u8868\u8fbe\u4e0e\u60c5\u7eea\u8bad\u7ec3\u52a9\u624b"
-  }
+  },
+  "toastSettingsSaved": "设置已保存",
+  "toastSettingsLocal": "后端暂时不可用，已先保存在本机",
+  "toastSettingsLoadedLocal": "暂时读不到后端设置，已使用本机设置",
+  "toastSettingsReset": "已恢复默认设置",
+  "toastExportPreview": "导出预览已生成",
+  "toastBluetoothPending": "蓝牙硬件连接将在下一轮迭代接入",
+  "toastVentFaceReady": "人脸已经贴到鼠鼠上了",
+  "toastVentFaceFailed": "这张图读不出来，换一张试试",
+  "toastVentIdentityCleared": "已经恢复成原来的鼠鼠"
 };
 
 const MAP_NODES = {
@@ -386,19 +422,98 @@ const drillSuggestions = document.querySelector("#drill-suggestions");
 const drillProgress = document.querySelector("#drill-progress");
 const drillForm = document.querySelector("#drill-form");
 const mouseGameFrame = document.querySelector("#mouse-game-frame");
+const ventFaceInput = document.querySelector("#vent-face-input");
+const ventFacePicker = document.querySelector(".vent-face-picker");
+const ventFacePreviewImage = document.querySelector("#vent-face-preview-image");
+const ventNameInput = document.querySelector("#vent-name-input");
+const ventIdentityClear = document.querySelector("#vent-identity-clear");
 const confirmedTranscript = document.querySelector("#confirmed-transcript");
 const analysisScreen = document.querySelector(".analysis-screen");
+const homeRecordButton = document.querySelector("#home-record-control");
+const homeRecordLabel = document.querySelector("#home-record-label");
+const homeRecordHelper = document.querySelector("#home-record-helper");
+const recordingReviewSheet = document.querySelector("#recording-review-sheet");
+const recordingStatus = document.querySelector("#recording-status");
+const recordingStatusLabel = document.querySelector("#recording-status-label");
+const recordingHelper = document.querySelector("#recording-helper");
+const startRecordingButton = document.querySelector("#start-recording");
+const recordingControls = document.querySelector("#recording-controls");
+const recordingAudioCard = document.querySelector("#recording-audio-card");
+const recordingAudio = document.querySelector("#recording-audio");
+const recordingSheetAudio = document.querySelector("#recording-sheet-audio");
+const saveRecordingButton = document.querySelector("#save-recording");
+const analyzeRecordingButton = document.querySelector("#analyze-recording");
+const transcriptStatus = document.querySelector("#transcript-status");
+const retranscribeButton = document.querySelector("#retranscribe-button");
+const transcriptTurnsList = document.querySelector("#transcript-turns");
+const addTurnButton = document.querySelector("[data-action='add-turn']");
+const humorToggle = document.querySelector("#context-humor");
 
 const STORAGE_KEY = "on-cue-demo-recordings";
+const SETTINGS_STORAGE_KEY = "on-cue-user-settings";
+const VENT_IDENTITY_KEY = "on-cue-vent-identity";
 const DEFAULT_TRANSCRIPT = `${I18N["mentor-line"] ? `导师：${I18N["mentor-line"]}` : ""}\n我：${I18N["me-line"]}`;
 const seedRecordings = [{ id: "family-dinner", title: COPY.seedTitle, meta: COPY.seedMeta, transcript: DEFAULT_TRANSCRIPT }];
-const TAB_ORDER = { home: 0, recording: 0, analysis: 0, practice: 1, levels: 1, custom: 1, drill: 1, vent: 2, settings: 3 };
-const BACK_OF = { recording: "home", analysis: "home", levels: "practice", custom: "practice", drill: "levels" };
+const SETTINGS_SCREENS = {
+  profile: "settings-profile",
+  device: "settings-device",
+  haptics: "settings-haptics",
+  notify: "settings-notify",
+  privacy: "settings-privacy",
+  export: "settings-export",
+  about: "settings-about",
+};
+const DEFAULT_APP_SETTINGS = {
+  profile: {
+    displayName: "Juni",
+    phoneMasked: "138****0000",
+    trainingGoal: "表达训练与冲突复盘",
+  },
+  device: {
+    input: "system",
+    bluetoothDevice: "未连接线下设备",
+    hardwareAutoConnect: false,
+    noiseSuppression: true,
+    autoTranscribe: true,
+  },
+  haptics: {
+    sound: true,
+    vibration: true,
+    intensity: "standard",
+  },
+  notify: {
+    enabled: true,
+    reminderTime: "21:30",
+    frequency: "daily",
+  },
+  privacy: {
+    storage: "local",
+    keepAudio: true,
+    analysisConsent: false,
+  },
+  export: {
+    format: "markdown",
+    includeAudio: false,
+  },
+};
+const SPEAKER_PRESETS = ["我", "对方", "导师", "领导", "家人"];
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 let recordings = loadRecordings();
 let elapsed = 0;
 let timerId = null;
 let toastId = null;
+let recordingState = "ready";
+let mediaRecorder = null;
+let recordedChunks = [];
+let audioStream = null;
+let recordedAudioUrl = "";
+let recordedAudioDataUrl = "";
+let recordedAudioBlob = null;
+let speechRecognition = null;
+let speechFinalText = "";
+let speechInterimText = "";
+let shouldRestartRecognition = false;
 let currentScreen = "home";
 let selectedMap = "work";
 let drillOrigin = "levels";
@@ -408,6 +523,18 @@ let drillStep = 0;
 let knowledgePromise = null;
 let currentKnowledgeAnalysis = null;
 let selectedKnowledgeVoice = "A";
+let currentDraftRecordingId = "";
+let currentDraftTitle = COPY.liveTitle;
+let currentDraftMeta = "";
+let transcriptionToken = 0;
+let transcriptEditedByUser = false;
+let transcribing = false;
+let transcriptTurns = [];
+let originalTranscriptTurns = [];
+let transcriptMode = "draft";
+let nextTurnId = 1;
+let analysisHumor = true;
+let settingsState = loadCachedSettings();
 
 function loadRecordings() {
   try {
@@ -422,6 +549,318 @@ function persistRecordings() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(recordings));
 }
 
+function getTranscriptText() {
+  if (transcriptTurns.length) return serializeTranscriptTurns(transcriptTurns);
+  return String(confirmedTranscript?.value || "").trim();
+}
+
+function syncContinueButton() {
+  if (!analyzeRecordingButton) return;
+  analyzeRecordingButton.disabled =
+    recordingState !== "stopped" || transcribing || isTranscriptPlaceholder(getTranscriptText());
+}
+
+function setTranscriptText(text, { snapshotOriginal = false } = {}) {
+  const value = String(text || "");
+  if (confirmedTranscript) confirmedTranscript.value = value;
+  if (isTranscriptPlaceholder(value) || !value.trim()) {
+    transcriptTurns = [];
+    originalTranscriptTurns = [];
+    transcriptMode = "draft";
+    renderTranscriptTurns();
+    syncContinueButton();
+    return;
+  }
+  transcriptTurns = parseTranscriptTurns(value).map((turn) => ({
+    id: `turn-${nextTurnId++}`,
+    speaker: turn.speaker || "我",
+    text: turn.text || "",
+  }));
+  if (snapshotOriginal || originalTranscriptTurns.length === 0) {
+    originalTranscriptTurns = transcriptTurns.map((turn) => ({ ...turn, id: `orig-${turn.id}` }));
+  }
+  renderTranscriptTurns();
+  syncContinueButton();
+}
+
+function syncTranscriptFromTurns() {
+  const text = serializeTranscriptTurns(transcriptTurns);
+  if (confirmedTranscript) confirmedTranscript.value = text;
+  transcriptEditedByUser = Boolean(text);
+  syncContinueButton();
+}
+
+function renderTranscriptTurns() {
+  if (!transcriptTurnsList) return;
+  const source = transcriptMode === "original" ? originalTranscriptTurns : transcriptTurns;
+  const readOnly = transcriptMode === "original";
+  document.querySelectorAll("[data-transcript-mode]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.transcriptMode === transcriptMode);
+  });
+  if (addTurnButton) addTurnButton.hidden = readOnly;
+  if (!source.length) {
+    transcriptTurnsList.innerHTML = `<article class="empty-history">还没有可编辑的逐字稿。停录后点「现在分析」，会按说话人拆成一句句。</article>`;
+    return;
+  }
+  transcriptTurnsList.innerHTML = source
+    .map((turn) => {
+      const avatar = escapeHtml((turn.speaker || "我").slice(0, 1));
+      const speakerChips = SPEAKER_PRESETS.map(
+        (name) =>
+          `<button type="button" class="chip${turn.speaker === name ? " active" : ""}" data-action="set-turn-speaker" data-turn-id="${turn.id}" data-speaker="${escapeHtml(name)}"${readOnly ? " disabled" : ""}>${escapeHtml(name)}</button>`,
+      ).join("");
+      return `
+        <article class="transcript-turn">
+          <span class="turn-avatar">${avatar}</span>
+          <div class="turn-card${readOnly ? " is-readonly" : ""}">
+            <header>
+              <input data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "我")}" ${readOnly ? "readonly" : ""} aria-label="说话人" />
+              <button type="button" class="turn-delete" data-action="delete-turn" data-turn-id="${turn.id}" ${readOnly ? "hidden" : ""} aria-label="删除这句">×</button>
+            </header>
+            <div class="turn-speakers">${speakerChips}</div>
+            <textarea data-turn-field="text" data-turn-id="${turn.id}" ${readOnly ? "readonly" : ""} aria-label="${escapeHtml(turn.speaker || "我")}的对话">${escapeHtml(turn.text || "")}</textarea>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function findTurn(turnId) {
+  return transcriptTurns.find((turn) => turn.id === turnId);
+}
+
+function updateTurn(turnId, patch) {
+  const turn = findTurn(turnId);
+  if (!turn || transcriptMode === "original") return;
+  Object.assign(turn, patch);
+  syncTranscriptFromTurns();
+  renderTranscriptTurns();
+}
+
+function addTranscriptTurn() {
+  if (transcriptMode === "original") return;
+  transcriptTurns.push({ id: `turn-${nextTurnId++}`, speaker: "我", text: "" });
+  syncTranscriptFromTurns();
+  renderTranscriptTurns();
+  transcriptTurnsList?.querySelector(".transcript-turn:last-child textarea")?.focus();
+}
+
+function deleteTranscriptTurn(turnId) {
+  if (transcriptMode === "original") return;
+  if (transcriptTurns.length <= 1) {
+    transcriptTurns = [];
+  } else {
+    transcriptTurns = transcriptTurns.filter((turn) => turn.id !== turnId);
+  }
+  syncTranscriptFromTurns();
+  renderTranscriptTurns();
+}
+
+function collectAnalysisContext() {
+  const relationship = document.querySelector("#context-relationship")?.value.trim() || "";
+  const occasion = document.querySelector("#context-occasion")?.value.trim() || "";
+  const feeling = document.querySelector("#context-feeling")?.value.trim() || "";
+  const goal = document.querySelector("#context-goal")?.value.trim() || "";
+  return [
+    relationship ? `关系：${relationship}` : "",
+    occasion ? `场合：${occasion}` : "",
+    feeling ? `感受：${feeling}` : "",
+    goal ? `目标：${goal}` : "",
+    analysisHumor ? "希望在低风险时提供幽默回复" : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function setContextChip(group, value) {
+  document.querySelectorAll(`[data-context-group="${group}"] .chip`).forEach((chip) => {
+    chip.classList.toggle("active", chip.dataset.contextValue === value);
+  });
+  const field = document.querySelector(`#context-${group}`);
+  if (field) field.value = value;
+}
+
+function openContextScreen() {
+  const text = getTranscriptText();
+  if (!text || isTranscriptPlaceholder(text)) {
+    showToast("请先确认逐字稿内容");
+    return;
+  }
+  showScreen("context");
+}
+
+function cloneSettings(source = DEFAULT_APP_SETTINGS) {
+  return JSON.parse(JSON.stringify(source));
+}
+
+function mergeAppSettings(base, patch) {
+  const merged = cloneSettings(base);
+  const incoming = patch && typeof patch === "object" ? patch : {};
+  Object.keys(DEFAULT_APP_SETTINGS).forEach((section) => {
+    if (!incoming[section] || typeof incoming[section] !== "object") return;
+    Object.keys(DEFAULT_APP_SETTINGS[section]).forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(incoming[section], key)) {
+        merged[section][key] = incoming[section][key];
+      }
+    });
+  });
+  return merged;
+}
+
+function loadCachedSettings() {
+  try {
+    return mergeAppSettings(DEFAULT_APP_SETTINGS, JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)));
+  } catch {
+    return cloneSettings();
+  }
+}
+
+function persistSettings() {
+  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settingsState));
+}
+
+function getSettingValue(path) {
+  return path.split(".").reduce((value, key) => value?.[key], settingsState);
+}
+
+function setNestedValue(target, path, value) {
+  const keys = path.split(".");
+  const lastKey = keys.pop();
+  const bucket = keys.reduce((current, key) => {
+    current[key] ||= {};
+    return current[key];
+  }, target);
+  bucket[lastKey] = value;
+}
+
+function formatSettingSummary(path, value) {
+  const labels = {
+    "device.input": { system: "系统默认  ›", headset: "耳机麦克风  ›", phone: "手机麦克风  ›", bluetooth: "蓝牙硬件  ›" },
+    "haptics.intensity": { soft: "轻柔  ›", standard: "标准  ›", strong: "强烈  ›" },
+    "notify.enabled": { true: "已开启  ›", false: "已关闭  ›" },
+    "privacy.storage": { local: "仅本机  ›", cloud: "后端同步  ›" },
+    "export.format": { markdown: "Markdown  ›", txt: "纯文本  ›", json: "JSON  ›" },
+  };
+  if (labels[path]) return labels[path][String(value)] || "";
+  return value ?? "";
+}
+
+function renderSettings() {
+  document.querySelectorAll("[data-settings-value]").forEach((node) => {
+    const value = getSettingValue(node.dataset.settingsValue);
+    node.textContent = formatSettingSummary(node.dataset.settingsValue, value);
+  });
+  document.querySelectorAll("[data-settings-form]").forEach((form) => {
+    form.querySelectorAll("input[name], select[name], textarea[name]").forEach((field) => {
+      const value = getSettingValue(field.name);
+      if (field.type === "checkbox") field.checked = Boolean(value);
+      else field.value = value ?? "";
+    });
+  });
+}
+
+function collectSettingsForm(form) {
+  const patch = {};
+  form.querySelectorAll("input[name], select[name], textarea[name]").forEach((field) => {
+    const value = field.type === "checkbox" ? field.checked : field.value;
+    setNestedValue(patch, field.name, value);
+  });
+  return patch;
+}
+
+async function loadSettings({ silent = false } = {}) {
+  try {
+    const response = await fetch("/api/settings", { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`settings ${response.status}`);
+    const payload = await response.json();
+    settingsState = mergeAppSettings(DEFAULT_APP_SETTINGS, payload.settings);
+    persistSettings();
+  } catch {
+    settingsState = loadCachedSettings();
+    if (!silent) showToast(COPY.toastSettingsLoadedLocal);
+  }
+  renderSettings();
+  return settingsState;
+}
+
+async function saveSettings(patch) {
+  settingsState = mergeAppSettings(settingsState, patch);
+  persistSettings();
+  renderSettings();
+
+  try {
+    const response = await fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ settings: settingsState }),
+    });
+    if (!response.ok) throw new Error(`settings ${response.status}`);
+    const payload = await response.json();
+    settingsState = mergeAppSettings(DEFAULT_APP_SETTINGS, payload.settings);
+    persistSettings();
+    renderSettings();
+    showToast(COPY.toastSettingsSaved);
+  } catch {
+    showToast(COPY.toastSettingsLocal);
+  }
+}
+
+async function resetSettings() {
+  settingsState = cloneSettings();
+  persistSettings();
+  renderSettings();
+  try {
+    await fetch("/api/settings", { method: "DELETE" });
+  } catch {
+    // Local settings have already been reset; backend sync can be retried later.
+  }
+  showToast(COPY.toastSettingsReset);
+}
+
+function showSettingsHome() {
+  showScreen("settings");
+  loadSettings({ silent: true });
+}
+
+function openSettingsDetail(item) {
+  const screen = SETTINGS_SCREENS[item];
+  if (!screen) {
+    showToast(COPY.toastSettings[item] || COPY.toastNoop);
+    return;
+  }
+  showScreen(screen);
+  renderSettings();
+  loadSettings({ silent: true });
+}
+
+function buildSettingsExport() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    settings: settingsState,
+    recordings,
+  };
+  if (settingsState.export.format === "json") return JSON.stringify(payload, null, 2);
+  if (settingsState.export.format === "txt") {
+    return recordings.map((recording) => `${recording.title}\n${recording.meta}\n${recording.transcript || ""}`).join("\n\n---\n\n");
+  }
+  return recordings
+    .map((recording) => `## ${recording.title}\n\n${recording.meta}\n\n${recording.transcript || "暂无逐字稿"}`)
+    .join("\n\n");
+}
+
+function previewSettingsExport() {
+  const extension = { json: "json", txt: "txt", markdown: "md" }[settingsState.export.format] || "txt";
+  const blob = new Blob([buildSettingsExport()], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `on-cue-export-preview.${extension}`;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 500);
+  showToast(COPY.toastExportPreview);
+}
+
 function waveform() {
   const heights = [12, 24, 18, 33, 27, 16, 30, 14, 21, 10, 26, 18, 31, 16];
   return heights
@@ -429,16 +868,35 @@ function waveform() {
     .join("");
 }
 
+function escapeHtml(value = "") {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;",
+  })[char]);
+}
+
 function renderRecordings() {
+  if (!savedList) return;
+  if (recordings.length === 0) {
+    savedList.innerHTML = `<article class="empty-history">还没有历史记录。完成一次录音后，可以选择“储存”放到这里。</article>`;
+    return;
+  }
   savedList.innerHTML = recordings
     .map(
       (recording) => `
         <article class="saved-card">
-          <strong>${recording.title}</strong>
-          <div class="meta">${recording.meta}</div>
+          <strong>${escapeHtml(recording.title)}</strong>
+          <div class="meta">${escapeHtml(recording.meta)}</div>
           <div class="saved-bottom">
-            <div class="mini-wave" aria-hidden="true">${waveform()}</div>
-            <button class="figma-button primary" data-action="analyze" data-recording-id="${recording.id}">${COPY.analyzeNow}</button>
+            ${
+              recording.audioDataUrl
+                ? `<audio class="saved-audio" controls src="${escapeHtml(recording.audioDataUrl)}"></audio>`
+                : `<div class="mini-wave" aria-hidden="true">${waveform()}</div>`
+            }
+            <button class="figma-button primary" data-action="review-recording" data-recording-id="${recording.id}">查看分析</button>
           </div>
         </article>
       `,
@@ -452,13 +910,15 @@ function formatTimer(seconds) {
   return `${minutes}:${remainder}`;
 }
 
+function setTimerDisplay(seconds) {
+  if (timerElement) timerElement.textContent = formatTimer(seconds);
+}
+
 function startTimer() {
   clearInterval(timerId);
-  elapsed = 138;
-  timerElement.textContent = "02:18";
   timerId = setInterval(() => {
     elapsed += 1;
-    timerElement.textContent = formatTimer(elapsed);
+    setTimerDisplay(elapsed);
   }, 1000);
 }
 
@@ -467,20 +927,382 @@ function stopTimer() {
   timerId = null;
 }
 
+function setRecordingState(nextState) {
+  recordingState = nextState;
+  const content = {
+    ready: ["点击开始录音", "说完后再点一次结束，会生成原音频和逐字稿"],
+    recording: ["正在录音，点击结束", "说完后再点一次结束，然后可以分析或储存"],
+    paused: ["已暂停", "录音已暂停，点击继续会接着写入同一段音频"],
+    processing: ["处理中", "正在生成可回放的原音频，请稍等"],
+    stopped: ["录音已结束", "可以现在分析，也可以先储存到历史记录"],
+  }[nextState] || ["准备录音", I18N["live-note"]];
+
+  if (homeRecordLabel) homeRecordLabel.textContent = content[0];
+  if (homeRecordHelper) homeRecordHelper.textContent = content[1];
+  homeRecordButton?.classList.toggle("is-recording", nextState === "recording");
+  homeRecordButton?.classList.toggle("is-stopped", nextState === "stopped");
+  homeRecordButton?.setAttribute("aria-pressed", String(nextState === "recording"));
+  if (homeRecordButton) homeRecordButton.disabled = nextState === "processing";
+
+  if (recordingStatusLabel) recordingStatusLabel.textContent = content[0];
+  if (recordingHelper) recordingHelper.textContent = content[1];
+  recordingStatus?.classList.toggle("is-ready", nextState === "ready");
+  recordingStatus?.classList.toggle("is-paused", nextState === "paused" || nextState === "processing");
+  recordingStatus?.classList.toggle("is-stopped", nextState === "stopped");
+  if (startRecordingButton) startRecordingButton.hidden = nextState !== "ready";
+  if (recordingControls) {
+    recordingControls.hidden = !["recording", "paused"].includes(nextState);
+    recordingControls.querySelector('[data-action="pause-recording"]').disabled = nextState !== "recording";
+    recordingControls.querySelector('[data-action="resume-recording"]').disabled = nextState !== "paused";
+    recordingControls.querySelector('[data-action="stop-recording"]').disabled = !["recording", "paused"].includes(nextState);
+  }
+  if (saveRecordingButton) saveRecordingButton.disabled = nextState !== "stopped";
+  syncContinueButton();
+  if (retranscribeButton) retranscribeButton.disabled = transcribing || !recordedAudioBlob;
+}
+
+function clearRecordedAudio() {
+  if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+  recordedAudioUrl = "";
+  recordedAudioDataUrl = "";
+  recordedAudioBlob = null;
+  recordingAudio?.removeAttribute("src");
+  recordingSheetAudio?.removeAttribute("src");
+  if (recordingAudioCard) recordingAudioCard.hidden = true;
+}
+
+function setTranscriptStatus(message, state = "") {
+  if (!transcriptStatus) return;
+  transcriptStatus.textContent = message;
+  transcriptStatus.dataset.state = state;
+}
+
+function setTranscribing(isTranscribing) {
+  transcribing = isTranscribing;
+  if (retranscribeButton) retranscribeButton.disabled = isTranscribing || !recordedAudioBlob;
+  syncContinueButton();
+}
+
+function applyTranscribedText(text, { force = false } = {}) {
+  const next = formatTranscriptText(text);
+  if (!next) return false;
+  const current = getTranscriptText();
+  if (!force && transcriptEditedByUser && current && !isTranscriptPlaceholder(current)) {
+    return false;
+  }
+  setTranscriptText(next, { snapshotOriginal: true });
+  transcriptEditedByUser = false;
+  return true;
+}
+
+async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
+  if (!(blob instanceof Blob) || blob.size === 0) {
+    if (!speechFinalText.trim() && isTranscriptPlaceholder(getTranscriptText())) {
+      setTranscriptText(COPY.transcriptEmptyAudio);
+    }
+    setTranscriptStatus(COPY.transcriptStatusError, "error");
+    setTranscribing(false);
+    if (!silent) showToast(COPY.toastTranscribeNoAudio);
+    return false;
+  }
+
+  const token = ++transcriptionToken;
+  setTranscribing(true);
+  setTranscriptStatus(COPY.transcriptStatusLoading, "loading");
+  if (isTranscriptPlaceholder(getTranscriptText()) || force) {
+    setTranscriptText(COPY.transcriptLoading);
+    transcriptEditedByUser = false;
+  }
+  if (!silent) showToast(COPY.toastTranscribing);
+
+  try {
+    const result = await transcribeAudioBlob(blob, {
+      onStatus: (status) => {
+        if (token !== transcriptionToken) return;
+        if (status === "local") {
+          setTranscriptStatus(COPY.transcriptStatusLoading, "loading");
+          if (isTranscriptPlaceholder(getTranscriptText()) || getTranscriptText() === COPY.transcriptLoading) {
+            setTranscriptText(COPY.transcriptLocalLoading);
+          }
+          showToast(COPY.toastTranscribeLocal);
+        }
+      },
+    });
+    if (token !== transcriptionToken) return false;
+    const applied = applyTranscribedText(result.text, { force });
+    setTranscriptStatus(COPY.transcriptStatusDone, "done");
+    if (applied) showToast(COPY.toastTranscribed);
+    return true;
+  } catch (error) {
+    console.warn("Transcription failed", error);
+    if (token !== transcriptionToken) return false;
+    const live = formatTranscriptText(speechFinalText);
+    if (live && (force || isTranscriptPlaceholder(getTranscriptText()))) {
+      setTranscriptText(live, { snapshotOriginal: true });
+      setTranscriptStatus(COPY.transcriptStatusDone, "done");
+      return true;
+    }
+    if (isTranscriptPlaceholder(getTranscriptText()) || getTranscriptText() === COPY.transcriptLoading) {
+      setTranscriptText(COPY.toastTranscribeFailed);
+    }
+    setTranscriptStatus(COPY.transcriptStatusError, "error");
+    if (!silent) showToast(COPY.toastTranscribeFailed);
+    return false;
+  } finally {
+    if (token === transcriptionToken) setTranscribing(false);
+  }
+}
+
+function releaseAudioStream() {
+  audioStream?.getTracks().forEach((track) => track.stop());
+  audioStream = null;
+}
+
+function currentLiveTranscript() {
+  const finalText = speechFinalText.trim();
+  const interimText = speechInterimText.trim();
+  return [
+    finalText,
+    interimText && recordingState === "recording" ? `（识别中）${interimText}` : "",
+  ].filter(Boolean).join("\n");
+}
+
+function renderSpeechTranscript() {
+  const live = currentLiveTranscript();
+  if (!live || transcriptEditedByUser) return;
+  setTranscriptText(live, { snapshotOriginal: originalTranscriptTurns.length === 0 });
+}
+
+function appendRecognizedText(text) {
+  const line = text.trim();
+  if (!line) return;
+  speechFinalText = `${speechFinalText}${speechFinalText ? "\n" : ""}我：${line}`;
+  renderSpeechTranscript();
+}
+
+function stopSpeechRecognition() {
+  shouldRestartRecognition = false;
+  speechInterimText = "";
+  if (!speechRecognition) {
+    renderSpeechTranscript();
+    return;
+  }
+  const activeRecognition = speechRecognition;
+  speechRecognition = null;
+  activeRecognition.onend = null;
+  try {
+    activeRecognition.stop();
+  } catch {
+    activeRecognition.abort?.();
+  }
+  renderSpeechTranscript();
+}
+
+function startSpeechRecognition() {
+  if (!SpeechRecognition) {
+    showToast(COPY.toastTranscriptionFallback);
+    return;
+  }
+  stopSpeechRecognition();
+  shouldRestartRecognition = true;
+  const recognition = new SpeechRecognition();
+  speechRecognition = recognition;
+  recognition.lang = "zh-CN";
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+  recognition.onresult = (event) => {
+    let interim = "";
+    for (let index = event.resultIndex; index < event.results.length; index += 1) {
+      const result = event.results[index];
+      const text = result[0]?.transcript || "";
+      if (result.isFinal) appendRecognizedText(text);
+      else interim += text;
+    }
+    speechInterimText = interim;
+    renderSpeechTranscript();
+  };
+  recognition.onerror = (event) => {
+    if (!["aborted", "no-speech"].includes(event.error)) showToast(COPY.toastTranscriptionFallback);
+  };
+  recognition.onend = () => {
+    if (shouldRestartRecognition && recordingState === "recording") {
+      window.setTimeout(startSpeechRecognition, 250);
+    }
+  };
+  try {
+    recognition.start();
+  } catch {
+    showToast(COPY.toastTranscriptionFallback);
+  }
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(blob);
+  });
+}
+
+function ensureTranscriptReady() {
+  if (isTranscriptPlaceholder(getTranscriptText())) {
+    const live = formatTranscriptText(speechFinalText);
+    if (live) setTranscriptText(live, { snapshotOriginal: originalTranscriptTurns.length === 0 });
+  }
+}
+
+async function finalizeRecordedAudio({ silent = false } = {}) {
+  let audioBlob = null;
+  if (recordedChunks.length > 0) {
+    const type = mediaRecorder?.mimeType || "audio/webm";
+    audioBlob = new Blob(recordedChunks, { type });
+    recordedAudioBlob = audioBlob;
+    recordedAudioUrl = URL.createObjectURL(audioBlob);
+    if (recordingAudio) recordingAudio.src = recordedAudioUrl;
+    if (recordingSheetAudio) recordingSheetAudio.src = recordedAudioUrl;
+    if (recordingAudioCard) recordingAudioCard.hidden = false;
+    recordedAudioDataUrl = await blobToDataUrl(audioBlob);
+  } else {
+    recordedAudioBlob = null;
+    if (recordingAudioCard) recordingAudioCard.hidden = true;
+  }
+  releaseAudioStream();
+  ensureTranscriptReady();
+  currentDraftRecordingId ||= `live-${Date.now()}`;
+  currentDraftTitle = COPY.liveTitle;
+  currentDraftMeta = `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
+  setRecordingState("stopped");
+  renderSpeechTranscript();
+  if (speechFinalText.trim()) setTranscriptStatus(COPY.transcriptStatusDone, "done");
+  setTranscribing(false);
+  if (retranscribeButton) retranscribeButton.disabled = !recordedAudioBlob;
+  if (currentScreen === "home") recordingReviewSheet.hidden = false;
+  if (!silent) showToast(COPY.toastRecordingStopped);
+  if (audioBlob && settingsState.device.autoTranscribe && !speechFinalText.trim()) {
+    await transcribeAndFill(audioBlob, { silent: true });
+  } else if (!audioBlob && !speechFinalText.trim()) {
+    setTranscriptText(COPY.transcriptEmptyAudio);
+    setTranscriptStatus(COPY.transcriptStatusError, "error");
+  }
+}
+
+function prepareRecordingSession() {
+  stopTimer();
+  stopSpeechRecognition();
+  releaseAudioStream();
+  clearRecordedAudio();
+  recordedChunks = [];
+  mediaRecorder = null;
+  currentDraftRecordingId = "";
+  currentDraftTitle = COPY.liveTitle;
+  currentDraftMeta = "";
+  speechFinalText = "";
+  speechInterimText = "";
+  transcriptionToken += 1;
+  transcriptEditedByUser = false;
+  elapsed = 0;
+  setTimerDisplay(0);
+  setTranscriptText(COPY.transcriptPlaceholder);
+  setTranscriptStatus(COPY.transcriptStatusReady, "");
+  setTranscribing(false);
+  recordingReviewSheet.hidden = true;
+  const marker = document.querySelector('[data-action="mark"]');
+  if (marker) marker.textContent = I18N["marked-initial"];
+  setRecordingState("ready");
+  renderSpeechTranscript();
+}
+
+async function startRecording() {
+  if (recordingState === "recording") return;
+  recordingReviewSheet.hidden = true;
+  recordedChunks = [];
+  currentDraftRecordingId = "";
+  currentDraftTitle = COPY.liveTitle;
+  currentDraftMeta = "";
+  speechFinalText = "";
+  speechInterimText = "";
+  transcriptionToken += 1;
+  transcriptEditedByUser = false;
+  elapsed = 0;
+  setTimerDisplay(0);
+  setTranscriptText(COPY.transcriptPlaceholder);
+  setTranscriptStatus(COPY.transcriptStatusReady, "");
+  setRecordingState("recording");
+  startTimer();
+  renderSpeechTranscript();
+  showToast(COPY.toastRecordingStarted);
+
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+    startSpeechRecognition();
+    showToast(COPY.toastTranscriptionFallback);
+    return;
+  }
+
+  try {
+    startSpeechRecognition();
+    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (recordingState !== "recording") {
+      releaseAudioStream();
+      return;
+    }
+    const mimeType = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((type) => MediaRecorder.isTypeSupported(type));
+    mediaRecorder = mimeType ? new MediaRecorder(audioStream, { mimeType }) : new MediaRecorder(audioStream);
+    mediaRecorder.addEventListener("dataavailable", (event) => {
+      if (event.data?.size > 0) recordedChunks.push(event.data);
+    });
+    mediaRecorder.start(250);
+    if (!speechRecognition && SpeechRecognition) startSpeechRecognition();
+  } catch (error) {
+    console.warn("Recording unavailable", error);
+    releaseAudioStream();
+    startSpeechRecognition();
+    showToast(COPY.toastTranscriptionFallback);
+  }
+}
+
+function pauseRecording() {
+  if (recordingState !== "recording") return;
+  if (mediaRecorder?.state === "recording") mediaRecorder.pause();
+  stopTimer();
+  stopSpeechRecognition();
+  setRecordingState("paused");
+  renderSpeechTranscript();
+  showToast(COPY.toastRecordingPaused);
+}
+
+function resumeRecording() {
+  if (recordingState !== "paused") return;
+  if (mediaRecorder?.state === "paused") mediaRecorder.resume();
+  setRecordingState("recording");
+  startTimer();
+  startSpeechRecognition();
+  renderSpeechTranscript();
+  showToast(COPY.toastRecordingResumed);
+}
+
+function stopRecording({ silent = false } = {}) {
+  if (!["recording", "paused"].includes(recordingState)) {
+    if (!silent) showToast(COPY.toastRecordingRequired);
+    return;
+  }
+  stopTimer();
+  stopSpeechRecognition();
+  setRecordingState("processing");
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.addEventListener("stop", () => finalizeRecordedAudio({ silent }), { once: true });
+    mediaRecorder.stop();
+  } else {
+    finalizeRecordedAudio({ silent });
+  }
+}
+
 function showToast(message) {
   clearTimeout(toastId);
   toast.textContent = message;
   toast.classList.add("show");
   toastId = setTimeout(() => toast.classList.remove("show"), 2200);
-}
-
-function inferDirection(from, to) {
-  if (BACK_OF[from] === to) return "back";
-  if (BACK_OF[to] === from) return "forward";
-  const a = TAB_ORDER[from] ?? 0;
-  const b = TAB_ORDER[to] ?? 0;
-  if (b === a) return "forward";
-  return b > a ? "forward" : "back";
 }
 
 function revealInbox(behavior = "smooth") {
@@ -492,29 +1314,14 @@ function revealInbox(behavior = "smooth") {
   });
 }
 
-function showScreen(id, { scrollInbox = false, direction } = {}) {
+function showScreen(id, { scrollInbox = false } = {}) {
   const next = screens.find((screen) => screen.dataset.screen === id);
   if (!next) return;
+  const previousScreen = currentScreen;
   const prev = screens.find((screen) => screen.classList.contains("active"));
-  const dir = direction || inferDirection(currentScreen, id);
 
-  screens.forEach((screen) => {
-    screen.classList.remove("enter-from-left", "enter-from-right", "leaving-left", "leaving-right", "splash-out");
-  });
-
-  if (prev && prev !== next) {
-    prev.classList.add(dir === "back" ? "leaving-right" : "leaving-left");
-    prev.classList.remove("active");
-    window.setTimeout(() => {
-      prev.classList.remove("leaving-left", "leaving-right", "splash-out");
-    }, 300);
-  }
-
-  if (dir === "back") next.classList.add("enter-from-left");
-  else next.classList.add("enter-from-right");
-  next.offsetHeight;
+  if (prev && prev !== next) prev.classList.remove("active");
   next.classList.add("active");
-  next.classList.remove("enter-from-left", "enter-from-right");
   next.setAttribute("aria-hidden", "false");
   screens.forEach((screen) => {
     if (screen !== next) screen.setAttribute("aria-hidden", "true");
@@ -529,22 +1336,150 @@ function showScreen(id, { scrollInbox = false, direction } = {}) {
   currentScreen = id;
   const tab = next.dataset.tab || id;
   guides.forEach((guide) => guide.classList.toggle("active", guide.dataset.jump === tab || guide.dataset.jump === id));
-  if (id === "recording") startTimer();
-  else stopTimer();
+  if (previousScreen === "home" && id !== "home" && ["recording", "paused"].includes(recordingState)) {
+    stopRecording({ silent: true });
+  } else if (id !== "home") {
+    stopTimer();
+  }
   if (id === "home" && scrollInbox) revealInbox();
+  if (id === "vent") sendVentIdentity();
 }
 
 function connectMouseGame() {
-  mouseGameFrame?.contentWindow?.addEventListener("tumbler:event", (event) => {
-    if (event.detail?.type !== "CLOSE_REQUESTED") return;
-    showScreen("practice");
-    window.setTimeout(() => {
-      mouseGameFrame.src = "/mouse-game.html";
-    }, 0);
+  sendVentIdentity();
+}
+
+function loadVentIdentity() {
+  try {
+    const value = JSON.parse(localStorage.getItem(VENT_IDENTITY_KEY));
+    return {
+      name: typeof value?.name === "string" ? value.name : "",
+      faceDataUrl: typeof value?.faceDataUrl === "string" ? value.faceDataUrl : "",
+    };
+  } catch {
+    return { name: "", faceDataUrl: "" };
+  }
+}
+
+let ventIdentity = loadVentIdentity();
+
+function persistVentIdentity() {
+  localStorage.setItem(VENT_IDENTITY_KEY, JSON.stringify(ventIdentity));
+}
+
+function sendVentIdentity() {
+  mouseGameFrame?.contentWindow?.postMessage(
+    {
+      type: "tumbler:identity",
+      name: ventIdentity.name,
+      faceDataUrl: ventIdentity.faceDataUrl,
+    },
+    "*",
+  );
+}
+
+function renderVentIdentity() {
+  const hasFace = Boolean(ventIdentity.faceDataUrl);
+  const hasName = Boolean(ventIdentity.name.trim());
+  if (ventNameInput && ventNameInput.value !== ventIdentity.name) {
+    ventNameInput.value = ventIdentity.name;
+  }
+  if (ventFacePreviewImage) {
+    if (hasFace) {
+      ventFacePreviewImage.src = ventIdentity.faceDataUrl;
+      ventFacePreviewImage.hidden = false;
+    } else {
+      ventFacePreviewImage.removeAttribute("src");
+      ventFacePreviewImage.hidden = true;
+    }
+  }
+  ventFacePicker?.classList.toggle("has-face", hasFace);
+  if (ventIdentityClear) ventIdentityClear.hidden = !(hasFace || hasName);
+}
+
+function cropImageToSquareDataUrl(file, size = 256) {
+  return new Promise((resolve, reject) => {
+    if (!file || !String(file.type).startsWith("image/")) {
+      reject(new Error("not-image"));
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const context = canvas.getContext("2d");
+        const scale = Math.max(size / Math.max(image.width, 1), size / Math.max(image.height, 1));
+        const width = image.width * scale;
+        const height = image.height * scale;
+        context.drawImage(image, (size - width) / 2, (size - height) / 2, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      } catch (error) {
+        reject(error);
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("decode-failed"));
+    };
+    image.src = url;
   });
 }
 
+function setVentIdentity(patch) {
+  ventIdentity = {
+    name: patch.name ?? ventIdentity.name,
+    faceDataUrl: patch.faceDataUrl ?? ventIdentity.faceDataUrl,
+  };
+  persistVentIdentity();
+  renderVentIdentity();
+  sendVentIdentity();
+}
+
+async function importVentFace(file) {
+  try {
+    const faceDataUrl = await cropImageToSquareDataUrl(file);
+    setVentIdentity({ faceDataUrl });
+    showToast(COPY.toastVentFaceReady);
+  } catch {
+    showToast(COPY.toastVentFaceFailed);
+  }
+}
+
+function clearVentIdentity() {
+  setVentIdentity({ name: "", faceDataUrl: "" });
+  if (ventFaceInput) ventFaceInput.value = "";
+  showToast(COPY.toastVentIdentityCleared);
+}
+
 mouseGameFrame?.addEventListener("load", connectMouseGame);
+window.addEventListener("message", (event) => {
+  if (event.source !== mouseGameFrame?.contentWindow) return;
+  if (event.data?.type === "tumbler:ready") sendVentIdentity();
+});
+if (mouseGameFrame?.contentDocument?.readyState === "complete") connectMouseGame();
+
+ventFaceInput?.addEventListener("change", async (event) => {
+  const file = event.target.files?.[0];
+  event.target.value = "";
+  if (file) await importVentFace(file);
+});
+
+ventNameInput?.addEventListener("compositionstart", () => {
+  ventNameInput.dataset.composing = "true";
+});
+ventNameInput?.addEventListener("compositionend", () => {
+  ventNameInput.dataset.composing = "false";
+  setVentIdentity({ name: ventNameInput.value.slice(0, 12) });
+});
+ventNameInput?.addEventListener("input", () => {
+  if (ventNameInput.dataset.composing === "true") return;
+  setVentIdentity({ name: ventNameInput.value.slice(0, 12) });
+});
 
 guides.forEach((guide) => {
   guide.addEventListener("click", () => {
@@ -556,6 +1491,63 @@ function addRecording(recording) {
   recordings = [recording, ...recordings.filter((item) => item.id !== recording.id)];
   persistRecordings();
   renderRecordings();
+}
+
+function buildCurrentRecording() {
+  ensureTranscriptReady();
+  currentDraftRecordingId ||= `live-${Date.now()}`;
+  currentDraftMeta ||= `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
+  return {
+    id: currentDraftRecordingId,
+    title: currentDraftTitle || COPY.liveTitle,
+    meta: currentDraftMeta,
+    transcript: getTranscriptText(),
+    audioDataUrl: recordedAudioDataUrl,
+  };
+}
+
+function saveCurrentRecording({ navigateToHistory = true } = {}) {
+  if (recordingState !== "stopped") {
+    showToast(COPY.toastRecordingRequired);
+    return false;
+  }
+  addRecording(buildCurrentRecording());
+  recordingReviewSheet.hidden = true;
+  showToast(COPY.toastLiveSaved);
+  showScreen(navigateToHistory ? "history" : "home");
+  return true;
+}
+
+function loadRecordingForReview(recordingId) {
+  const recording = recordings.find((item) => item.id === recordingId);
+  if (!recording) {
+    showToast("没有找到这条历史记录");
+    return;
+  }
+  stopTimer();
+  stopSpeechRecognition();
+  releaseAudioStream();
+  currentDraftRecordingId = recording.id;
+  currentDraftTitle = recording.title || COPY.liveTitle;
+  currentDraftMeta = recording.meta || `${COPY.justNow} · ${COPY.stored}`;
+  recordedAudioDataUrl = recording.audioDataUrl || "";
+  recordedAudioBlob = recordedAudioDataUrl ? blobFromDataUrl(recordedAudioDataUrl) : null;
+  recordedAudioUrl = "";
+  if (recordedAudioDataUrl) {
+    recordingAudio.src = recordedAudioDataUrl;
+    if (recordingSheetAudio) recordingSheetAudio.src = recordedAudioDataUrl;
+  } else {
+    recordingAudio.removeAttribute("src");
+    recordingSheetAudio?.removeAttribute("src");
+  }
+  setTranscriptText(recording.transcript || DEFAULT_TRANSCRIPT, { snapshotOriginal: true });
+  transcriptEditedByUser = false;
+  setTranscriptStatus(recording.transcript ? COPY.transcriptStatusDone : COPY.transcriptStatusReady, recording.transcript ? "done" : "");
+  setTranscribing(false);
+  if (retranscribeButton) retranscribeButton.disabled = !recordedAudioBlob;
+  recordingReviewSheet.hidden = true;
+  setRecordingState("stopped");
+  showScreen("transcript");
 }
 
 function knowledgeBase() {
@@ -632,7 +1624,7 @@ async function runKnowledgeAnalysis(transcript) {
   setKnowledgeText("#kb-status", "正在检索 120 个场景…");
   try {
     const knowledge = await knowledgeBase();
-    renderKnowledgeAnalysis(analyzeConfirmedTranscript(text, knowledge));
+    renderKnowledgeAnalysis(analyzeConfirmedTranscript(text, knowledge, { extra: collectAnalysisContext() }));
   } catch (error) {
     console.error("Knowledge analysis failed", error);
     setKnowledgeText("#kb-status", "知识库读取失败");
@@ -809,15 +1801,101 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  const transcriptModeTab = event.target.closest("[data-transcript-mode]");
+  if (transcriptModeTab) {
+    transcriptMode = transcriptModeTab.dataset.transcriptMode === "original" ? "original" : "draft";
+    renderTranscriptTurns();
+    return;
+  }
+
+  const contextChip = event.target.closest("[data-context-value]");
+  if (contextChip) {
+    const group = contextChip.closest("[data-context-group]")?.dataset.contextGroup;
+    if (group) setContextChip(group, contextChip.dataset.contextValue);
+    return;
+  }
+
   const control = event.target.closest("[data-action]");
   if (!control) return;
   switch (control.dataset.action) {
     case "record":
-      showScreen("recording");
+      prepareRecordingSession();
+      await startRecording();
+      break;
+    case "toggle-recording":
+      if (["recording", "paused"].includes(recordingState)) {
+        stopRecording();
+      } else if (recordingState !== "processing") {
+        prepareRecordingSession();
+        await startRecording();
+      }
+      break;
+    case "history-list":
+      showScreen("history");
+      break;
+    case "review-transcript":
+      if (recordingState !== "stopped") {
+        showToast(COPY.toastRecordingRequired);
+        break;
+      }
+      ensureTranscriptReady();
+      renderSpeechTranscript();
+      recordingReviewSheet.hidden = true;
+      showScreen("transcript");
+      break;
+    case "review-recording":
+      loadRecordingForReview(control.dataset.recordingId);
+      break;
+    case "add-turn":
+      addTranscriptTurn();
+      break;
+    case "delete-turn":
+      deleteTranscriptTurn(control.dataset.turnId);
+      break;
+    case "set-turn-speaker":
+      updateTurn(control.dataset.turnId, { speaker: control.dataset.speaker });
+      break;
+    case "open-context":
+      if (recordingState !== "stopped") {
+        showToast(COPY.toastRecordingRequired);
+        break;
+      }
+      openContextScreen();
+      break;
+    case "toggle-humor":
+      analysisHumor = !analysisHumor;
+      humorToggle?.classList.toggle("is-on", analysisHumor);
+      humorToggle?.setAttribute("aria-pressed", String(analysisHumor));
+      break;
+    case "retranscribe":
+      if (!recordedAudioBlob) {
+        showToast(COPY.toastTranscribeNoAudio);
+        break;
+      }
+      transcriptEditedByUser = false;
+      await transcribeAndFill(recordedAudioBlob, { force: true });
+      break;
+    case "start-recording":
+      await startRecording();
+      break;
+    case "pause-recording":
+      pauseRecording();
+      break;
+    case "resume-recording":
+      resumeRecording();
+      break;
+    case "stop-recording":
+      stopRecording();
       break;
     case "home":
     case "tab-home":
       showScreen("home");
+      break;
+    case "transcript":
+      showScreen("transcript");
+      break;
+    case "context":
+      showScreen("context");
       break;
     case "tab-practice":
     case "practice":
@@ -827,29 +1905,29 @@ document.addEventListener("click", async (event) => {
       showScreen("vent");
       break;
     case "tab-settings":
-      showScreen("settings");
+    case "settings":
+      showSettingsHome();
       break;
     case "save-current":
       addRecording({ id: "mentor-plan", title: COPY.savedTitle, meta: COPY.savedMeta });
       showToast(COPY.toastSaved);
-      showScreen("home", { scrollInbox: true });
+      showScreen("history");
       break;
     case "save-recording":
-      addRecording({
-        id: `live-${Date.now()}`,
-        title: COPY.liveTitle,
-        meta: `${COPY.justNow} \u00b7 ${formatTimer(Math.max(elapsed, 18))} \u00b7 ${COPY.stored}`,
-        transcript: confirmedTranscript.value.trim(),
-      });
-      showToast(COPY.toastLiveSaved);
-      showScreen("home", { scrollInbox: true });
+      saveCurrentRecording({ navigateToHistory: true });
       break;
     case "analyze":
       {
-        const saved = recordings.find((item) => item.id === control.dataset.recordingId);
-        const transcript = currentScreen === "recording"
-          ? confirmedTranscript.value
-          : saved?.transcript || DEFAULT_TRANSCRIPT;
+        if (recordingState !== "stopped") {
+          showToast(COPY.toastRecordingRequired);
+          break;
+        }
+        const transcript = getTranscriptText();
+        if (isTranscriptPlaceholder(transcript)) {
+          showToast(transcribing ? COPY.toastTranscribing : "请先确认逐字稿内容");
+          break;
+        }
+        recordingReviewSheet.hidden = true;
         await runKnowledgeAnalysis(transcript);
       }
       break;
@@ -878,7 +1956,19 @@ document.addEventListener("click", async (event) => {
       showScreen(drillOrigin === "custom" ? "custom" : "levels");
       break;
     case "settings-item":
-      showToast(COPY.toastSettings[control.dataset.item] || COPY.toastNoop);
+      openSettingsDetail(control.dataset.item);
+      break;
+    case "settings-export-preview":
+      previewSettingsExport();
+      break;
+    case "settings-bluetooth-scan":
+      showToast(COPY.toastBluetoothPending);
+      break;
+    case "settings-reset":
+      await resetSettings();
+      break;
+    case "clear-vent-identity":
+      clearVentIdentity();
       break;
   }
 });
@@ -898,6 +1988,43 @@ document.querySelector("#drill-form").addEventListener("submit", (event) => {
   input.value = "";
 });
 
+document.querySelectorAll("[data-settings-form]").forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    await saveSettings(collectSettingsForm(form));
+  });
+});
+
+document.addEventListener("input", (event) => {
+  const turnField = event.target.closest("[data-turn-field]");
+  if (turnField) {
+    if (transcriptMode === "original") return;
+    const turn = findTurn(turnField.dataset.turnId);
+    if (!turn) return;
+    turn[turnField.dataset.turnField] = turnField.value;
+    syncTranscriptFromTurns();
+    if (turnField.dataset.turnField !== "speaker") return;
+    const card = turnField.closest(".transcript-turn");
+    const avatar = card?.querySelector(".turn-avatar");
+    if (avatar) avatar.textContent = (turnField.value || "我").slice(0, 1);
+    card?.querySelectorAll("[data-action='set-turn-speaker']").forEach((chip) => {
+      chip.classList.toggle("active", chip.dataset.speaker === turnField.value.trim());
+    });
+    return;
+  }
+
+  const contextField = event.target.closest("#context-relationship, #context-occasion, #context-feeling, #context-goal");
+  if (!contextField) return;
+  const group = contextField.id.replace("context-", "");
+  document.querySelectorAll(`[data-context-group="${group}"] .chip`).forEach((chip) => {
+    chip.classList.toggle("active", chip.dataset.contextValue === contextField.value.trim());
+  });
+});
+
 installPhoneViewportFitting();
+prepareRecordingSession();
 renderRecordings();
 renderMapDetail("work");
+renderSettings();
+renderVentIdentity();
+loadSettings({ silent: true });
