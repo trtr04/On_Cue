@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Patterns v0.2",
+  "type": "array",
+  "minItems": 30,
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "version",
+      "name",
+      "definition",
+      "observable_signals",
+      "counterexamples",
+      "possible_user_impact",
+      "strategy_refs",
+      "cautions",
+      "lens",
+      "risk_level",
+      "humor_applicability",
+      "source_note",
+      "review_status"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^pattern-[a-z0-9-]+$"
+      },
+      "version": {
+        "const": "0.2"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "definition": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "observable_signals": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "counterexamples": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "possible_user_impact": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "strategy_refs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^strategy-[a-z0-9-]+$"
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "cautions": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "lens": {
+        "enum": [
+          "balanced",
+          "relationship-savvy",
+          "value-exchange",
+          "position-operator",
+          "safety"
+        ]
+      },
+      "risk_level": {
+        "enum": [
+          "none",
+          "attention",
+          "urgent"
+        ]
+      },
+      "humor_applicability": {
+        "enum": [
+          "suitable",
+          "caution",
+          "forbidden"
+        ]
+      },
+      "source_note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "review_status": {
+        "const": "pending_human_review"
+      }
+    }
+  }
+}

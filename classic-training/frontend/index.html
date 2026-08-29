@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>错不起我对了 · 沟通与 PUA 应对训练</title>
+    <link rel="stylesheet" href="/static/styles.css?v=2" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside id="file-warning" hidden>
+        当前打开的是静态文件，无法连接后端。请先启动 FastAPI，再访问 http://127.0.0.1:8000/。
+      </aside>
+      <header>
+        <p class="eyebrow">错不起我对了 · 表达与边界训练</p>
+        <h1 id="scene-title">领导质问项目进度</h1>
+        <p id="scene-description">练习在压力下先说现状，再给事实、方案和明确时间。</p>
+      </header>
+
+      <nav class="path-switcher" aria-label="训练方式">
+        <button id="classic-path-button" class="path-button active" type="button">普通沟通训练</button>
+        <button id="pua-path-button" class="path-button" type="button">女性 PUA 应对训练</button>
+        <button id="incident-path-button" class="path-button" type="button">整理真实经历</button>
+      </nav>
+
+      <section id="incident-flow" class="incident-flow" hidden>
+        <section class="incident-intro">
+          <p class="eyebrow">从真实经历开始</p>
+          <h2>把刚才没说清的话，变成下一次可以练的场景</h2>
+          <p>先按你自己的方式讲，不需要整理得很完整。AI 会一次只补问一个关键问题。</p>
+          <form id="incident-form">
+            <label for="incident-description">发生了什么？</label>
+            <textarea
+              id="incident-description"
+              rows="6"
+              minlength="10"
+              maxlength="5000"
+              placeholder="例如：今天开会时，领导突然问我为什么还没完成。我当时很紧张，一直解释技术问题，最后也没说清什么时候能交……"
+              required
+            ></textarea>
+            <div class="voice-control">
+              <button
+                id="incident-record-button"
+                class="record-button secondary-button"
+                type="button"
+                data-purpose="incident_narration"
+                data-target="incident-description"
+                data-status="incident-record-status"
+                data-limit="180"
+              >开始录音</button>
+              <span id="incident-record-status">单次最多 180 秒，可录多次并追加文字</span>
+            </div>
+            <div class="incident-actions">
+              <span id="incident-status">文字会保存在你本机的 SQLite 数据库中</span>
+              <button id="incident-submit-button" type="submit">帮我整理</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="incident-dialogue-panel" class="incident-dialogue-panel" hidden>
+          <div class="incident-understanding">
+            <strong>目前我理解的是</strong>
+            <p id="incident-understanding"></p>
+          </div>
+          <div id="incident-messages" class="incident-messages"></div>
+          <form id="incident-answer-form" class="incident-answer-form">
+            <label class="sr-only" for="incident-answer">补充回答</label>
+            <textarea id="incident-answer" rows="3" maxlength="2500" placeholder="按真实情况回答就好……"></textarea>
+            <div class="incident-answer-buttons">
+              <button
+                id="incident-answer-record-button"
+                class="record-button secondary-button"
+                type="button"
+                data-purpose="incident_narration"
+                data-target="incident-answer"
+                data-status="incident-status"
+                data-limit="180"
+              >开始录音</button>
+              <button id="incident-answer-button" type="submit">补充这条信息</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="scene-card" class="scene-card" hidden>
+          <div class="scene-card-heading">
+            <div>
+              <p class="eyebrow">场景确认卡</p>
+              <h2 id="scene-card-title"></h2>
+            </div>
+            <span id="scene-card-pressure" class="briefing-setting"></span>
+          </div>
+          <p id="scene-card-summary" class="scene-card-summary"></p>
+          <dl class="scene-card-details">
+            <div><dt>对话对象</dt><dd id="scene-card-counterpart"></dd></div>
+            <div><dt>发生地点</dt><dd id="scene-card-setting"></dd></div>
+            <div><dt>对方说了或做了什么</dt><dd id="scene-card-trigger"></dd></div>
+            <div><dt>你当时怎么回应</dt><dd id="scene-card-response"></dd></div>
+            <div><dt>你卡在哪里</dt><dd id="scene-card-stuck"></dd></div>
+            <div><dt>下一次想做到</dt><dd id="scene-card-goal"></dd></div>
+          </dl>
+          <div class="scene-card-lists">
+            <div><h3>训练重点</h3><ul id="scene-card-focus"></ul></div>
+            <div><h3>模拟角色会怎样反应</h3><ul id="scene-card-role"></ul></div>
+          </div>
+          <div class="incident-actions">
+            <span id="scene-card-status">确认后会保存为可继续加工的训练场景</span>
+            <div class="scene-card-buttons">
+              <button id="confirm-scene-button" type="button">确认并保存场景</button>
+              <button id="start-custom-training-button" type="button" hidden>进入五轮模拟训练</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="incident-safety" class="incident-safety" hidden>
+          <strong>这段经历可能涉及现实安全风险</strong>
+          <p id="incident-safety-message"></p>
+        </section>
+      </section>
+
+      <div id="classic-flow">
+
+      <section class="briefing" id="briefing-panel" aria-labelledby="briefing-title">
+        <div class="briefing-heading">
+          <div>
+            <p class="eyebrow">进入场景前</p>
+            <h2 id="briefing-title">你手里的情况</h2>
+          </div>
+          <span class="briefing-setting" id="briefing-setting">正在加载场景……</span>
+        </div>
+        <p class="briefing-identity" id="briefing-identity"></p>
+        <p id="briefing-summary"></p>
+        <div class="fact-grid" id="briefing-facts"></div>
+        <div class="mission">
+          <strong>你的任务</strong>
+          <p id="briefing-mission"></p>
+        </div>
+        <details>
+          <summary>紧张时可以看一眼回答框架</summary>
+          <p id="briefing-tip"></p>
+        </details>
+      </section>
+
+      <section class="setup" id="setup-panel">
+        <label for="scenario-select">训练场景</label>
+        <select id="scenario-select" aria-label="训练场景"></select>
+        <label for="difficulty">训练难度</label>
+        <select id="difficulty">
+          <option value="1">基础</option>
+          <option value="2" selected>进阶</option>
+          <option value="3">高压</option>
+        </select>
+        <button id="start-button" type="button">开始训练</button>
+      </section>
+
+      <section class="chat-panel" aria-live="polite">
+        <div class="chat-meta">
+          <span id="role-label">直属领导</span>
+          <span id="turn-label">尚未开始</span>
+        </div>
+        <div id="messages" class="messages">
+          <p class="empty-state">点击“开始训练”，领导会先向你提问。</p>
+        </div>
+
+        <form id="message-form" class="composer">
+          <label class="sr-only" for="message-input">输入你的回答</label>
+          <textarea
+            id="message-input"
+            rows="3"
+            maxlength="1200"
+            placeholder="输入你的回答……"
+            disabled
+          ></textarea>
+          <div class="voice-control">
+            <button
+              id="classic-record-button"
+              class="record-button secondary-button"
+              type="button"
+              data-purpose="classic_turn"
+              data-target="message-input"
+              data-status="classic-record-status"
+              data-limit="90"
+              disabled
+            >开始录音</button>
+            <span id="classic-record-status">单次最多 90 秒，转写后请检查再发送</span>
+          </div>
+          <aside class="hint-card" id="hint-card" aria-live="polite" hidden>
+            <div class="hint-heading">
+              <strong>这一轮可以这样想</strong>
+              <span>不占训练轮数</span>
+            </div>
+            <p><strong>对方要确认：</strong><span id="hint-focus"></span></p>
+            <p><strong>先做这一步：</strong><span id="hint-move"></span></p>
+            <div>
+              <strong>可以用的事实：</strong>
+              <ul id="hint-facts"></ul>
+            </div>
+            <p><strong>试着这样开头：</strong><span id="hint-starter"></span></p>
+            <p class="hint-warning"><strong>注意：</strong><span id="hint-warning"></span></p>
+          </aside>
+          <div class="composer-actions">
+            <span id="status-text">所有角色对话均由 LLM 生成</span>
+            <div class="composer-buttons">
+              <button id="hint-button" class="secondary-button" type="button" disabled>我卡住了</button>
+              <button id="finish-button" class="secondary-button" type="button" disabled>结束并复盘</button>
+              <button id="send-button" type="submit" disabled>发送</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="review-panel" id="review-panel" aria-labelledby="review-title" hidden>
+        <p class="eyebrow">训练复盘</p>
+        <h2 id="review-title">这次你是怎么应对的</h2>
+        <p class="review-summary" id="review-summary"></p>
+        <div class="review-columns">
+          <div>
+            <h3>做得好的地方</h3>
+            <ul id="review-strengths"></ul>
+          </div>
+          <div>
+            <h3>优先改进</h3>
+            <ul id="review-improvements"></ul>
+          </div>
+        </div>
+        <div class="review-dimensions" id="review-dimensions"></div>
+        <div class="better-response">
+          <h3>换一种更清楚的说法</h3>
+          <p id="better-response"></p>
+        </div>
+        <div class="next-practice">
+          <strong>下一次只练这一点</strong>
+          <p id="next-practice"></p>
+        </div>
+      </section>
+      </div>
+    </main>
+    <script>
+      if (window.location.protocol === "file:") {
+        const warning = document.querySelector("#file-warning");
+        warning.hidden = false;
+        warning.style.cssText = "display:block;padding:16px;margin-bottom:16px;background:#fff1d6;border:1px solid #d69a2d;border-radius:12px;color:#5f4312;font-family:sans-serif";
+        document.querySelector("#start-button").disabled = true;
+      }
+    </script>
+    <script src="/static/app.js?v=2" defer></script>
+  </body>
+</html>
