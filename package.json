@@ -9,7 +9,7 @@
   "scripts": {
     "predev": "npm run build:frontend",
     "dev": "vinext dev",
-    "build": "npm run build:frontend && vinext build",
+    "build": "npm run build:frontend && vinext build && node scripts/prune-build-fonts.mjs",
     "build:frontend": "vite build --config vite.frontend.config.js && node scripts/sync-frontend.mjs",
     "start": "vinext start",
     "test:oncue": "node --test tests/oncue-integration.test.mjs"
