@@ -15,6 +15,7 @@ load_dotenv(PROJECT_DIR / ".env")
 
 @dataclass(frozen=True)
 class Settings:
+    team_ui_origin: str = os.getenv("TEAM_UI_ORIGIN", "http://localhost:3000")
     zhipu_api_url: str = os.getenv(
         "ZHIPU_API_URL",
         "https://open.bigmodel.cn/api/paas/v4/chat/completions",

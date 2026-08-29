@@ -39,6 +39,23 @@ GOALS = [
 
 MODULES = [
     {
+        "module_id": "pua-workplace-general",
+        "title": "通用职场 PUA · 综合施压",
+        "domain": "workplace",
+        "target_group": "general",
+        "scenario_types": [
+            "workplace_emotional_manipulation",
+            "workplace_overtime_coercion",
+            "workplace_compensation_pressure",
+            "workplace_accountability",
+            "workplace_ability_threat",
+            "workplace_job_threat",
+        ],
+        "setting": "会议室里的一对一工作谈话",
+        "counterpart": "综合使用态度、加班、薪资和能力话术的领导",
+        "summary": "来自《职场PUA话术集合》的通用职场压力场景，覆盖感恩绑架、无偿加班、薪资回避、责任转移、能力贬低与离职威胁。",
+    },
+    {
         "module_id": "pua-workplace-interview",
         "title": "女性职场 PUA · 面试越界询问",
         "domain": "workplace",

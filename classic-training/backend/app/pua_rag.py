@@ -29,16 +29,21 @@ class PUARetriever:
         if not module:
             return []
         allowed_types = set(module["scenario_types"])
+        target_group = module.get("target_group")
         candidates = [
             entry for entry in self._load()
-            if allowed_types.intersection(entry.scenario_types) and entry.severity <= difficulty
+            if allowed_types.intersection(entry.scenario_types)
+            and (not target_group or entry.target_group == target_group)
+            and entry.severity <= difficulty
         ]
         # A sparse module may not contain an easy example. Keep it runnable by
         # selecting the module's mildest source line, while the role card still
         # constrains delivery to the requested difficulty.
         if not candidates:
             module_entries = [
-                entry for entry in self._load() if allowed_types.intersection(entry.scenario_types)
+                entry for entry in self._load()
+                if allowed_types.intersection(entry.scenario_types)
+                and (not target_group or entry.target_group == target_group)
             ]
             if module_entries:
                 minimum = min(entry.severity for entry in module_entries)

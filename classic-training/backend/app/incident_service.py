@@ -6,7 +6,9 @@ from fastapi import HTTPException
 
 from .llm_service import llm_service
 from .models import (
+    AdvisorFeedback,
     CreateIncidentRequest,
+    DialogueAdvisorRequest,
     IncidentAnswerRequest,
     IncidentMessage,
     IncidentRecord,
@@ -60,6 +62,18 @@ class IncidentService:
         incident.status = "confirmed"
         incident.next_question = None
         return self.incidents.save(incident)
+
+    def analyze_dialogue(self, incident_id: str, request: DialogueAdvisorRequest) -> AdvisorFeedback:
+        if not request.transcript_confirmed:
+            raise HTTPException(status_code=422, detail="请先确认说话人和逐句稿，再生成反馈")
+        incident = self.incidents.get(incident_id)
+        if incident.status not in {"ready", "confirmed"}:
+            raise HTTPException(status_code=409, detail="请先把真实经历整理成场景卡")
+        feedback = self.llm.analyze_confirmed_dialogue(incident, request)
+        incident.dialogue_segments = request.segments
+        incident.advisor_feedback = feedback
+        self.incidents.save(incident)
+        return feedback
 
     def _analyze_and_save(self, incident: IncidentRecord) -> IncidentRecord:
         output = self.llm.analyze_incident(incident)
