@@ -259,6 +259,72 @@ test("the packaged classic training has all eleven new_classic_mode PUA modules"
   assert.equal(session.endReason, "boundary_held");
 });
 
+test("classic training retrieves only the knowledge corpus assigned to its module", async () => {
+  const women = await readFile(new URL("../女性职场PUA话术.md", import.meta.url), "utf8");
+  const family = await readFile(new URL("../家庭PUA话术.md", import.meta.url), "utf8");
+  const workplace = await readFile(new URL("../职场PUA话术集合.md", import.meta.url), "utf8");
+  const {
+    buildTrainingKnowledge,
+    retrieveTrainingEvidence,
+  } = await import("../lib/training-knowledge.js");
+
+  const knowledge = buildTrainingKnowledge({
+    "女性职场PUA话术.md": women,
+    "家庭PUA话术.md": family,
+    "职场PUA话术集合.md": workplace,
+  });
+  const familyEvidence = retrieveTrainingEvidence({
+    moduleId: "pua-family-marriage",
+    query: "你年纪不小了，为什么还不结婚？",
+    knowledge,
+  });
+  const overtimeEvidence = retrieveTrainingEvidence({
+    moduleId: "pua-workplace-overtime",
+    query: "为什么周末电话打不通，领导都没走",
+    knowledge,
+  });
+
+  assert.ok(familyEvidence.length > 0);
+  assert.ok(familyEvidence.every((item) => item.source === "家庭PUA话术.md"));
+  assert.ok(familyEvidence.every((item) => item.section.includes("催婚")));
+  assert.ok(overtimeEvidence.length > 0);
+  assert.ok(overtimeEvidence.every((item) => item.source === "职场PUA话术集合.md"));
+  assert.ok(overtimeEvidence.every((item) => /周末|加班|晚上|休息天|领导还没走|多做一点|额外增加/.test(item.text)));
+});
+
+test("each classic module sends its retrieved corpus through the server model API", async () => {
+  const service = await readFile(new URL("../lib/classic-service.ts", import.meta.url), "utf8");
+
+  assert.match(service, /retrieveTrainingEvidence/);
+  assert.match(service, /模块专属知识库证据/);
+  assert.match(service, /source:\s*"module-knowledge\+model"/);
+  assert.match(service, /generateTrainingHint/);
+  assert.match(service, /generateTrainingReview/);
+  assert.doesNotMatch(service, /const PRESSURE_REPLIES|fallback_line/);
+});
+
+test("recording review and classic training use separate knowledge routes", async () => {
+  const analysisRoute = await readFile(new URL("../app/api/analyze/route.ts", import.meta.url), "utf8");
+  const service = await readFile(new URL("../lib/classic-service.ts", import.meta.url), "utf8");
+  const corpora = await readFile(new URL("../lib/training-corpora.ts", import.meta.url), "utf8");
+
+  assert.match(analysisRoute, /references\/knowledge\/scenes\.json/);
+  assert.match(analysisRoute, /references\/knowledge\/patterns\.json/);
+  assert.match(analysisRoute, /references\/knowledge\/strategies\.json/);
+  assert.doesNotMatch(analysisRoute, /女性职场PUA话术|家庭PUA话术|职场PUA话术集合/);
+  assert.match(service, /trainingKnowledge/);
+  assert.match(corpora, /女性职场PUA话术\.md|womenCorpus/);
+  assert.match(corpora, /家庭PUA话术\.md|familyCorpus/);
+  assert.match(corpora, /职场PUA话术集合\.md|workplaceCorpus/);
+});
+
+test("frontend bundles use content hashes so the removed local speech model cannot survive cache", async () => {
+  const config = await readFile(new URL("../vite.frontend.config.js", import.meta.url), "utf8");
+
+  assert.match(config, /entryFileNames:\s*"assets\/oncue-\[hash\]\.js"/);
+  assert.match(config, /assets\/oncue-\[hash\]\.css/);
+});
+
 test("the live practice UI uses the new_classic_mode backend contract", async () => {
   const html = await readFile(new URL("index.html", projectRoot), "utf8");
   const script = await readFile(new URL("app.js", projectRoot), "utf8");

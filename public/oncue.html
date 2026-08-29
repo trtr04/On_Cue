@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fbeaf6" />
     <title>On Cue</title>
-    <script type="module" crossorigin src="/assets/oncue.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/oncue.css">
+    <script type="module" crossorigin src="/assets/oncue-CFD0Cf4x.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/oncue-BmeKd085.css">
   </head>
   <body>
     <main class="simulator-shell">
@@ -34,7 +34,7 @@
                 </div>
               </div>
               <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
-              <button class="history-button" data-action="history-list" aria-label="打开历史记录">历史</button>
+              <button class="history-button" data-action="history-list" aria-label="打开录音记录">记录</button>
               <img class="home-mascot" src="/assets/panda-lying.png" alt="" />
               <div class="home-chat-bubble">
                 <p data-i18n="home-bubble"></p>
@@ -50,12 +50,12 @@
               </button>
               <div class="recording-review-sheet" id="recording-review-sheet" hidden>
                 <article>
-                  <small>刚刚的原音频</small>
-                  <strong>要现在分析，还是先存起来？</strong>
+                  <small>录音完成</small>
+                  <strong>核对转写后即可开始分析</strong>
                   <audio id="recording-sheet-audio" controls></audio>
                   <div>
-                    <button class="figma-button secondary" data-action="save-recording">储存</button>
-                    <button class="figma-button primary" data-action="review-transcript">现在分析</button>
+                    <button class="figma-button secondary" data-action="save-recording">保存</button>
+                    <button class="figma-button primary" data-action="review-transcript">核对转写</button>
                   </div>
                 </article>
               </div>
@@ -73,8 +73,8 @@
             <div class="subpage-header">
               <button class="round-button" data-action="home">&#8592;</button>
               <div>
-                <small>本机保存</small>
-                <h1>历史记录</h1>
+                <small>仅保存在本机</small>
+                <h1>录音记录</h1>
               </div>
             </div>
             <div class="history-list" id="saved-list"></div>
@@ -100,6 +100,14 @@
                   <button class="chip" data-filter="love" data-i18n="filter-love"></button>
                   <button class="chip" data-filter="friend" data-i18n="filter-friend"></button>
                 </div>
+                <section class="new-classic-features" id="new-classic-features" aria-label="沟通训练功能">
+                  <button type="button" data-action="open-levels" data-scene="work">
+                    <b>沟通压力训练</b><span>11 个职场与家庭场景 · 3 档难度</span>
+                  </button>
+                  <button type="button" data-action="tab-home">
+                    <b>对话复盘</b><span>基于转写与背景生成 3 种应对视角</span>
+                  </button>
+                </section>
                 <article class="practice-hero">
                   <span data-i18n="today-rec"></span>
                   <strong data-i18n="rec-title"></strong>
@@ -178,6 +186,12 @@
                 <h1 id="levels-title"></h1>
               </div>
             </div>
+            <div class="classic-difficulty" id="classic-difficulty" aria-label="训练难度">
+              <span>难度</span>
+              <button class="active" type="button" data-classic-difficulty="1">容易</button>
+              <button type="button" data-classic-difficulty="2">中等</button>
+              <button type="button" data-classic-difficulty="3">困难</button>
+            </div>
             <div class="levels-list" id="levels-list"></div>
             <div class="status-bar">
               <b>9:41</b>
@@ -223,6 +237,18 @@
           </section>
 
           <section class="screen drill-screen" data-screen="drill" data-tab="practice">
+            <div class="scene-stage family-dinner-stage" aria-hidden="true">
+              <div class="family-dinner-shade"></div>
+              <img class="family-dinner-auntie auntie-fierce" src="/assets/auntie-cutout-Be71SQaM.png" alt="" />
+              <img class="family-dinner-auntie auntie-calm" src="/assets/auntie-calm-D6CTGbsW.png" alt="" />
+              <div class="family-dinner-caption">除夕 · 家庭聚餐</div>
+            </div>
+            <div class="scene-stage workplace-stage" aria-hidden="true">
+              <div class="workplace-shade"></div>
+              <img class="workplace-boss boss-one" src="/assets/boss1-cutout-BDIcjsKL.png" alt="" />
+              <img class="workplace-boss boss-two" src="/assets/boss2-cutout-DVz8zrge.png" alt="" />
+              <div class="workplace-caption">会议室 · 一对一沟通</div>
+            </div>
             <div class="drill-header">
               <button class="round-button" data-action="levels">&#8592;</button>
               <div>
@@ -236,8 +262,27 @@
             <div class="drill-suggestions" id="drill-suggestions"></div>
             <form class="drill-composer" id="drill-form">
               <input id="drill-input" data-i18n-placeholder="drill-placeholder" />
-              <button type="submit">&#8593;</button>
+              <button class="drill-hint" type="button" id="drill-hint" aria-label="获取提示">?</button>
+              <button class="drill-send" type="submit">&#8593;</button>
             </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen review-screen" data-screen="review" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div><small>练习复盘</small><h1>本次应对表现</h1></div>
+            </div>
+            <div class="review-scroll" id="training-review"></div>
             <div class="status-bar">
               <b>9:41</b>
               <div class="status-icons">
@@ -254,8 +299,8 @@
             <div class="subpage-header">
               <button class="round-button" data-action="home">&#8592;</button>
               <div>
-                <small>复盘前确认</small>
-                <h1>逐字稿分析</h1>
+                <small>录音转写</small>
+                <h1>核对转写</h1>
               </div>
             </div>
             <div class="scroll-page transcript-scroll">
@@ -264,21 +309,21 @@
                   <small>原音频</small>
                   <strong>先听一遍，再按句修正</strong>
                 </div>
-                <button type="button" class="transcript-retry" id="retranscribe-button" data-action="retranscribe">重新转文字</button>
+                <button type="button" class="transcript-retry" id="retranscribe-button" data-action="retranscribe">重新转写</button>
                 <audio id="recording-audio" controls></audio>
               </article>
               <nav class="transcript-mode-tabs" aria-label="逐字稿版本">
-                <button type="button" class="active" data-transcript-mode="draft">整理稿 · 可编辑</button>
-                <button type="button" data-transcript-mode="original">原始稿 · 只读</button>
+                <button type="button" class="active" data-transcript-mode="draft">逐句转写 · 可编辑</button>
+                <button type="button" data-transcript-mode="original">原始转写 · 只读</button>
               </nav>
-              <p id="transcript-status">停录后点「现在分析」，会按说话人拆开逐字稿</p>
+              <p id="transcript-status">系统会按说话人拆分，请逐句核对</p>
               <div id="transcript-turns" class="transcript-turns"></div>
-              <button type="button" class="transcript-add" data-action="add-turn">+ 添加一句</button>
+              <button type="button" class="transcript-add" data-action="add-turn">+ 补充一句</button>
               <textarea id="confirmed-transcript" class="sr-only" aria-hidden="true" tabindex="-1"></textarea>
             </div>
             <footer class="transcript-footer">
               <button class="figma-button secondary" id="save-recording" data-action="save-recording" data-i18n="save-recording"></button>
-              <button class="figma-button primary" id="analyze-recording" data-action="open-context">逐字稿确认无误，继续</button>
+              <button class="figma-button primary" id="analyze-recording" data-action="open-context">确认转写，补充背景</button>
             </footer>
             <div class="status-bar">
               <b>9:41</b>
@@ -296,17 +341,17 @@
             <div class="subpage-header">
               <button class="round-button" data-action="transcript">&#8592;</button>
               <div>
-                <small>分析前设置</small>
-                <h1>补充背景</h1>
+                <small>分析设置</small>
+                <h1>补充对话背景</h1>
               </div>
             </div>
             <div class="scroll-page context-scroll">
-              <span class="context-step">分析前 · 补充背景</span>
+              <span class="context-step">第 2 步 · 补充背景</span>
               <h2>同一句话，放在不同关系里不一样</h2>
               <p class="context-lead">只填你愿意提供的内容；这些信息能让建议更贴近现场。</p>
 
               <article class="context-card">
-                <strong>你们的关系</strong>
+                <strong>与对方的关系</strong>
                 <div class="context-chips" data-context-group="relationship">
                   <button type="button" class="chip" data-context-value="父母">父母</button>
                   <button type="button" class="chip" data-context-value="伴侣">伴侣</button>
@@ -319,7 +364,7 @@
               </article>
 
               <article class="context-card">
-                <strong>发生场合</strong>
+                <strong>对话场景</strong>
                 <div class="context-chips" data-context-group="occasion">
                   <button type="button" class="chip" data-context-value="家庭聚餐">家庭聚餐</button>
                   <button type="button" class="chip" data-context-value="私信">私信</button>
@@ -331,7 +376,7 @@
               </article>
 
               <article class="context-card">
-                <strong>你当时的感受</strong>
+                <strong>当时感受</strong>
                 <div class="context-chips" data-context-group="feeling">
                   <button type="button" class="chip" data-context-value="委屈">委屈</button>
                   <button type="button" class="chip" data-context-value="尴尬">尴尬</button>
@@ -344,7 +389,7 @@
               </article>
 
               <article class="context-card">
-                <strong>你现在最想做到什么</strong>
+                <strong>期望结果</strong>
                 <div class="context-chips" data-context-group="goal">
                   <button type="button" class="chip" data-context-value="维持关系">维持关系</button>
                   <button type="button" class="chip" data-context-value="说清边界">说清边界</button>
@@ -357,14 +402,14 @@
 
               <article class="context-card context-toggle-card">
                 <div>
-                  <strong>低风险时提供幽默回复</strong>
-                  <small>一旦检测到安全风险会自动关闭</small>
+                  <strong>提供轻松版回复</strong>
+                  <small>检测到安全风险时自动停用</small>
                 </div>
                 <button type="button" class="ink-switch is-on" id="context-humor" data-action="toggle-humor" aria-pressed="true" aria-label="低风险时提供幽默回复"></button>
               </article>
             </div>
             <footer class="context-footer">
-              <button class="figma-button primary" id="start-analysis" data-action="analyze">开始整理与分析</button>
+              <button class="figma-button primary" id="start-analysis" data-action="analyze">生成对话分析</button>
             </footer>
             <div class="status-bar">
               <b>9:41</b>
@@ -384,41 +429,24 @@
                 <section class="kb-analysis-header">
                   <button class="round-button" data-action="context">&#8592;</button>
                   <span class="kb-status" id="kb-status">正在读取知识库…</span>
-                  <h1>我听下来的现场</h1>
+                  <h1>对话复盘</h1>
                   <p id="kb-match-title"></p>
                 </section>
-                <article class="kb-scene-card">
-                  <p id="kb-scene-opening"></p>
-                  <dl>
-                    <div><dt>关键变化</dt><dd id="kb-key-detail"></dd></div>
-                    <div><dt>卡住的位置</dt><dd id="kb-stuck"></dd></div>
-                    <div><dt>还需确认</dt><dd id="kb-confirm"></dd></div>
-                  </dl>
-                </article>
-                <section class="kb-evidence-section">
-                  <h2>知识库依据</h2>
-                  <ul id="kb-evidence"></ul>
-                </section>
                 <section class="kb-voices-section">
-                  <header><h2>三种朋友视角</h2><small>同一事实底盘，不同处理方向</small></header>
+                  <header><h2>三种应对视角</h2><small>同一事实，三种决策侧重</small></header>
                   <nav class="kb-voice-tabs" aria-label="选择回答视角">
-                    <button class="active" data-voice="A">A · 算清交换</button>
-                    <button data-voice="B">B · 顾住场面</button>
-                    <button data-voice="C">C · 拿回主线</button>
+                    <button class="active" data-voice="A">A · 理性权衡</button>
+                    <button data-voice="B">B · 稳妥沟通</button>
+                    <button data-voice="C">C · 明确边界</button>
                   </nav>
                   <article class="kb-voice-card">
                     <small id="kb-voice-label"></small>
                     <h3 id="kb-voice-headline"></h3>
                     <p id="kb-voice-analysis"></p>
-                    <div><span>可以直接说</span><strong id="kb-direct-reply"></strong></div>
+                    <div><span>建议回复</span><strong id="kb-direct-reply"></strong></div>
                   </article>
                 </section>
-                <section class="kb-next-section">
-                  <h2>匹配到的模式与策略</h2>
-                  <div id="kb-tags"></div>
-                  <p id="kb-uncertainty"></p>
-                </section>
-                <button class="figma-button primary kb-replay" data-action="replay">把这个场景再演练一遍 →</button>
+                <button class="figma-button primary kb-replay" data-action="save-personal-scene">纳入用户专属场景</button>
               </div>
             </div>
             <div class="status-bar">
@@ -615,8 +643,8 @@
               </label>
               <label class="settings-toggle">
                 <span>
-                  <b>停录后自动转文字</b>
-                  <small>进入复盘前先生成逐字稿</small>
+                  <b>停录后自动转写</b>
+                  <small>进入分析前先生成逐句转写</small>
                 </span>
                 <input name="device.autoTranscribe" type="checkbox" />
               </label>
@@ -740,17 +768,14 @@
               <label class="settings-toggle">
                 <span>
                   <b>保留原音频</b>
-                  <small>关闭后只保存逐字稿和分析结果</small>
+                  <small>关闭后只保存转写与分析结果</small>
                 </span>
                 <input name="privacy.keepAudio" type="checkbox" />
               </label>
-              <label class="settings-toggle">
-                <span>
-                  <b>允许用于分析改进</b>
-                  <small>用于后续个性化建议，需要你主动开启</small>
-                </span>
-                <input name="privacy.analysisConsent" type="checkbox" />
-              </label>
+              <article class="settings-note-card">
+                <strong>云端 API 处理</strong>
+                <p>录音转写与知识库分析将通过服务器端 API 处理；密钥不会发送到浏览器。</p>
+              </article>
               <button class="figma-button primary" type="submit">保存隐私设置</button>
             </form>
             <div class="status-bar">
@@ -777,8 +802,8 @@
               <label>
                 <span>导出格式</span>
                 <select name="export.format">
-                  <option value="markdown">Markdown 复盘</option>
-                  <option value="txt">纯文本逐字稿</option>
+                  <option value="markdown">Markdown 对话复盘</option>
+                  <option value="txt">纯文本转写</option>
                   <option value="json">JSON 数据包</option>
                 </select>
               </label>
@@ -791,7 +816,7 @@
               </label>
               <article class="settings-note-card">
                 <strong>当前可导出内容</strong>
-                <p>历史录音、逐字稿、知识库分析结果与练习进度会从本机记录中生成。</p>
+                <p>录音记录、转写、对话分析结果与练习进度会从本机数据中生成。</p>
               </article>
               <button class="figma-button primary" type="submit">保存导出偏好</button>
               <button class="figma-button secondary" type="button" data-action="settings-export-preview">生成导出预览</button>
@@ -819,8 +844,8 @@
             <div class="settings-detail-form">
               <article class="settings-about-card">
                 <img src="/assets/icon-home.svg" alt="" />
-                <strong>错不起我对了 v1.0</strong>
-                <p>一个帮你把冲突现场记录下来、重新组织表达和边界的训练助手。</p>
+                <strong>On Cue · 错不起我对了</strong>
+                <p>记录真实对话，分析沟通卡点，练习更清晰的表达与边界。</p>
               </article>
               <article class="settings-note-card">
                 <strong>下一步可以继续补</strong>
