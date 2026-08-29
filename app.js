@@ -491,7 +491,7 @@ function showScreen(id, { scrollInbox = false, direction } = {}) {
     prev.classList.remove("active");
     window.setTimeout(() => {
       prev.classList.remove("leaving-left", "leaving-right", "splash-out");
-    }, 480);
+    }, 300);
   }
 
   if (dir === "back") next.classList.add("enter-from-left");

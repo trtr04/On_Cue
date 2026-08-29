@@ -109,8 +109,8 @@ button { cursor: pointer; }
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate3d(56px, 10px, 0) scale(.97);
-  transition: transform .46s cubic-bezier(.22, .9, .28, 1), opacity .34s ease;
+  transform: none;
+  transition: transform .28s ease, opacity .28s ease;
   z-index: 1;
 }
 .screen.active {
@@ -120,27 +120,26 @@ button { cursor: pointer; }
   transform: none;
   z-index: 4;
 }
-.screen.enter-from-left { transform: translate3d(-48px, 6px, 0) scale(.98); }
-.screen.enter-from-right { transform: translate3d(56px, 10px, 0) scale(.97); }
+.screen.enter-from-left { transform: translateX(-16px); }
+.screen.enter-from-right { transform: translateX(16px); }
 .screen.leaving-left {
   opacity: 0;
   visibility: visible;
-  transform: translate3d(-42px, 0, 0) scale(.98);
+  transform: translateX(-16px);
   z-index: 3;
   pointer-events: none;
 }
 .screen.leaving-right {
   opacity: 0;
   visibility: visible;
-  transform: translate3d(48px, 8px, 0) scale(.98);
+  transform: translateX(16px);
   z-index: 3;
   pointer-events: none;
 }
 .screen.splash-out {
   opacity: 0;
   visibility: visible;
-  transform: scale(1.08);
-  filter: blur(6px);
+  transform: none;
   z-index: 5;
 }
 .scroll-page { overflow-y: auto; scrollbar-width: none; }
