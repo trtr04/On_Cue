@@ -8,8 +8,10 @@ const MODEL_HOSTS = ["https://huggingface.co/", "https://hf-mirror.com/"];
 const PLACEHOLDER_SNIPPETS = [
   "自动转写会出现在这里",
   "这里会填入这次录音",
+  "转写内容会显示在这里",
   "这里会自动填入",
   "正在整理这次录音",
+  "正在整理录音转写",
   "正在听，请开始说话",
   "没有录到音频",
   "转写失败",
@@ -25,21 +27,28 @@ export function isTranscriptPlaceholder(value) {
   return PLACEHOLDER_SNIPPETS.some((snippet) => text.includes(snippet));
 }
 
+export function splitTranscriptSentences(value) {
+  const text = String(value || "")
+    .replace(/\r/g, "")
+    .replace(/[ \t]+/g, " ")
+    .trim();
+  if (!text) return [];
+  return (text.match(/[^。！？!?；;.\n]+[。！？!?；;.]?/g) || [])
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+}
+
 export function parseTranscriptTurns(value) {
   const text = String(value || "").trim();
   if (!text || isTranscriptPlaceholder(text)) return [];
   const turns = [];
   text.split(/\n+/).forEach((line) => {
     const match = line.match(/^([^：:]{1,12})[：:]\s*(.*)$/);
-    if (match) {
-      turns.push({ speaker: match[1].trim() || "我", text: match[2].trim() });
-      return;
-    }
-    if (turns.length) {
-      turns[turns.length - 1].text = `${turns[turns.length - 1].text}\n${line}`.trim();
-      return;
-    }
-    turns.push({ speaker: "我", text: line.trim() });
+    const speaker = match ? match[1].trim() || "待确认" : "待确认";
+    const content = match ? match[2] : line;
+    splitTranscriptSentences(content).forEach((sentence) => {
+      turns.push({ speaker, text: sentence });
+    });
   });
   return turns.filter((turn) => turn.speaker || turn.text);
 }
@@ -62,10 +71,10 @@ export function formatTranscriptText(value) {
     .replace(/\n{3,}/g, "\n\n")
     .trim();
   if (!text) return "";
-  if (/^(我|对方|导师|领导|家人|同事)[：:]/m.test(text) || text.includes("\n")) {
+  if (/^[^：:\n]{1,12}[：:]/m.test(text) || text.includes("\n")) {
     return text.replace(/^(\S+):/gm, "$1：");
   }
-  return `我：${text}`;
+  return `待确认：${text}`;
 }
 
 export function filenameForAudio(blob, fallback = "recording.webm") {

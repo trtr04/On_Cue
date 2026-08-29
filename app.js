@@ -29,7 +29,7 @@ const I18N = {
   "guide-practice": "\u7ecf\u5178\u5bf9\u7ec3\u4e0e\u573a\u666f\u5730\u56fe",
   "guide-vent": "\u60c5\u7eea\u66b4\u51fb",
   "guide-settings": "\u8bbe\u7f6e",
-  "guide-note": "录音页会请求麦克风权限；原音频与逐字稿只保存在本机演示记录里。",
+  "guide-note": "录音页会请求麦克风权限；原音频与转写默认仅保存在本机。",
   "phone-label": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86 \u79fb\u52a8\u7aef\u6a21\u62df\u5668",
   "app-name": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86",
   "app-tagline": "\u8868\u8fbe\u4e0e\u60c5\u7eea\u8bad\u7ec3\u52a9\u624b",
@@ -42,7 +42,7 @@ const I18N = {
   "saved-note": "\u5df2\u5b58\u5165\u540e\u7aef\uff0c\u53ef\u968f\u65f6\u56de\u6765\u7ee7\u7eed\u5206\u6790",
   "back": "\u8fd4\u56de\u9996\u9875",
   "recording": "正在录音",
-  "live-note": "点击开始录音；停录后点「现在分析」，才会进入逐字稿复盘。",
+  "live-note": "点击开始录音；停录后先核对转写，再生成对话分析。",
   "marked-initial": "＋ 标记紧张点",
   "transcript": "\u5b9e\u65f6\u8f6c\u5199",
   "analyzing": "AI \u5b9e\u65f6\u5206\u6790\u4e2d\u2026",
@@ -51,8 +51,8 @@ const I18N = {
   "me-time": "\u6211 \u00b7 02:16",
   "me-line": "\u6211\u6539\u8fc7\u4e86\uff0c\u4f46\u662f\u8fd9\u6b21\u6a21\u677f\u548c\u4e0a\u6b21\u4e0d\u4e00\u6837\u2026\u2026",
   "after-record": "停止录音后",
-  "save-recording": "储存",
-  "direct-analyze": "\u76f4\u63a5\u5206\u6790",
+  "save-recording": "保存",
+  "direct-analyze": "核对转写",
   "privacy": "原音频与文字会出现在首页待分析记录；只有主动点击时才开始知识库分析。",
   "analysis-done": "\u5f55\u97f3\u5206\u6790\u5b8c\u6210",
   "analysis-title": "\u8fd9\u6bb5\u5bf9\u8bdd\uff0c\u5361\u5728\u54ea\u91cc\uff1f",
@@ -130,35 +130,35 @@ const I18N = {
 
 const COPY = {
   "seedTitle": "\u5bb6\u5ead\u805a\u9910 \u00b7 \u88ab\u8ffd\u95ee\u8ba1\u5212",
-  "seedMeta": "\u6628\u5929 19:32 \u00b7 02:08 \u00b7 \u5df2\u5b58\u50a8",
-  "analyzeNow": "\u7acb\u5373\u5206\u6790",
+  "seedMeta": "昨天 19:32 · 02:08 · 已保存",
+  "analyzeNow": "查看分析",
   "savedTitle": "\u5bfc\u5e08\u529e\u516c\u5ba4 \u00b7 \u65b9\u6848\u4fee\u6539",
-  "savedMeta": "\u4eca\u5929 14:20 \u00b7 03:42 \u00b7 \u5df2\u5b58\u50a8",
-  "toastSaved": "\u5f55\u97f3\u5df2\u5b58\u50a8\uff0c\u53ef\u968f\u65f6\u56de\u6765\u5206\u6790",
+  "savedMeta": "今天 14:20 · 03:42 · 已保存",
+  "toastSaved": "录音已保存，可随时回来分析",
   "liveTitle": "刚刚的冲突 · 原音频记录",
   "justNow": "\u521a\u521a",
-  "stored": "\u5df2\u5b58\u50a8",
-  "toastLiveSaved": "已保存原音频和逐字稿",
+  "stored": "已保存",
+  "toastLiveSaved": "原音频与转写已保存",
   "marked": "\u2713 \u5df2\u6807\u8bb0\u7d27\u5f20\u70b9",
   "toastMarked": "\u7d27\u5f20\u65f6\u523b\u5df2\u6807\u8bb0",
   "toastRecordingStarted": "开始录音了，说完后再点一次结束",
   "toastRecordingPaused": "录音已暂停",
   "toastRecordingResumed": "继续录音",
-  "toastRecordingStopped": "录音已停止，可以现在分析或先储存",
+  "toastRecordingStopped": "录音已结束，可以核对转写或先保存",
   "toastRecordingRequired": "请先开始并停止一次录音",
-  "toastTranscriptionFallback": "当前浏览器不能边说边转文字，停止后会根据录音生成逐字稿",
-  "toastTranscribing": "正在把这次录音转成逐字稿…",
+  "toastTranscriptionFallback": "当前浏览器不支持实时转写，停录后会根据音频生成文本",
+  "toastTranscribing": "正在转写录音…",
   "toastTranscribeLocal": "正在加载本地识别模型，第一次会稍慢",
-  "toastTranscribed": "逐字稿已生成，复盘时可以再改",
-  "toastTranscribeFailed": "自动转写暂时失败，可手动输入或点重新转文字",
+  "toastTranscribed": "转写已生成，请逐句核对",
+  "toastTranscribeFailed": "自动转写暂时失败，可手动输入或重新转写",
   "toastTranscribeNoAudio": "没有可转写的音频",
-  "transcriptPlaceholder": "这里会填入这次录音的逐字稿，复盘时可以修改后再分析。",
-  "transcriptLoading": "正在整理这次录音的逐字稿…",
+  "transcriptPlaceholder": "转写内容会显示在这里，可逐句修改后再分析。",
+  "transcriptLoading": "正在整理录音转写…",
   "transcriptLocalLoading": "首次转写需要加载识别模型，请稍等…",
   "transcriptEmptyAudio": "没有录到音频，请重新录音，或直接在这里输入文字。",
-  "transcriptStatusReady": "停录后点「现在分析」，会进入这段录音的逐字稿",
-  "transcriptStatusLoading": "正在整理这次录音的逐字稿",
-  "transcriptStatusDone": "这是这次录音的逐字稿，复盘时可以修改",
+  "transcriptStatusReady": "停录后先核对转写，再补充对话背景",
+  "transcriptStatusLoading": "正在整理录音转写",
+  "transcriptStatusDone": "请确认每句话及其说话人",
   "transcriptStatusError": "转写失败，请手动输入或重试",
   "toastReplay": "\u5df2\u8fdb\u5165\u5bf9\u5e94\u573a\u666f\u5bf9\u7ec3",
   "toastNoop": "\u672c\u6b21\u6a21\u62df\u5668\u805a\u7126\u5f55\u97f3\u590d\u76d8\u6d41\u7a0b",
@@ -499,7 +499,7 @@ const DEFAULT_APP_SETTINGS = {
     includeAudio: false,
   },
 };
-const SPEAKER_PRESETS = ["我", "对方", "导师", "领导", "家人"];
+const SPEAKER_PRESETS = ["待确认", "我", "对方", "导师", "领导", "家人"];
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 let recordings = loadRecordings();
@@ -604,12 +604,12 @@ function renderTranscriptTurns() {
   });
   if (addTurnButton) addTurnButton.hidden = readOnly;
   if (!source.length) {
-    transcriptTurnsList.innerHTML = `<article class="empty-history">还没有可编辑的逐字稿。停录后点「现在分析」，会按说话人拆成一句句。</article>`;
+    transcriptTurnsList.innerHTML = `<article class="empty-history">暂无可编辑的转写。停录后进入“核对转写”，系统会按说话人拆分。</article>`;
     return;
   }
   transcriptTurnsList.innerHTML = source
-    .map((turn) => {
-      const avatar = escapeHtml((turn.speaker || "我").slice(0, 1));
+    .map((turn, index) => {
+      const avatar = escapeHtml((turn.speaker || "待确认").slice(0, 1));
       const speakerChips = SPEAKER_PRESETS.map(
         (name) =>
           `<button type="button" class="chip${turn.speaker === name ? " active" : ""}" data-action="set-turn-speaker" data-turn-id="${turn.id}" data-speaker="${escapeHtml(name)}"${readOnly ? " disabled" : ""}>${escapeHtml(name)}</button>`,
@@ -618,8 +618,10 @@ function renderTranscriptTurns() {
         <article class="transcript-turn">
           <span class="turn-avatar">${avatar}</span>
           <div class="turn-card${readOnly ? " is-readonly" : ""}">
+            <small class="turn-number">第 ${index + 1} 句</small>
             <header>
-              <input data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "我")}" ${readOnly ? "readonly" : ""} aria-label="说话人" />
+              <label class="turn-speaker-label" for="speaker-${turn.id}">这句话是谁说的？</label>
+              <input id="speaker-${turn.id}" data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "待确认")}" ${readOnly ? "readonly" : ""} aria-label="说话人，可输入自定义称呼" />
               <button type="button" class="turn-delete" data-action="delete-turn" data-turn-id="${turn.id}" ${readOnly ? "hidden" : ""} aria-label="删除这句">×</button>
             </header>
             <div class="turn-speakers">${speakerChips}</div>
@@ -645,7 +647,7 @@ function updateTurn(turnId, patch) {
 
 function addTranscriptTurn() {
   if (transcriptMode === "original") return;
-  transcriptTurns.push({ id: `turn-${nextTurnId++}`, speaker: "我", text: "" });
+  transcriptTurns.push({ id: `turn-${nextTurnId++}`, speaker: "待确认", text: "" });
   syncTranscriptFromTurns();
   renderTranscriptTurns();
   transcriptTurnsList?.querySelector(".transcript-turn:last-child textarea")?.focus();
@@ -689,7 +691,7 @@ function setContextChip(group, value) {
 function openContextScreen() {
   const text = getTranscriptText();
   if (!text || isTranscriptPlaceholder(text)) {
-    showToast("请先确认逐字稿内容");
+    showToast("请先确认转写内容");
     return;
   }
   showScreen("context");
@@ -822,7 +824,7 @@ function buildSettingsExport() {
     return recordings.map((recording) => `${recording.title}\n${recording.meta}\n${recording.transcript || ""}`).join("\n\n---\n\n");
   }
   return recordings
-    .map((recording) => `## ${recording.title}\n\n${recording.meta}\n\n${recording.transcript || "暂无逐字稿"}`)
+    .map((recording) => `## ${recording.title}\n\n${recording.meta}\n\n${recording.transcript || "暂无转写"}`)
     .join("\n\n");
 }
 
@@ -858,7 +860,7 @@ function escapeHtml(value = "") {
 function renderRecordings() {
   if (!savedList) return;
   if (recordings.length === 0) {
-    savedList.innerHTML = `<article class="empty-history">还没有历史记录。完成一次录音后，可以选择“储存”放到这里。</article>`;
+    savedList.innerHTML = `<article class="empty-history">暂无录音记录。完成录音后，可以选择“保存”放到这里。</article>`;
     return;
   }
   savedList.innerHTML = recordings
@@ -907,11 +909,11 @@ function stopTimer() {
 function setRecordingState(nextState) {
   recordingState = nextState;
   const content = {
-    ready: ["点击开始录音", "说完后再点一次结束，会生成原音频和逐字稿"],
-    recording: ["正在录音，点击结束", "说完后再点一次结束，然后可以分析或储存"],
+    ready: ["点击开始录音", "说完后再点一次结束，会保留原音频并生成转写"],
+    recording: ["正在录音，点击结束", "结束后可以核对转写或先保存"],
     paused: ["已暂停", "录音已暂停，点击继续会接着写入同一段音频"],
     processing: ["处理中", "正在生成可回放的原音频，请稍等"],
-    stopped: ["录音已结束", "可以现在分析，也可以先储存到历史记录"],
+    stopped: ["录音已结束", "可以核对转写，也可以先保存到录音记录"],
   }[nextState] || ["准备录音", I18N["live-note"]];
 
   if (homeRecordLabel) homeRecordLabel.textContent = content[0];
@@ -1054,7 +1056,7 @@ function renderSpeechTranscript() {
 function appendRecognizedText(text) {
   const line = text.trim();
   if (!line) return;
-  speechFinalText = `${speechFinalText}${speechFinalText ? "\n" : ""}我：${line}`;
+  speechFinalText = `${speechFinalText}${speechFinalText ? "\n" : ""}待确认：${line}`;
   renderSpeechTranscript();
 }
 
@@ -1558,7 +1560,7 @@ function renderKnowledgeAnalysis(result) {
   const riskLabel = result.riskLevel === "urgent" ? " · 安全优先" : "";
   setKnowledgeText(
     "#kb-status",
-    `${result.source === "knowledge+model" ? "知识库增强" : "本地知识库"} · ${confidenceLabel}${riskLabel}`,
+    `${result.source === "knowledge+model" ? "智能分析" : "本地分析"} · ${confidenceLabel}${riskLabel}`,
   );
   setKnowledgeText("#kb-match-title", `匹配场景：${result.scene.title}`);
   renderKnowledgeVoice(result.primaryVoice);
@@ -1578,7 +1580,7 @@ async function requestGroundedKnowledgeAnalysis(transcript, context) {
 async function runKnowledgeAnalysis(transcript) {
   const text = String(transcript || "").trim();
   if (!text) {
-    showToast("请先确认逐字稿内容");
+    showToast("请先确认转写内容");
     return;
   }
   showScreen("analysis");
@@ -1674,7 +1676,7 @@ function updateDrillProgress() {
     return;
   }
   const difficulty = ["", "容易", "中等", "困难"][currentTrainingSession.difficulty] || "容易";
-  drillProgress.textContent = `new_classic_mode · ${difficulty} · 第 ${Math.min(currentTrainingSession.turn + 1, currentTrainingSession.maxTurns)} / ${currentTrainingSession.maxTurns} 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
+  drillProgress.textContent = `沉浸对练 · ${difficulty} · 第 ${Math.min(currentTrainingSession.turn + 1, currentTrainingSession.maxTurns)} / ${currentTrainingSession.maxTurns} 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
 }
 
 function listCard(title, values) {
@@ -1739,7 +1741,7 @@ function renderClassicTrainingReview(review) {
   const back = document.createElement("button");
   back.className = "figma-button primary";
   back.dataset.action = "practice";
-  back.textContent = "返回训练地图";
+  back.textContent = "返回场景地图";
   next.append(betterTitle, better, practiceTitle, practice, back);
 
   target.append(summary, columns, dimensions, next);
@@ -1783,7 +1785,7 @@ async function startDrill(id, extra = {}) {
 
   drillForm.classList.add("is-disabled");
   document.querySelector("#drill-input").disabled = true;
-  drillProgress.textContent = "正在连接 new_classic_mode 训练服务…";
+  drillProgress.textContent = "正在进入训练场景…";
   try {
     const data = await createClassicTrainingSession(id, selectedClassicDifficulty);
     currentTrainingSession = {
@@ -1801,7 +1803,7 @@ async function startDrill(id, extra = {}) {
     updateDrillProgress();
   } catch (error) {
     appendDrill("ai", `系统提示：${error.message}。没有启用旧版预设回复。`);
-    drillProgress.textContent = "经典训练服务未连接";
+    drillProgress.textContent = "训练服务暂时不可用";
   }
 }
 
@@ -1831,7 +1833,7 @@ async function sendDrill(text) {
       updateDrillProgress();
       if (data.end_session) {
         renderSuggestions([]);
-        drillProgress.textContent = "正在生成 AI 复盘…";
+        drillProgress.textContent = "正在生成练习复盘…";
         const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
         currentTrainingSession = null;
         renderClassicTrainingReview(review);
@@ -1860,7 +1862,7 @@ async function sendDrill(text) {
 async function finishClassicTraining() {
   if (!currentTrainingSession?.sessionId) return;
   drillForm.classList.add("is-disabled");
-  drillProgress.textContent = "正在生成 AI 复盘…";
+  drillProgress.textContent = "正在生成练习复盘…";
   try {
     const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
     currentTrainingSession = null;
@@ -2058,7 +2060,7 @@ document.addEventListener("click", async (event) => {
         }
         const transcript = getTranscriptText();
         if (isTranscriptPlaceholder(transcript)) {
-          showToast(transcribing ? COPY.toastTranscribing : "请先确认逐字稿内容");
+          showToast(transcribing ? COPY.toastTranscribing : "请先确认转写内容");
           break;
         }
         recordingReviewSheet.hidden = true;

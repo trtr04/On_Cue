@@ -515,14 +515,27 @@ button { cursor: pointer; }
   background: var(--canvas);
   box-shadow: 3px 3px 0 var(--ink);
 }
+.turn-number {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 800;
+}
 .turn-card header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
 }
+.turn-speaker-label {
+  grid-column: 1 / -1;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 800;
+}
 .turn-card header input {
-  width: 92px;
+  width: 100%;
   height: 28px;
   padding: 0 8px;
   border: 2px solid var(--ink);

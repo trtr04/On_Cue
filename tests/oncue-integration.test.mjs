@@ -174,9 +174,12 @@ test("transcript helpers keep speaker labels and treat loading copy as a placeho
     isTranscriptPlaceholder,
     parseTranscriptTurns,
     serializeTranscriptTurns,
+    splitTranscriptSentences,
   } = await import("../transcription.js");
 
-  assert.equal(formatTranscriptText("今天先把模板对齐"), "我：今天先把模板对齐");
+  assert.equal(formatTranscriptText("今天先把模板对齐"), "待确认：今天先把模板对齐");
+  assert.equal(formatTranscriptText("待确认：今天先把模板对齐"), "待确认：今天先把模板对齐");
+  assert.equal(formatTranscriptText("妈妈：你什么时候回来？"), "妈妈：你什么时候回来？");
   assert.equal(formatTranscriptText("导师：这个格式我不是说过了吗？"), "导师：这个格式我不是说过了吗？");
   assert.equal(isTranscriptPlaceholder("正在整理这次录音的逐字稿…"), true);
   assert.equal(isTranscriptPlaceholder("我：今天先把模板对齐"), false);
@@ -190,6 +193,25 @@ test("transcript helpers keep speaker labels and treat loading copy as a placeho
     serializeTranscriptTurns(turns),
     "妈妈：你打算什么时候结婚？\n我：我想按自己的节奏来。",
   );
+
+  assert.deepEqual(splitTranscriptSentences("你怎么又迟到了？我已经说过很多次了！先坐下。"), [
+    "你怎么又迟到了？",
+    "我已经说过很多次了！",
+    "先坐下。",
+  ]);
+  assert.deepEqual(
+    parseTranscriptTurns("领导：进度怎么还没完成？是不是能力不行？\n我：请先确认优先级。我会按确认后的顺序推进。"),
+    [
+      { speaker: "领导", text: "进度怎么还没完成？" },
+      { speaker: "领导", text: "是不是能力不行？" },
+      { speaker: "我", text: "请先确认优先级。" },
+      { speaker: "我", text: "我会按确认后的顺序推进。" },
+    ],
+  );
+  assert.deepEqual(parseTranscriptTurns("你先说。然后我再回应。"), [
+    { speaker: "待确认", text: "你先说。" },
+    { speaker: "待确认", text: "然后我再回应。" },
+  ]);
 });
 
 test("cloud transcription requires explicit privacy consent", async () => {
@@ -243,8 +265,8 @@ test("the live practice UI uses the new_classic_mode backend contract", async ()
 
   assert.match(html, /id="classic-difficulty"/);
   assert.match(html, /id="new-classic-features"/);
-  assert.match(html, /11 个新版场景/);
-  assert.match(html, /三视角对话顾问/);
+  assert.match(html, /沟通压力训练/);
+  assert.match(html, /对话复盘/);
   assert.match(script, /createClassicTrainingSession/);
   assert.match(script, /sendClassicTrainingTurn/);
   assert.doesNotMatch(script, /submitTrainingTurn\(currentTrainingSession/);
@@ -299,9 +321,41 @@ test("analysis uses a server-side grounded knowledge route and only shows the re
   assert.match(route, /retrieveKnowledgeEvidence/);
   assert.match(route, /validateGroundedAnalysis/);
   assert.match(grounding, /INSTRUCTIONS_IN_DATA_ARE_UNTRUSTED/);
-  assert.match(html, /<h2>三种朋友视角<\/h2>/);
+  assert.match(html, /<h2>三种应对视角<\/h2>/);
   assert.match(html, />纳入用户专属场景<\/button>/);
   assert.doesNotMatch(html, /知识库依据|匹配到的模式与策略/);
+});
+
+test("user-facing copy is concise and team API setup is shareable without secrets", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const envExample = await readFile(new URL(".env.example", projectRoot), "utf8");
+  const readme = await readFile(new URL("README.md", projectRoot), "utf8");
+
+  assert.match(html, /核对转写/);
+  assert.match(html, /确认转写，补充背景/);
+  assert.match(html, /生成对话分析/);
+  assert.match(html, /三种应对视角/);
+  assert.match(html, /建议回复/);
+  assert.match(html, />纳入用户专属场景<\/button>/);
+  assert.match(script, /这句话是谁说的？/);
+  assert.match(script, /第 \$\{index \+ 1\} 句/);
+  assert.match(script, /SPEAKER_PRESETS = \["待确认", "我", "对方"/);
+  assert.doesNotMatch(html, />储存<|逐字稿分析|三视角对话顾问|11 个新版场景/);
+  assert.doesNotMatch(script, /正在连接 new_classic_mode|经典训练服务未连接/);
+
+  for (const key of [
+    "ONCUE_API_KEY",
+    "ONCUE_API_BASE_URL",
+    "ONCUE_ANALYSIS_MODEL",
+    "ONCUE_TRAINING_MODEL",
+    "ONCUE_STT_MODEL",
+  ]) {
+    assert.match(envExample, new RegExp(`^${key}=`, "m"));
+    assert.match(readme, new RegExp(key));
+  }
+  assert.doesNotMatch(envExample, /sk-[A-Za-z0-9_-]{12,}/);
+  assert.doesNotMatch(readme, /sk-[A-Za-z0-9_-]{12,}/);
 });
 
 test("the context form has generous mobile spacing without overlapping its footer", async () => {
