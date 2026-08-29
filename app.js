@@ -1,5 +1,4 @@
 import { installPhoneViewportFitting } from "./responsive.js";
-import { analyzeConfirmedTranscript, loadKnowledgeBase } from "./knowledge-analysis.js";
 import {
   TRAINING_MODULES,
   getTrainingHints,
@@ -146,15 +145,14 @@ const COPY = {
   "toastRecordingResumed": "继续录音",
   "toastRecordingStopped": "录音已结束，可以核对转写或先保存",
   "toastRecordingRequired": "请先开始并停止一次录音",
-  "toastTranscriptionFallback": "当前浏览器不支持实时转写，停录后会根据音频生成文本",
+  "toastTranscriptionFallback": "当前浏览器无法生成录音，请检查麦克风权限",
   "toastTranscribing": "正在转写录音…",
-  "toastTranscribeLocal": "正在加载本地识别模型，第一次会稍慢",
+  "toastTranscribeApi": "正在调用语音转写 API…",
   "toastTranscribed": "转写已生成，请逐句核对",
   "toastTranscribeFailed": "自动转写暂时失败，可手动输入或重新转写",
   "toastTranscribeNoAudio": "没有可转写的音频",
   "transcriptPlaceholder": "转写内容会显示在这里，可逐句修改后再分析。",
   "transcriptLoading": "正在整理录音转写…",
-  "transcriptLocalLoading": "首次转写需要加载识别模型，请稍等…",
   "transcriptEmptyAudio": "没有录到音频，请重新录音，或直接在这里输入文字。",
   "transcriptStatusReady": "停录后先核对转写，再补充对话背景",
   "transcriptStatusLoading": "正在整理录音转写",
@@ -492,7 +490,6 @@ const DEFAULT_APP_SETTINGS = {
   privacy: {
     storage: "local",
     keepAudio: true,
-    analysisConsent: false,
   },
   export: {
     format: "markdown",
@@ -500,7 +497,6 @@ const DEFAULT_APP_SETTINGS = {
   },
 };
 const SPEAKER_PRESETS = ["待确认", "我", "对方", "导师", "领导", "家人"];
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 let recordings = loadRecordings();
 let elapsed = 0;
@@ -513,10 +509,6 @@ let audioStream = null;
 let recordedAudioUrl = "";
 let recordedAudioDataUrl = "";
 let recordedAudioBlob = null;
-let speechRecognition = null;
-let speechFinalText = "";
-let speechInterimText = "";
-let shouldRestartRecognition = false;
 let currentScreen = "home";
 let selectedMap = "work";
 let drillOrigin = "levels";
@@ -525,7 +517,6 @@ let currentTrainingSession = null;
 let drillStep = 0;
 let boundaryWins = 0;
 let selectedClassicDifficulty = 1;
-let knowledgePromise = null;
 let currentKnowledgeAnalysis = null;
 let selectedKnowledgeVoice = "A";
 let currentDraftRecordingId = "";
@@ -976,7 +967,7 @@ function applyTranscribedText(text, { force = false } = {}) {
 
 async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
   if (!(blob instanceof Blob) || blob.size === 0) {
-    if (!speechFinalText.trim() && isTranscriptPlaceholder(getTranscriptText())) {
+    if (isTranscriptPlaceholder(getTranscriptText())) {
       setTranscriptText(COPY.transcriptEmptyAudio);
     }
     setTranscriptStatus(COPY.transcriptStatusError, "error");
@@ -996,15 +987,11 @@ async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
 
   try {
     const result = await transcribeAudioBlob(blob, {
-      allowCloud: settingsState.privacy.analysisConsent,
       onStatus: (status) => {
         if (token !== transcriptionToken) return;
-        if (status === "local") {
+        if (status === "api") {
           setTranscriptStatus(COPY.transcriptStatusLoading, "loading");
-          if (isTranscriptPlaceholder(getTranscriptText()) || getTranscriptText() === COPY.transcriptLoading) {
-            setTranscriptText(COPY.transcriptLocalLoading);
-          }
-          showToast(COPY.toastTranscribeLocal);
+          showToast(COPY.toastTranscribeApi);
         }
       },
     });
@@ -1016,12 +1003,6 @@ async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
   } catch (error) {
     console.warn("Transcription failed", error);
     if (token !== transcriptionToken) return false;
-    const live = formatTranscriptText(speechFinalText);
-    if (live && (force || isTranscriptPlaceholder(getTranscriptText()))) {
-      setTranscriptText(live, { snapshotOriginal: true });
-      setTranscriptStatus(COPY.transcriptStatusDone, "done");
-      return true;
-    }
     if (isTranscriptPlaceholder(getTranscriptText()) || getTranscriptText() === COPY.transcriptLoading) {
       setTranscriptText(COPY.toastTranscribeFailed);
     }
@@ -1038,85 +1019,6 @@ function releaseAudioStream() {
   audioStream = null;
 }
 
-function currentLiveTranscript() {
-  const finalText = speechFinalText.trim();
-  const interimText = speechInterimText.trim();
-  return [
-    finalText,
-    interimText && recordingState === "recording" ? `（识别中）${interimText}` : "",
-  ].filter(Boolean).join("\n");
-}
-
-function renderSpeechTranscript() {
-  const live = currentLiveTranscript();
-  if (!live || transcriptEditedByUser) return;
-  setTranscriptText(live, { snapshotOriginal: originalTranscriptTurns.length === 0 });
-}
-
-function appendRecognizedText(text) {
-  const line = text.trim();
-  if (!line) return;
-  speechFinalText = `${speechFinalText}${speechFinalText ? "\n" : ""}待确认：${line}`;
-  renderSpeechTranscript();
-}
-
-function stopSpeechRecognition() {
-  shouldRestartRecognition = false;
-  speechInterimText = "";
-  if (!speechRecognition) {
-    renderSpeechTranscript();
-    return;
-  }
-  const activeRecognition = speechRecognition;
-  speechRecognition = null;
-  activeRecognition.onend = null;
-  try {
-    activeRecognition.stop();
-  } catch {
-    activeRecognition.abort?.();
-  }
-  renderSpeechTranscript();
-}
-
-function startSpeechRecognition() {
-  if (!SpeechRecognition) {
-    showToast(COPY.toastTranscriptionFallback);
-    return;
-  }
-  stopSpeechRecognition();
-  shouldRestartRecognition = true;
-  const recognition = new SpeechRecognition();
-  speechRecognition = recognition;
-  recognition.lang = "zh-CN";
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-  recognition.onresult = (event) => {
-    let interim = "";
-    for (let index = event.resultIndex; index < event.results.length; index += 1) {
-      const result = event.results[index];
-      const text = result[0]?.transcript || "";
-      if (result.isFinal) appendRecognizedText(text);
-      else interim += text;
-    }
-    speechInterimText = interim;
-    renderSpeechTranscript();
-  };
-  recognition.onerror = (event) => {
-    if (!["aborted", "no-speech"].includes(event.error)) showToast(COPY.toastTranscriptionFallback);
-  };
-  recognition.onend = () => {
-    if (shouldRestartRecognition && recordingState === "recording") {
-      window.setTimeout(startSpeechRecognition, 250);
-    }
-  };
-  try {
-    recognition.start();
-  } catch {
-    showToast(COPY.toastTranscriptionFallback);
-  }
-}
-
 function blobToDataUrl(blob) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -1124,13 +1026,6 @@ function blobToDataUrl(blob) {
     reader.onerror = () => resolve("");
     reader.readAsDataURL(blob);
   });
-}
-
-function ensureTranscriptReady() {
-  if (isTranscriptPlaceholder(getTranscriptText())) {
-    const live = formatTranscriptText(speechFinalText);
-    if (live) setTranscriptText(live, { snapshotOriginal: originalTranscriptTurns.length === 0 });
-  }
 }
 
 async function finalizeRecordedAudio({ silent = false } = {}) {
@@ -1149,20 +1044,17 @@ async function finalizeRecordedAudio({ silent = false } = {}) {
     if (recordingAudioCard) recordingAudioCard.hidden = true;
   }
   releaseAudioStream();
-  ensureTranscriptReady();
   currentDraftRecordingId ||= `live-${Date.now()}`;
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
   setRecordingState("stopped");
-  renderSpeechTranscript();
-  if (speechFinalText.trim()) setTranscriptStatus(COPY.transcriptStatusDone, "done");
   setTranscribing(false);
   if (retranscribeButton) retranscribeButton.disabled = !recordedAudioBlob;
   if (currentScreen === "home") recordingReviewSheet.hidden = false;
   if (!silent) showToast(COPY.toastRecordingStopped);
-  if (audioBlob && settingsState.device.autoTranscribe && !speechFinalText.trim()) {
+  if (audioBlob && settingsState.device.autoTranscribe) {
     await transcribeAndFill(audioBlob, { silent: true });
-  } else if (!audioBlob && !speechFinalText.trim()) {
+  } else if (!audioBlob) {
     setTranscriptText(COPY.transcriptEmptyAudio);
     setTranscriptStatus(COPY.transcriptStatusError, "error");
   }
@@ -1170,7 +1062,6 @@ async function finalizeRecordedAudio({ silent = false } = {}) {
 
 function prepareRecordingSession() {
   stopTimer();
-  stopSpeechRecognition();
   releaseAudioStream();
   clearRecordedAudio();
   recordedChunks = [];
@@ -1178,8 +1069,6 @@ function prepareRecordingSession() {
   currentDraftRecordingId = "";
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = "";
-  speechFinalText = "";
-  speechInterimText = "";
   transcriptionToken += 1;
   transcriptEditedByUser = false;
   elapsed = 0;
@@ -1191,7 +1080,6 @@ function prepareRecordingSession() {
   const marker = document.querySelector('[data-action="mark"]');
   if (marker) marker.textContent = I18N["marked-initial"];
   setRecordingState("ready");
-  renderSpeechTranscript();
 }
 
 async function startRecording() {
@@ -1201,8 +1089,6 @@ async function startRecording() {
   currentDraftRecordingId = "";
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = "";
-  speechFinalText = "";
-  speechInterimText = "";
   transcriptionToken += 1;
   transcriptEditedByUser = false;
   elapsed = 0;
@@ -1211,17 +1097,16 @@ async function startRecording() {
   setTranscriptStatus(COPY.transcriptStatusReady, "");
   setRecordingState("recording");
   startTimer();
-  renderSpeechTranscript();
   showToast(COPY.toastRecordingStarted);
 
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
-    startSpeechRecognition();
+    stopTimer();
+    setRecordingState("ready");
     showToast(COPY.toastTranscriptionFallback);
     return;
   }
 
   try {
-    startSpeechRecognition();
     audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     if (recordingState !== "recording") {
       releaseAudioStream();
@@ -1233,11 +1118,11 @@ async function startRecording() {
       if (event.data?.size > 0) recordedChunks.push(event.data);
     });
     mediaRecorder.start(250);
-    if (!speechRecognition && SpeechRecognition) startSpeechRecognition();
   } catch (error) {
     console.warn("Recording unavailable", error);
     releaseAudioStream();
-    startSpeechRecognition();
+    stopTimer();
+    setRecordingState("ready");
     showToast(COPY.toastTranscriptionFallback);
   }
 }
@@ -1246,9 +1131,7 @@ function pauseRecording() {
   if (recordingState !== "recording") return;
   if (mediaRecorder?.state === "recording") mediaRecorder.pause();
   stopTimer();
-  stopSpeechRecognition();
   setRecordingState("paused");
-  renderSpeechTranscript();
   showToast(COPY.toastRecordingPaused);
 }
 
@@ -1257,8 +1140,6 @@ function resumeRecording() {
   if (mediaRecorder?.state === "paused") mediaRecorder.resume();
   setRecordingState("recording");
   startTimer();
-  startSpeechRecognition();
-  renderSpeechTranscript();
   showToast(COPY.toastRecordingResumed);
 }
 
@@ -1268,7 +1149,6 @@ function stopRecording({ silent = false } = {}) {
     return;
   }
   stopTimer();
-  stopSpeechRecognition();
   setRecordingState("processing");
   if (mediaRecorder && mediaRecorder.state !== "inactive") {
     mediaRecorder.addEventListener("stop", () => finalizeRecordedAudio({ silent }), { once: true });
@@ -1474,7 +1354,6 @@ function addRecording(recording) {
 }
 
 function buildCurrentRecording() {
-  ensureTranscriptReady();
   currentDraftRecordingId ||= `live-${Date.now()}`;
   currentDraftMeta ||= `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
   return {
@@ -1505,7 +1384,6 @@ function loadRecordingForReview(recordingId) {
     return;
   }
   stopTimer();
-  stopSpeechRecognition();
   releaseAudioStream();
   currentDraftRecordingId = recording.id;
   currentDraftTitle = recording.title || COPY.liveTitle;
@@ -1528,11 +1406,6 @@ function loadRecordingForReview(recordingId) {
   recordingReviewSheet.hidden = true;
   setRecordingState("stopped");
   showScreen("transcript");
-}
-
-function knowledgeBase() {
-  knowledgePromise ||= loadKnowledgeBase();
-  return knowledgePromise;
 }
 
 function setKnowledgeText(selector, value) {
@@ -1560,7 +1433,7 @@ function renderKnowledgeAnalysis(result) {
   const riskLabel = result.riskLevel === "urgent" ? " · 安全优先" : "";
   setKnowledgeText(
     "#kb-status",
-    `${result.source === "knowledge+model" ? "智能分析" : "本地分析"} · ${confidenceLabel}${riskLabel}`,
+    `智能分析 · ${confidenceLabel}${riskLabel}`,
   );
   setKnowledgeText("#kb-match-title", `匹配场景：${result.scene.title}`);
   renderKnowledgeVoice(result.primaryVoice);
@@ -1588,23 +1461,12 @@ async function runKnowledgeAnalysis(transcript) {
   setKnowledgeText("#kb-status", "正在检索知识库并整理三种视角…");
   try {
     const context = collectAnalysisContext();
-    if (settingsState.privacy.analysisConsent) {
-      try {
-        renderKnowledgeAnalysis(await requestGroundedKnowledgeAnalysis(text, context));
-        return;
-      } catch {
-        // Continue with the packaged on-device knowledge base when the model endpoint is unavailable.
-      }
-    }
-    const knowledge = await knowledgeBase();
-    renderKnowledgeAnalysis({
-      ...analyzeConfirmedTranscript(text, knowledge, { extra: context }),
-      source: "knowledge-local",
-    });
+    renderKnowledgeAnalysis(await requestGroundedKnowledgeAnalysis(text, context));
   } catch (error) {
     console.error("Knowledge analysis failed", error);
-    setKnowledgeText("#kb-status", "知识库读取失败");
-    showToast("知识库暂时无法读取，请重试");
+    setKnowledgeText("#kb-status", "智能分析暂时不可用");
+    setKnowledgeText("#kb-match-title", "请检查 API 配置后重试");
+    showToast("智能分析暂时不可用，请稍后重试");
   } finally {
     analysisScreen.classList.remove("is-loading");
   }
@@ -1974,8 +1836,6 @@ document.addEventListener("click", async (event) => {
         showToast(COPY.toastRecordingRequired);
         break;
       }
-      ensureTranscriptReady();
-      renderSpeechTranscript();
       recordingReviewSheet.hidden = true;
       showScreen("transcript");
       break;

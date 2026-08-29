@@ -134,8 +134,8 @@ test("the recording analysis UI confirms text, original audio, speakers, and all
   assert.match(html, /data-voice="B"/);
   assert.match(html, /data-voice="C"/);
   assert.doesNotMatch(html, /id="speaker-select"/);
-  assert.match(script, /analyzeConfirmedTranscript/);
-  assert.match(script, /loadKnowledgeBase/);
+  assert.match(script, /fetch\("\/api\/analyze"/);
+  assert.doesNotMatch(script, /analyzeConfirmedTranscript|loadKnowledgeBase/);
   assert.match(script, /collectAnalysisContext/);
   assert.match(script, /openContextScreen/);
 });
@@ -154,13 +154,13 @@ test("the home recording flow supports toggle recording, review sheet, storage, 
   assert.match(html, /id="confirmed-transcript"/);
   assert.doesNotMatch(html, /id="transcript-live-bar"/);
   assert.match(script, /MediaRecorder/);
-  assert.match(script, /SpeechRecognition/);
+  assert.doesNotMatch(script, /SpeechRecognition/);
   assert.match(script, /audioDataUrl/);
   assert.match(script, /saveCurrentRecording/);
   assert.match(script, /transcribeAndFill/);
   assert.match(script, /case "review-transcript"/);
   assert.match(transcription, /\/api\/transcribe/);
-  assert.match(transcription, /Xenova\/whisper-base/);
+  assert.doesNotMatch(transcription, /Xenova\/whisper-base|huggingface|transcribeViaLocalWhisper/);
   assert.match(route, /api\.groq\.com\/openai\/v1\/audio\/transcriptions/);
   assert.match(route, /api\.openai\.com\/v1\/audio\/transcriptions/);
   assert.match(route, /ONCUE_API_KEY/);
@@ -214,14 +214,16 @@ test("transcript helpers keep speaker labels and treat loading copy as a placeho
   ]);
 });
 
-test("cloud transcription requires explicit privacy consent", async () => {
+test("speech transcription always uses the server API and never loads a browser model", async () => {
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const transcription = await readFile(new URL("transcription.js", projectRoot), "utf8");
   const { transcriptionPlan } = await import("../transcription.js");
 
-  assert.deepEqual(transcriptionPlan({ allowCloud: false }), ["local"]);
-  assert.deepEqual(transcriptionPlan(), ["local"]);
-  assert.deepEqual(transcriptionPlan({ allowCloud: true }), ["cloud", "local"]);
-  assert.match(script, /allowCloud:\s*settingsState\.privacy\.analysisConsent/);
+  assert.deepEqual(transcriptionPlan(), ["api"]);
+  assert.deepEqual(transcriptionPlan({ allowCloud: false }), ["api"]);
+  assert.doesNotMatch(script, /allowCloud|analysisConsent/);
+  assert.doesNotMatch(transcription, /TRANSFORMER_URLS|LOCAL_MODEL|MODEL_HOSTS|transcribeViaLocalWhisper/);
+  assert.match(transcription, /transcribeViaApi/);
 });
 
 test("personal settings stay device-local until account sync exists", async () => {
@@ -316,7 +318,8 @@ test("analysis uses a server-side grounded knowledge route and only shows the re
   const grounding = await readFile(new URL("lib/knowledge-grounding.js", projectRoot), "utf8");
 
   assert.match(script, /fetch\("\/api\/analyze"/);
-  assert.match(script, /analyzeConfirmedTranscript/);
+  assert.doesNotMatch(script, /analyzeConfirmedTranscript|loadKnowledgeBase|knowledge-local/);
+  assert.match(script, /智能分析暂时不可用/);
   assert.match(route, /ONCUE_API_KEY/);
   assert.match(route, /retrieveKnowledgeEvidence/);
   assert.match(route, /validateGroundedAnalysis/);
@@ -337,6 +340,8 @@ test("user-facing copy is concise and team API setup is shareable without secret
   assert.match(html, /生成对话分析/);
   assert.match(html, /三种应对视角/);
   assert.match(html, /建议回复/);
+  assert.match(html, /录音转写与知识库分析将通过服务器端 API 处理/);
+  assert.doesNotMatch(html, /name="privacy\.analysisConsent"/);
   assert.match(html, />纳入用户专属场景<\/button>/);
   assert.match(script, /这句话是谁说的？/);
   assert.match(script, /第 \$\{index \+ 1\} 句/);

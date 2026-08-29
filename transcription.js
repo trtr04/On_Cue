@@ -1,10 +1,3 @@
-const TRANSFORMER_URLS = [
-  "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.2/+esm",
-  "https://unpkg.com/@huggingface/transformers@3.5.2/+esm",
-];
-const LOCAL_MODEL = "Xenova/whisper-base";
-const MODEL_HOSTS = ["https://huggingface.co/", "https://hf-mirror.com/"];
-
 const PLACEHOLDER_SNIPPETS = [
   "自动转写会出现在这里",
   "这里会填入这次录音",
@@ -18,8 +11,6 @@ const PLACEHOLDER_SNIPPETS = [
   "自动转写暂时失败",
   "首次转写需要加载",
 ];
-
-let localPipelinePromise = null;
 
 export function isTranscriptPlaceholder(value) {
   const text = String(value || "").trim();
@@ -118,124 +109,14 @@ async function transcribeViaApi(blob) {
   return { text, source: payload.source || "api" };
 }
 
-async function loadTransformers() {
-  let lastError = null;
-  for (const url of TRANSFORMER_URLS) {
-    try {
-      return await import(/* @vite-ignore */ url);
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError || new Error("transformers_unavailable");
+export function transcriptionPlan() {
+  return ["api"];
 }
 
-async function decodeToWhisperAudio(blob) {
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) throw new Error("no_audio_context");
-  const context = new AudioContextClass();
-  try {
-    const copied = (await blob.arrayBuffer()).slice(0);
-    const buffer = await context.decodeAudioData(copied);
-    const channel = buffer.numberOfChannels > 1 ? mixToMono(buffer) : buffer.getChannelData(0);
-    const samples = resample(channel, buffer.sampleRate, 16000);
-    return { raw: samples, sampling_rate: 16000 };
-  } finally {
-    await context.close().catch(() => {});
-  }
-}
-
-function mixToMono(buffer) {
-  const length = buffer.length;
-  const mixed = new Float32Array(length);
-  const count = buffer.numberOfChannels;
-  for (let channel = 0; channel < count; channel += 1) {
-    const data = buffer.getChannelData(channel);
-    for (let index = 0; index < length; index += 1) mixed[index] += data[index] / count;
-  }
-  return mixed;
-}
-
-function resample(input, fromRate, toRate) {
-  if (fromRate === toRate) return input;
-  const ratio = fromRate / toRate;
-  const length = Math.max(1, Math.round(input.length / ratio));
-  const output = new Float32Array(length);
-  for (let index = 0; index < length; index += 1) {
-    const position = index * ratio;
-    const left = Math.floor(position);
-    const right = Math.min(left + 1, input.length - 1);
-    const t = position - left;
-    output[index] = input[left] * (1 - t) + input[right] * t;
-  }
-  return output;
-}
-
-async function createLocalPipeline(remoteHost) {
-  const { pipeline, env } = await loadTransformers();
-  env.allowLocalModels = false;
-  env.useBrowserCache = true;
-  if (remoteHost) env.remoteHost = remoteHost;
-  try {
-    return await pipeline("automatic-speech-recognition", LOCAL_MODEL, { dtype: "q8" });
-  } catch {
-    return pipeline("automatic-speech-recognition", LOCAL_MODEL);
-  }
-}
-
-async function getLocalPipeline() {
-  if (!localPipelinePromise) {
-    localPipelinePromise = (async () => {
-      let lastError = null;
-      for (const host of MODEL_HOSTS) {
-        try {
-          return await createLocalPipeline(host);
-        } catch (error) {
-          lastError = error;
-        }
-      }
-      throw lastError || new Error("local_model_failed");
-    })();
-  }
-  try {
-    return await localPipelinePromise;
-  } catch (error) {
-    localPipelinePromise = null;
-    throw error;
-  }
-}
-
-async function transcribeViaLocalWhisper(blob) {
-  const transcriber = await getLocalPipeline();
-  const audio = await decodeToWhisperAudio(blob);
-  const result = await transcriber(audio.raw, {
-    language: "chinese",
-    task: "transcribe",
-    chunk_length_s: 30,
-    stride_length_s: 5,
-  });
-  const text = formatTranscriptText(result?.text);
-  if (!text) throw new Error("empty_local_transcript");
-  return { text, source: "whisper-local" };
-}
-
-export function transcriptionPlan({ allowCloud = false } = {}) {
-  return allowCloud ? ["cloud", "local"] : ["local"];
-}
-
-export async function transcribeAudioBlob(blob, { onStatus, allowCloud = false } = {}) {
+export async function transcribeAudioBlob(blob, { onStatus } = {}) {
   if (!(blob instanceof Blob) || blob.size === 0) {
     throw new Error("missing_audio");
   }
-
-  let lastError = null;
-  for (const mode of transcriptionPlan({ allowCloud })) {
-    onStatus?.(mode);
-    try {
-      return mode === "cloud" ? await transcribeViaApi(blob) : await transcribeViaLocalWhisper(blob);
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError || new Error("transcription_failed");
+  onStatus?.("api");
+  return transcribeViaApi(blob);
 }
