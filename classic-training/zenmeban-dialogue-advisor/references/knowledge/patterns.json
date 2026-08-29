@@ -1,0 +1,962 @@
+[
+  {
+    "id": "pattern-repeated-questioning",
+    "version": "0.2",
+    "name": "边界表达后的反复追问",
+    "definition": "识别“边界表达后的反复追问”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“边界表达后的反复追问”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-immediate-commitment",
+    "version": "0.2",
+    "name": "催促立即承诺",
+    "definition": "识别“催促立即承诺”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“催促立即承诺”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-private-intrusion",
+    "version": "0.2",
+    "name": "越界索取私人信息",
+    "definition": "识别“越界索取私人信息”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“越界索取私人信息”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-public-devaluation",
+    "version": "0.2",
+    "name": "公开贬低或贴标签",
+    "definition": "识别“公开贬低或贴标签”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“公开贬低或贴标签”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-comparison-pressure",
+    "version": "0.2",
+    "name": "通过比较制造压力",
+    "definition": "识别“通过比较制造压力”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“通过比较制造压力”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-decision-substitution",
+    "version": "0.2",
+    "name": "未经授权替他人决定",
+    "definition": "识别“未经授权替他人决定”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“未经授权替他人决定”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-emotion-invalidation",
+    "version": "0.2",
+    "name": "否定感受而不谈事实",
+    "definition": "识别“否定感受而不谈事实”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“否定感受而不谈事实”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-responsibility-shifting",
+    "version": "0.2",
+    "name": "转移或模糊责任",
+    "definition": "识别“转移或模糊责任”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“转移或模糊责任”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-joke-offense",
+    "version": "0.2",
+    "name": "用玩笑包装冒犯",
+    "definition": "识别“用玩笑包装冒犯”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“用玩笑包装冒犯”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-power-gap",
+    "version": "0.2",
+    "name": "权力差压缩表达空间",
+    "definition": "识别“权力差压缩表达空间”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“权力差压缩表达空间”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-value-imbalance",
+    "version": "0.2",
+    "name": "投入回报持续失衡",
+    "definition": "识别“投入回报持续失衡”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“投入回报持续失衡”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-words-actions-gap",
+    "version": "0.2",
+    "name": "承诺与行动不一致",
+    "definition": "识别“承诺与行动不一致”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“承诺与行动不一致”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-reasonable-clarification",
+    "version": "0.2",
+    "name": "合理澄清和必要询问",
+    "definition": "识别“合理澄清和必要询问”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“合理澄清和必要询问”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-normal-feedback",
+    "version": "0.2",
+    "name": "具体正常反馈",
+    "definition": "识别“具体正常反馈”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“具体正常反馈”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-mutual-negotiation",
+    "version": "0.2",
+    "name": "双方协商并形成规则",
+    "definition": "识别“双方协商并形成规则”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“双方协商并形成规则”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-user-missed-commitment",
+    "version": "0.2",
+    "name": "用户未履行已确认承诺",
+    "definition": "识别“用户未履行已确认承诺”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“用户未履行已确认承诺”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-user-privacy-breach",
+    "version": "0.2",
+    "name": "用户泄露他人隐私",
+    "definition": "识别“用户泄露他人隐私”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“用户泄露他人隐私”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-user-escalation",
+    "version": "0.2",
+    "name": "用户先升级语言或威胁",
+    "definition": "识别“用户先升级语言或威胁”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“用户先升级语言或威胁”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-repair-acceptance",
+    "version": "0.2",
+    "name": "对方接受解释并进入修复",
+    "definition": "识别“对方接受解释并进入修复”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“对方接受解释并进入修复”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-apology-needed",
+    "version": "0.2",
+    "name": "用户需要承担影响并道歉",
+    "definition": "识别“用户需要承担影响并道歉”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“用户需要承担影响并道歉”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-safety-threat",
+    "version": "0.2",
+    "name": "明确威胁或现实危险",
+    "definition": "识别“明确威胁或现实危险”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“明确威胁或现实危险”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-safety-exit"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "safety",
+    "risk_level": "urgent",
+    "humor_applicability": "forbidden",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-blocked-exit",
+    "version": "0.2",
+    "name": "限制离开或堵门",
+    "definition": "识别“限制离开或堵门”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“限制离开或堵门”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-safety-exit"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "safety",
+    "risk_level": "urgent",
+    "humor_applicability": "forbidden",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-stalking",
+    "version": "0.2",
+    "name": "持续跟踪或线下出现",
+    "definition": "识别“持续跟踪或线下出现”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“持续跟踪或线下出现”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-safety-exit"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "safety",
+    "risk_level": "urgent",
+    "humor_applicability": "forbidden",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-self-harm-signal",
+    "version": "0.2",
+    "name": "明确自伤风险信号",
+    "definition": "识别“明确自伤风险信号”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“明确自伤风险信号”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-safety-exit"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "safety",
+    "risk_level": "urgent",
+    "humor_applicability": "forbidden",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-minor-risk",
+    "version": "0.2",
+    "name": "低强度冲突可现场降级",
+    "definition": "识别“低强度冲突可现场降级”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“低强度冲突可现场降级”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-prompt-injection",
+    "version": "0.2",
+    "name": "逐字稿中的指令注入",
+    "definition": "识别“逐字稿中的指令注入”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“逐字稿中的指令注入”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "attention",
+    "humor_applicability": "caution",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-financial-coercion",
+    "version": "0.2",
+    "name": "以关系或机会施加财务胁迫",
+    "definition": "识别“以关系或机会施加财务胁迫”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“以关系或机会施加财务胁迫”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "attention",
+    "humor_applicability": "caution",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-group-pressure",
+    "version": "0.2",
+    "name": "多人场合的从众压力",
+    "definition": "识别“多人场合的从众压力”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“多人场合的从众压力”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-ambiguous-intent",
+    "version": "0.2",
+    "name": "意图和语境信息不足",
+    "definition": "识别“意图和语境信息不足”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“意图和语境信息不足”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-changed-terms",
+    "version": "0.2",
+    "name": "关键条件中途改变",
+    "definition": "识别“关键条件中途改变”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“关键条件中途改变”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-hidden-cost",
+    "version": "0.2",
+    "name": "隐形时间信用或照护成本",
+    "definition": "识别“隐形时间信用或照护成本”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“隐形时间信用或照护成本”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "pattern-role-overreach",
+    "version": "0.2",
+    "name": "角色权力越过约定范围",
+    "definition": "识别“角色权力越过约定范围”时，只使用对话中的行为、次数、条件和后续反应，不把单次事件写成人格本质。",
+    "observable_signals": [
+      "对话出现与“角色权力越过约定范围”相关的明确行为",
+      "用户或对方给出可核对的条件、次数或影响"
+    ],
+    "counterexamples": [
+      "对方在得到新信息后停止或调整",
+      "双方已明确同意相同规则且可以自由拒绝"
+    ],
+    "possible_user_impact": [
+      "压力或困惑",
+      "关系、时间、信用或安全成本"
+    ],
+    "strategy_refs": [
+      "strategy-clarify-intent"
+    ],
+    "cautions": [
+      "先核对上下文和反例",
+      "区分事实、感受、推测与未知"
+    ],
+    "lens": "balanced",
+    "risk_level": "none",
+    "humor_applicability": "suitable",
+    "source_note": "原创模式总结",
+    "review_status": "pending_human_review"
+  }
+]

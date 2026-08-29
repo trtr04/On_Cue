@@ -1,0 +1,39 @@
+{
+  "version": "0.2",
+  "always_output_all_voices": true,
+  "public_labels_only": true,
+  "default_voice_order": [
+    "A",
+    "B",
+    "C"
+  ],
+  "category_primary": {
+    "family": "B",
+    "workplace": "C",
+    "interview": "C",
+    "intimate": "A",
+    "friends": "B",
+    "campus": "C",
+    "housing": "B",
+    "consumer": "A",
+    "online": "B",
+    "freelance": "C",
+    "caregiving": "B",
+    "public": "B"
+  },
+  "urgent_voice_order": [
+    "B",
+    "C",
+    "A"
+  ],
+  "rename_contract": {
+    "stable_ids": [
+      "A",
+      "B",
+      "C"
+    ],
+    "editable_field": "display_name",
+    "instruction": "以后只修改三个display_name；voice_id、Schema键和路由ID保持A/B/C不变。"
+  },
+  "review_status": "pending_human_review"
+}
