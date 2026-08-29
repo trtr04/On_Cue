@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbeaf6" />
+    <title>On Cue</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="simulator-shell">
+      <aside class="flow-guide">
+        <span data-i18n="guide-kicker"></span>
+        <h1 data-i18n-html="guide-title"></h1>
+        <p data-i18n="guide-copy"></p>
+        <button class="guide-link active" data-jump="home"><b>01</b><i data-i18n="guide-home"></i></button>
+        <button class="guide-link" data-jump="practice"><b>02</b><i data-i18n="guide-practice"></i></button>
+        <button class="guide-link" data-jump="vent"><b>03</b><i data-i18n="guide-vent"></i></button>
+        <button class="guide-link" data-jump="settings"><b>04</b><i data-i18n="guide-settings"></i></button>
+        <small data-i18n="guide-note"></small>
+      </aside>
+
+      <section class="device-stage">
+        <div class="phone" data-i18n-aria-label="phone-label">
+          <section class="screen home-screen active" data-screen="home" data-tab="home">
+            <div class="home-canvas">
+              <div class="status-bar">
+                <b>9:41</b>
+                <div class="status-icons">
+                  <img src="/assets/ios-signal.svg" alt="" />
+                  <img src="/assets/ios-wifi.svg" alt="" />
+                  <img class="battery" src="/assets/ios-battery.svg" alt="" />
+                </div>
+              </div>
+              <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+              <div class="home-bubble">
+                <img src="/assets/bubble-bg.svg" alt="" />
+                <p data-i18n="home-bubble"></p>
+              </div>
+              <img class="home-mascot" src="/assets/panda-lying.png" alt="" />
+              <button class="home-record" data-action="record">
+                <img src="/assets/record-dot.svg" alt="" />
+                <span data-i18n="record-cta"></span>
+              </button>
+              <div class="home-inbox" id="home-inbox">
+                <article class="home-conflict">
+                  <strong data-i18n="current-title"></strong>
+                  <button class="figma-button secondary" data-action="save-current" data-i18n="save-first"></button>
+                  <button class="figma-button primary" data-action="analyze" data-i18n="analyze"></button>
+                </article>
+                <div class="saved-list" id="saved-list"></div>
+              </div>
+              <nav class="figma-nav">
+                <button class="active" data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+                <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+                <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+                <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+              </nav>
+              <div class="home-indicator"></div>
+            </div>
+          </section>
+
+          <section class="screen practice-screen" data-screen="practice" data-tab="practice">
+            <div class="scroll-page practice-scroll">
+              <div class="practice-canvas">
+                <div class="practice-filters" id="practice-filters">
+                  <button class="chip active" data-filter="all" data-i18n="filter-all"></button>
+                  <button class="chip" data-filter="work" data-i18n="filter-work"></button>
+                  <button class="chip" data-filter="home" data-i18n="filter-home"></button>
+                  <button class="chip" data-filter="love" data-i18n="filter-love"></button>
+                  <button class="chip" data-filter="friend" data-i18n="filter-friend"></button>
+                </div>
+                <article class="practice-hero">
+                  <span data-i18n="today-rec"></span>
+                  <strong data-i18n="rec-title"></strong>
+                  <button class="figma-button secondary" data-action="open-levels" data-scene="work" data-i18n="view-levels"></button>
+                  <img src="/assets/panda-angry.png" alt="" />
+                </article>
+                <section class="scene-map">
+                  <header>
+                    <h2 data-i18n="map-title"></h2>
+                    <small data-i18n="map-progress"></small>
+                  </header>
+                  <div class="map-canvas">
+                    <img class="map-route" src="/assets/map-route.svg" alt="" />
+                    <button class="map-node home" data-map="home">
+                      <img class="node-circle" src="/assets/map-node-pink.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-home"></b>
+                      <img class="node-icon" src="/assets/map-icon-house.svg" alt="" />
+                      <img class="node-tag" src="/assets/map-label-pink.svg" alt="" />
+                      <em data-i18n="node-home-tag"></em>
+                      <i class="dots"><img src="/assets/map-dot-pink.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /></i>
+                    </button>
+                    <button class="map-node work selected" data-map="work">
+                      <img class="node-circle" src="/assets/map-node-company.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-work"></b>
+                      <img class="node-icon" src="/assets/map-icon-building.svg" alt="" />
+                      <img class="node-tag" src="/assets/map-label-pink.svg" alt="" />
+                      <em data-i18n="node-work-tag"></em>
+                      <i class="dots"><img src="/assets/map-dot-pink.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /></i>
+                    </button>
+                    <button class="map-node mall locked" data-map="mall">
+                      <img class="node-circle" src="/assets/map-node-locked.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-locked"></b>
+                      <img class="node-lock" src="/assets/map-icon-lock.svg" alt="" />
+                    </button>
+                    <button class="map-node net" data-map="net">
+                      <img class="node-circle" src="/assets/map-node-pink.svg" alt="" />
+                      <img class="node-cap" src="/assets/map-label-black.svg" alt="" />
+                      <b data-i18n="node-net"></b>
+                      <img class="node-icon" src="/assets/map-icon-globe.svg" alt="" />
+                      <img class="node-tag" src="/assets/map-label-pink.svg" alt="" />
+                      <em data-i18n="node-net-tag"></em>
+                      <i class="dots"><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /><img src="/assets/map-dot-gray.svg" alt="" /></i>
+                    </button>
+                  </div>
+                  <article class="map-detail" id="map-detail"></article>
+                </section>
+                <button class="create-scene" data-action="custom-scene" data-i18n="create-scene"></button>
+              </div>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <nav class="figma-nav">
+              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+              <button class="active" data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+              <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+              <button data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+            </nav>
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen levels-screen" data-screen="levels" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div>
+                <small id="levels-kicker"></small>
+                <h1 id="levels-title"></h1>
+              </div>
+            </div>
+            <div class="levels-list" id="levels-list"></div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen custom-screen" data-screen="custom" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div>
+                <small data-i18n="custom-kicker"></small>
+                <h1 data-i18n="custom-title"></h1>
+              </div>
+            </div>
+            <div class="custom-scroll">
+              <form class="incident-intake" id="custom-form">
+                <p>把当时发生的事按自己的方式讲出来，AI 会一次只补问一个关键问题。</p>
+                <textarea id="custom-scene" rows="6" minlength="10" maxlength="5000" placeholder="例如：年夜饭时，姑妈一直追问我什么时候结婚……" required></textarea>
+                <div class="inline-actions">
+                  <button class="voice-button" type="button" data-record-target="custom-scene" data-purpose="incident_narration" data-limit="180">● 语音讲述</button>
+                  <button class="figma-button primary" type="submit">帮我整理</button>
+                </div>
+                <small id="incident-status">文字或语音都可以，转写后请先检查。</small>
+              </form>
+              <section id="incident-workspace" class="incident-workspace" hidden></section>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen drill-screen" data-screen="drill" data-tab="practice">
+            <div class="scene-stage family-dinner-stage" aria-hidden="true">
+              <div class="family-dinner-shade"></div>
+              <img class="family-dinner-auntie auntie-fierce" src="/assets/game/auntie-cutout.png" alt="" />
+              <img class="family-dinner-auntie auntie-calm" src="/assets/game/auntie-calm.png" alt="" />
+              <div class="family-dinner-caption">除夕 · 家庭聚餐</div>
+            </div>
+            <div class="scene-stage workplace-stage" aria-hidden="true">
+              <div class="workplace-shade"></div>
+              <img class="workplace-boss boss-one" src="/assets/game/boss1-cutout.png" alt="" />
+              <img class="workplace-boss boss-two" src="/assets/game/boss2-cutout.png" alt="" />
+              <div class="workplace-caption">会议室 · 一对一沟通</div>
+            </div>
+            <div class="drill-header">
+              <button class="round-button" data-action="levels">&#8592;</button>
+              <div>
+                <small id="drill-role"></small>
+                <strong id="drill-title"></strong>
+                <span id="drill-progress"></span>
+              </div>
+              <button class="end-drill" data-action="end-drill" data-i18n="end-drill"></button>
+            </div>
+            <div class="drill-thread" id="drill-thread"></div>
+            <div class="drill-suggestions" id="drill-suggestions"></div>
+            <form class="drill-composer" id="drill-form">
+              <input id="drill-input" data-i18n-placeholder="drill-placeholder" />
+              <button class="drill-mic" type="button" data-record-target="drill-input" data-purpose="classic_turn" data-limit="90" aria-label="语音输入">●</button>
+              <button class="drill-hint" type="button" id="drill-hint" aria-label="获取提示">?</button>
+              <button class="drill-send" type="submit">&#8593;</button>
+            </form>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen review-screen" data-screen="review" data-tab="practice">
+            <div class="subpage-header">
+              <button class="round-button" data-action="practice">&#8592;</button>
+              <div><small>训练复盘</small><h1>这次你是怎么应对的</h1></div>
+            </div>
+            <div class="review-scroll" id="training-review"></div>
+            <div class="status-bar"><b>9:41</b></div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen recording-screen" data-screen="recording" data-tab="home">
+            <div class="recording-header">
+              <button class="round-button" data-action="home">&#8592;</button>
+              <div class="live-status"><i></i><span data-i18n="recording"></span></div>
+              <b>&#8226;&#8226;&#8226;</b>
+            </div>
+            <article class="live-wave-card">
+              <strong id="timer">02:18</strong>
+              <p data-i18n="live-note"></p>
+              <img src="/assets/live-waveform.svg" alt="" />
+              <button class="tension-marker" data-action="mark" data-i18n="marked-initial"></button>
+            </article>
+            <article class="live-transcript">
+              <h2>确认逐字稿</h2>
+              <span>可以修改文字与说话人</span>
+              <textarea id="confirmed-transcript" aria-label="确认后的逐字稿">导师：这个格式我不是说过了吗？你到底有没有认真做？
+我：我改过了，但是这次模板和上次不一样。</textarea>
+              <p class="transcript-consent">只有点击“用知识库分析”后，确认文字才会进入分析流程。</p>
+            </article>
+            <footer class="recording-footer">
+              <strong data-i18n="after-record"></strong>
+              <button class="figma-button secondary" data-action="save-recording" data-i18n="save-recording"></button>
+              <button class="figma-button primary" data-action="analyze">用知识库分析</button>
+              <p data-i18n="privacy"></p>
+            </footer>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen analysis-screen" data-screen="analysis" data-tab="home">
+            <div class="scroll-page analysis-scroll">
+              <div class="analysis-content">
+                <section class="kb-analysis-header">
+                  <button class="round-button" data-action="home">&#8592;</button>
+                  <span class="kb-status" id="kb-status">正在读取知识库…</span>
+                  <h1>我听下来的现场</h1>
+                  <p id="kb-match-title"></p>
+                </section>
+                <article class="kb-scene-card">
+                  <p id="kb-scene-opening"></p>
+                  <dl>
+                    <div><dt>关键变化</dt><dd id="kb-key-detail"></dd></div>
+                    <div><dt>卡住的位置</dt><dd id="kb-stuck"></dd></div>
+                    <div><dt>还需确认</dt><dd id="kb-confirm"></dd></div>
+                  </dl>
+                </article>
+                <section class="kb-evidence-section">
+                  <h2>知识库依据</h2>
+                  <ul id="kb-evidence"></ul>
+                </section>
+                <section class="kb-voices-section">
+                  <header><h2>三种朋友视角</h2><small>同一事实底盘，不同处理方向</small></header>
+                  <nav class="kb-voice-tabs" aria-label="选择回答视角">
+                    <button class="active" data-voice="A">A · 算清交换</button>
+                    <button data-voice="B">B · 顾住场面</button>
+                    <button data-voice="C">C · 拿回主线</button>
+                  </nav>
+                  <article class="kb-voice-card">
+                    <small id="kb-voice-label"></small>
+                    <h3 id="kb-voice-headline"></h3>
+                    <p id="kb-voice-analysis"></p>
+                    <div><span>可以直接说</span><strong id="kb-direct-reply"></strong></div>
+                  </article>
+                </section>
+                <section class="kb-next-section">
+                  <h2>匹配到的模式与策略</h2>
+                  <div id="kb-tags"></div>
+                  <p id="kb-uncertainty"></p>
+                </section>
+                <button class="figma-button primary kb-replay" data-action="replay">把这个场景再演练一遍 →</button>
+              </div>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <div class="home-indicator"></div>
+          </section>
+
+          <section class="screen vent-screen" data-screen="vent" data-tab="vent">
+            <iframe
+              id="mouse-game-frame"
+              class="mouse-game-frame"
+              src="/mouse-game.html"
+              title="鼠鼠不倒翁｜解压小游戏"
+              allow="autoplay"
+            ></iframe>
+          </section>
+
+          <section class="screen settings-screen" data-screen="settings" data-tab="settings">
+            <div class="settings-header">
+              <h1 data-i18n="settings-title"></h1>
+            </div>
+            <div class="settings-scroll">
+              <article class="settings-profile">
+                <div class="settings-avatar"><img src="/assets/icon-user.svg" alt="" /></div>
+                <div>
+                  <strong>Juni</strong>
+                  <small>138****0000</small>
+                </div>
+                <button class="settings-edit" data-action="settings-item" data-item="profile">
+                  <img src="/assets/icon-chevron.svg" alt="" />
+                </button>
+              </article>
+              <article class="settings-summary">
+                <strong data-i18n="settings-summary-title"></strong>
+                <p data-i18n="settings-summary-copy"></p>
+              </article>
+              <button class="settings-row" data-action="settings-item" data-item="device"><span data-i18n="set-device"></span><em data-i18n="set-device-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="haptics"><span data-i18n="set-haptics"></span><em data-i18n="set-haptics-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="notify"><span data-i18n="set-notify"></span><em data-i18n="set-notify-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="privacy"><span data-i18n="set-privacy"></span><em data-i18n="set-privacy-v"></em></button>
+              <button class="settings-row" data-action="settings-item" data-item="export"><span data-i18n="set-export"></span><em>&rsaquo;</em></button>
+              <button class="settings-row" data-action="settings-item" data-item="about"><span data-i18n="set-about"></span><em>v1.0  &rsaquo;</em></button>
+            </div>
+            <div class="status-bar">
+              <b>9:41</b>
+              <div class="status-icons">
+                <img src="/assets/ios-signal.svg" alt="" />
+                <img src="/assets/ios-wifi.svg" alt="" />
+                <img class="battery" src="/assets/ios-battery.svg" alt="" />
+              </div>
+            </div>
+            <img class="dynamic-island" src="/assets/dynamic-island.svg" alt="" />
+            <nav class="figma-nav">
+              <button data-action="tab-home"><img src="/assets/nav-mic.svg" alt="" /></button>
+              <button data-action="tab-practice"><img src="/assets/nav-gamepad.svg" alt="" /></button>
+              <button data-action="tab-vent"><img src="/assets/nav-glove.svg" alt="" /></button>
+              <button class="active" data-action="tab-settings"><img src="/assets/nav-settings.svg" alt="" /></button>
+            </nav>
+            <div class="home-indicator"></div>
+          </section>
+
+          <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
