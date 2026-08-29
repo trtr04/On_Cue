@@ -8,6 +8,7 @@ type Provider = {
   url: string;
   key: string;
   model: string;
+  responseFormat: "json" | "diarized_json";
 };
 
 function providers(): Provider[] {
@@ -19,12 +20,24 @@ function providers(): Provider[] {
     const base = new URL((process.env.ONCUE_API_BASE_URL || "https://api.openai.com/v1").trim());
     if (base.protocol !== "https:") throw new Error("ONCUE_API_BASE_URL must use https");
     base.pathname = `${base.pathname.replace(/\/$/, "")}/audio/transcriptions`;
-    list.push({
-      source: "oncue",
-      url: base.toString(),
-      key: oncueKey,
-      model: process.env.ONCUE_STT_MODEL?.trim() || "gpt-4o-mini-transcribe",
-    });
+    const diarizationModel = process.env.ONCUE_DIARIZATION_MODEL?.trim() || "gpt-4o-transcribe-diarize";
+    const fallbackModel = process.env.ONCUE_STT_MODEL?.trim() || "gpt-4o-mini-transcribe";
+    list.push(
+      {
+        source: "oncue-diarized",
+        url: base.toString(),
+        key: oncueKey,
+        model: diarizationModel,
+        responseFormat: "diarized_json",
+      },
+      ...(fallbackModel === diarizationModel ? [] : [{
+        source: "oncue",
+        url: base.toString(),
+        key: oncueKey,
+        model: fallbackModel,
+        responseFormat: "json" as const,
+      }]),
+    );
   }
   if (groqKey) {
     list.push({
@@ -32,21 +45,31 @@ function providers(): Provider[] {
       url: GROQ_URL,
       key: groqKey,
       model: "whisper-large-v3-turbo",
+      responseFormat: "json",
     });
   }
   if (openaiKey) {
     list.push(
       {
+        source: "openai-diarized",
+        url: OPENAI_URL,
+        key: openaiKey,
+        model: "gpt-4o-transcribe-diarize",
+        responseFormat: "diarized_json",
+      },
+      {
         source: "openai",
         url: OPENAI_URL,
         key: openaiKey,
         model: "gpt-4o-mini-transcribe",
+        responseFormat: "json",
       },
       {
         source: "openai",
         url: OPENAI_URL,
         key: openaiKey,
         model: "whisper-1",
+        responseFormat: "json",
       },
     );
   }
@@ -68,21 +91,54 @@ async function transcribeWith(provider: Provider, audio: Blob, filename: string)
   body.append("file", audio, filename);
   body.append("model", provider.model);
   body.append("language", "zh");
-  body.append("response_format", "json");
-  body.append("prompt", TRANSCRIBE_PROMPT);
+  body.append("response_format", provider.responseFormat);
+  if (provider.responseFormat !== "diarized_json") body.append("prompt", TRANSCRIBE_PROMPT);
 
   const response = await fetch(provider.url, {
     method: "POST",
     headers: { Authorization: `Bearer ${provider.key}` },
     body,
   });
-  const payload = (await response.json().catch(() => null)) as { text?: string; error?: { message?: string } } | null;
+  const payload = (await response.json().catch(() => null)) as {
+    text?: unknown;
+    segments?: unknown;
+    error?: { message?: string };
+  } | null;
   if (!response.ok) {
     throw new Error(payload?.error?.message || `${provider.source} ${response.status}`);
   }
   const text = String(payload?.text || "").trim();
   if (!text) throw new Error(`${provider.source} empty`);
-  return { text, source: provider.source, model: provider.model };
+  const segments = Array.isArray(payload?.segments)
+    ? payload.segments.slice(0, 800).flatMap((raw, index) => {
+      if (!raw || typeof raw !== "object") return [];
+      const segment = raw as Record<string, unknown>;
+      const segmentText = String(segment.text || "").trim().slice(0, 2_000);
+      const speakerId = String(segment.speaker || "").trim().slice(0, 40);
+      if (!segmentText || !speakerId) return [];
+      const start = Number(segment.start);
+      const end = Number(segment.end);
+      return [{
+        id: String(segment.id || `segment-${index + 1}`).slice(0, 80),
+        speakerId,
+        text: segmentText,
+        startMs: Number.isFinite(start) ? Math.max(0, Math.round(start * 1_000)) : 0,
+        endMs: Number.isFinite(end) ? Math.max(0, Math.round(end * 1_000)) : 0,
+        confidence: null,
+        isUserEdited: false,
+      }];
+    })
+    : [];
+  if (provider.responseFormat === "diarized_json" && segments.length === 0) {
+    throw new Error(`${provider.source} missing segments`);
+  }
+  return {
+    text: text.slice(0, 30_000),
+    segments,
+    source: provider.source,
+    model: provider.model,
+    diarized: segments.length > 0,
+  };
 }
 
 export async function POST(request: Request) {

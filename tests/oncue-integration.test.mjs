@@ -226,6 +226,39 @@ test("speech transcription always uses the server API and never loads a browser 
   assert.match(transcription, /transcribeViaApi/);
 });
 
+test("diarized API segments become one editable chat card per sentence and speaker", async () => {
+  const { normalizeDiarizedSegments } = await import("../transcription.js");
+
+  const turns = normalizeDiarizedSegments([
+    { id: "seg-a", speaker: "A", start: 0, end: 4, text: "你为什么迟到？我已经等很久了。" },
+    { id: "seg-b", speaker: "B", start: 4, end: 8, text: "路上临时堵车了。我应该提前告诉你。" },
+  ]);
+
+  assert.equal(turns.length, 4);
+  assert.deepEqual(turns.map((turn) => turn.speaker), ["对方", "对方", "我", "我"]);
+  assert.deepEqual(turns.map((turn) => turn.speakerId), ["A", "A", "B", "B"]);
+  assert.deepEqual(turns.map((turn) => turn.text), [
+    "你为什么迟到？",
+    "我已经等很久了。",
+    "路上临时堵车了。",
+    "我应该提前告诉你。",
+  ]);
+  assert.ok(turns.every((turn) => Number.isFinite(turn.startMs) && Number.isFinite(turn.endMs)));
+  assert.ok(turns.every((turn) => turn.isUserEdited === false));
+});
+
+test("the transcription route requests true speaker diarization and the UI consumes segments", async () => {
+  const route = await readFile(new URL("../app/api/transcribe/route.ts", import.meta.url), "utf8");
+  const script = await readFile(new URL("../app.js", import.meta.url), "utf8");
+
+  assert.match(route, /gpt-4o-transcribe-diarize/);
+  assert.match(route, /diarized_json/);
+  assert.match(route, /segments/);
+  assert.match(route, /speakerId/);
+  assert.match(script, /applyTranscribedResult/);
+  assert.match(script, /result\.segments/);
+});
+
 test("personal settings stay device-local until account sync exists", async () => {
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
   const route = await readFile(new URL("app/api/settings/route.ts", projectRoot), "utf8");
@@ -420,6 +453,7 @@ test("user-facing copy is concise and team API setup is shareable without secret
     "ONCUE_API_BASE_URL",
     "ONCUE_ANALYSIS_MODEL",
     "ONCUE_TRAINING_MODEL",
+    "ONCUE_DIARIZATION_MODEL",
     "ONCUE_STT_MODEL",
   ]) {
     assert.match(envExample, new RegExp(`^${key}=`, "m"));

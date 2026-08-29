@@ -579,6 +579,29 @@ function setTranscriptText(text, { snapshotOriginal = false } = {}) {
   syncContinueButton();
 }
 
+function setTranscriptSegments(segments, { snapshotOriginal = false } = {}) {
+  const source = Array.isArray(segments) ? segments.filter((segment) => segment?.text) : [];
+  if (!source.length) return false;
+  transcriptMode = "draft";
+  transcriptTurns = source.map((segment) => ({
+    id: `turn-${nextTurnId++}`,
+    speaker: String(segment.speaker || "待确认").trim() || "待确认",
+    speakerId: String(segment.speakerId || "").trim(),
+    text: String(segment.text || "").trim(),
+    startMs: Number.isFinite(Number(segment.startMs)) ? Number(segment.startMs) : 0,
+    endMs: Number.isFinite(Number(segment.endMs)) ? Number(segment.endMs) : 0,
+    confidence: Number.isFinite(Number(segment.confidence)) ? Number(segment.confidence) : null,
+    isUserEdited: Boolean(segment.isUserEdited),
+  }));
+  if (snapshotOriginal || originalTranscriptTurns.length === 0) {
+    originalTranscriptTurns = transcriptTurns.map((turn) => ({ ...turn, id: `orig-${turn.id}` }));
+  }
+  if (confirmedTranscript) confirmedTranscript.value = serializeTranscriptTurns(transcriptTurns);
+  renderTranscriptTurns();
+  syncContinueButton();
+  return true;
+}
+
 function syncTranscriptFromTurns() {
   const text = serializeTranscriptTurns(transcriptTurns);
   if (confirmedTranscript) confirmedTranscript.value = text;
@@ -631,7 +654,7 @@ function findTurn(turnId) {
 function updateTurn(turnId, patch) {
   const turn = findTurn(turnId);
   if (!turn || transcriptMode === "original") return;
-  Object.assign(turn, patch);
+  Object.assign(turn, patch, { isUserEdited: true });
   syncTranscriptFromTurns();
   renderTranscriptTurns();
 }
@@ -965,6 +988,19 @@ function applyTranscribedText(text, { force = false } = {}) {
   return true;
 }
 
+function applyTranscribedResult(result, { force = false } = {}) {
+  const current = getTranscriptText();
+  if (!force && transcriptEditedByUser && current && !isTranscriptPlaceholder(current)) {
+    return false;
+  }
+  if (Array.isArray(result?.segments) && result.segments.length > 0) {
+    const applied = setTranscriptSegments(result.segments, { snapshotOriginal: true });
+    if (applied) transcriptEditedByUser = false;
+    return applied;
+  }
+  return applyTranscribedText(result?.text, { force });
+}
+
 async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
   if (!(blob instanceof Blob) || blob.size === 0) {
     if (isTranscriptPlaceholder(getTranscriptText())) {
@@ -996,7 +1032,7 @@ async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
       },
     });
     if (token !== transcriptionToken) return false;
-    const applied = applyTranscribedText(result.text, { force });
+    const applied = applyTranscribedResult(result, { force });
     setTranscriptStatus(COPY.transcriptStatusDone, "done");
     if (applied) showToast(COPY.toastTranscribed);
     return true;

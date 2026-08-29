@@ -44,6 +44,52 @@ export function parseTranscriptTurns(value) {
   return turns.filter((turn) => turn.speaker || turn.text);
 }
 
+function speakerName(index, speakerId) {
+  if (index === 0) return "对方";
+  if (index === 1) return "我";
+  return `说话人 ${String(speakerId || index + 1).slice(0, 12)}`;
+}
+
+export function normalizeDiarizedSegments(value) {
+  if (!Array.isArray(value)) return [];
+  const speakers = new Map();
+  const turns = [];
+  value.slice(0, 800).forEach((raw, segmentIndex) => {
+    if (!raw || typeof raw !== "object") return;
+    const speakerId = String(raw.speakerId ?? raw.speaker ?? "").trim().slice(0, 40);
+    const segmentText = String(raw.text || "").trim().slice(0, 2_000);
+    if (!speakerId || !segmentText) return;
+    if (!speakers.has(speakerId)) speakers.set(speakerId, speakerName(speakers.size, speakerId));
+    const sentences = splitTranscriptSentences(segmentText);
+    if (!sentences.length) return;
+    const rawStart = Number(raw.startMs ?? Number(raw.start) * 1_000);
+    const rawEnd = Number(raw.endMs ?? Number(raw.end) * 1_000);
+    const startMs = Number.isFinite(rawStart) ? Math.max(0, Math.round(rawStart)) : 0;
+    const endMs = Number.isFinite(rawEnd) ? Math.max(startMs, Math.round(rawEnd)) : startMs;
+    const totalWeight = sentences.reduce((sum, sentence) => sum + Math.max(1, sentence.length), 0);
+    let consumedWeight = 0;
+    sentences.forEach((sentence, sentenceIndex) => {
+      const sentenceWeight = Math.max(1, sentence.length);
+      const sentenceStart = startMs + Math.round((endMs - startMs) * consumedWeight / totalWeight);
+      consumedWeight += sentenceWeight;
+      const sentenceEnd = sentenceIndex === sentences.length - 1
+        ? endMs
+        : startMs + Math.round((endMs - startMs) * consumedWeight / totalWeight);
+      turns.push({
+        id: `${String(raw.id || `segment-${segmentIndex + 1}`).slice(0, 80)}-${sentenceIndex + 1}`,
+        speaker: speakers.get(speakerId),
+        speakerId,
+        text: sentence,
+        startMs: sentenceStart,
+        endMs: sentenceEnd,
+        confidence: Number.isFinite(Number(raw.confidence)) ? Number(raw.confidence) : null,
+        isUserEdited: false,
+      });
+    });
+  });
+  return turns;
+}
+
 export function serializeTranscriptTurns(turns) {
   return (turns || [])
     .map((turn) => {
@@ -106,7 +152,13 @@ async function transcribeViaApi(blob) {
   const payload = await response.json();
   const text = formatTranscriptText(payload?.text);
   if (!text) throw new Error("empty_api_transcript");
-  return { text, source: payload.source || "api" };
+  return {
+    text,
+    segments: normalizeDiarizedSegments(payload?.segments),
+    source: payload.source || "api",
+    model: payload.model || "",
+    diarized: Boolean(payload?.diarized),
+  };
 }
 
 export function transcriptionPlan() {

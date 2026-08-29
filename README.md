@@ -21,10 +21,12 @@ ONCUE_API_KEY=由项目负责人单独提供
 ONCUE_API_BASE_URL=https://api.openai.com/v1
 ONCUE_ANALYSIS_MODEL=gpt-4o-mini
 ONCUE_TRAINING_MODEL=gpt-4o-mini
+ONCUE_DIARIZATION_MODEL=gpt-4o-transcribe-diarize
 ONCUE_STT_MODEL=gpt-4o-mini-transcribe
 ```
 
-- `ONCUE_STT_MODEL`：录音转写。
+- `ONCUE_DIARIZATION_MODEL`：优先执行带说话人标签与时间戳的录音转写。
+- `ONCUE_STT_MODEL`：当前服务不支持说话人分离时使用的普通转写兼容模型。
 - `ONCUE_ANALYSIS_MODEL`：结合内置知识库生成对话分析。
 - `ONCUE_TRAINING_MODEL`：生成训练角色回复。
 - 如果 API 服务商不是 OpenAI 兼容地址，需要同步修改 `ONCUE_API_BASE_URL` 和模型名。
@@ -37,4 +39,4 @@ npm run test:oncue
 npm run build
 ```
 
-录音转写会按句拆成独立卡片。每张卡片都可选择“我”“对方”等说话人，也可以输入自定义称呼；确认后才进入知识库分析。
+录音转写会优先按声音区分说话人，再按句拆成独立卡片。默认将首个声音标为“对方”、第二个声音标为“我”；每张卡片仍可人工修改角色和文字，确认后才进入知识库分析。
