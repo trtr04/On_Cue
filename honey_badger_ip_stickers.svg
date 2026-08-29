@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="sheetBg" x2="0" y2="1"><stop stop-color="#fffdf9"/><stop offset="1" stop-color="#f8ecee"/></linearGradient>
+    <linearGradient id="black" x2=".8" y2="1"><stop stop-color="#4a4b54"/><stop offset=".5" stop-color="#292a30"/><stop offset="1" stop-color="#15161a"/></linearGradient>
+    <linearGradient id="gray" x2=".7" y2="1"><stop stop-color="#f4f2eb"/><stop offset=".55" stop-color="#d1d0ca"/><stop offset="1" stop-color="#969791"/></linearGradient>
+    <linearGradient id="pinkS" x2=".8" y2="1"><stop stop-color="#ffc2d8"/><stop offset=".55" stop-color="#f58db7"/><stop offset="1" stop-color="#b94f78"/></linearGradient>
+    <filter id="sticker" x="-30%" y="-30%" width="160%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="8" result="d"/><feFlood flood-color="#fff" result="w"/><feComposite in="w" in2="d" operator="in" result="outline"/><feDropShadow in="outline" dx="0" dy="7" stdDeviation="5" flood-color="#684c59" flood-opacity=".22"/><feMerge><feMergeNode/><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <g id="bowS">
+      <path d="M0 15C-19-10-49-7-46 18c3 23 27 26 47 9 19 17 44 13 47-10C51-7 22-10 2 15Z" fill="url(#pinkS)" stroke="#9f4d6c" stroke-width="4"/>
+      <circle cx="1" cy="20" r="11" fill="#ffb8d1" stroke="#9f4d6c" stroke-width="3"/>
+    </g>
+    <g id="mini">
+      <path d="M-78 81C-81 17-54-42 0-46 56-42 82 17 78 82l-4 58c-4 52-33 70-74 70s-70-18-74-70Z" fill="url(#black)" stroke="#15161a" stroke-width="5"/>
+      <path d="M-73 35C-61-16-36-45 0-46c37 1 62 29 73 81-22-13-45-19-73-19s-52 6-73 19Z" fill="url(#gray)" stroke="#85847f" stroke-width="4"/>
+      <circle cx="-59" cy="16" r="19" fill="#292a30" stroke="#15161a" stroke-width="4"/><circle cx="59" cy="16" r="19" fill="#292a30" stroke="#15161a" stroke-width="4"/>
+      <ellipse cx="0" cy="66" rx="57" ry="50" fill="#303139"/>
+      <ellipse cx="-23" cy="55" rx="20" ry="25" fill="#fff8e8"/><ellipse cx="23" cy="55" rx="20" ry="25" fill="#fff8e8"/>
+      <ellipse cx="-20" cy="60" rx="10" ry="15" fill="#17181c"/><ellipse cx="20" cy="60" rx="10" ry="15" fill="#17181c"/>
+      <circle cx="-16" cy="55" r="4" fill="#fff"/><circle cx="24" cy="55" r="4" fill="#fff"/>
+      <path d="M-39 27l-8-9M-31 23l-3-12M-23 22l2-11M39 27l8-9M31 23l3-12M23 22l-2-11" stroke="#15161a" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="0" cy="82" rx="14" ry="10" fill="#15161a"/>
+      <path d="M-21 99q21 17 42 0" fill="none" stroke="#efa0ba" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="-43" cy="87" r="11" fill="#f5a5bd" opacity=".42"/><circle cx="43" cy="87" r="11" fill="#f5a5bd" opacity=".42"/>
+      <path d="M-72 112q-38 28-13 60c11 14 27 3 24-11M72 112q38 28 13 60c-11 14-27 3-24-11" fill="url(#black)" stroke="#15161a" stroke-width="5"/>
+      <ellipse cx="-40" cy="184" rx="38" ry="24" fill="url(#black)" stroke="#15161a" stroke-width="5"/><ellipse cx="40" cy="184" rx="38" ry="24" fill="url(#black)" stroke="#15161a" stroke-width="5"/>
+      <path d="M0 119l14 13-14 16-14-16Z" fill="url(#pinkS)" stroke="#9f4d6c" stroke-width="3"/>
+      <use href="#bowS" transform="translate(57 -3) rotate(7)"/>
+    </g>
+    <g id="heart"><path d="M0 27C-46-3-55-39-29-51-9-60 2-46 8-34c8-15 22-27 40-16 28 17 9 52-40 81Z" fill="url(#pinkS)" stroke="#a7486b" stroke-width="5"/></g>
+    <g id="spark"><path d="M0-16L5-5 17 0 5 5 0 17-5 5-17 0-5-5Z" fill="#ffd968"/></g>
+  </defs>
+  <rect width="1600" height="900" rx="34" fill="url(#sheetBg)"/>
+  <text x="65" y="58" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#493d43">PINK BOW HONEY BADGER · EMOTION &amp; ACTION STICKERS</text>
+  <g fill="#fff" opacity=".56" stroke="#eadadd" stroke-width="2">
+    <rect x="45" y="85" width="350" height="245" rx="38"/><rect x="430" y="85" width="350" height="245" rx="38"/><rect x="815" y="85" width="350" height="245" rx="38"/><rect x="1200" y="85" width="350" height="245" rx="38"/>
+    <rect x="45" y="350" width="350" height="245" rx="38"/><rect x="430" y="350" width="350" height="245" rx="38"/><rect x="815" y="350" width="350" height="245" rx="38"/><rect x="1200" y="350" width="350" height="245" rx="38"/>
+    <rect x="45" y="615" width="350" height="245" rx="38"/><rect x="430" y="615" width="350" height="245" rx="38"/><rect x="815" y="615" width="350" height="245" rx="38"/><rect x="1200" y="615" width="350" height="245" rx="38"/>
+  </g>
+  <!-- 1 hug -->
+  <g transform="translate(220 142) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><use href="#heart" transform="translate(0 145) scale(.72)"/>
+    <path d="M-71 116q29 35 62 23M71 116q-29 35-62 23" fill="none" stroke="#292a30" stroke-width="18" stroke-linecap="round"/>
+  </g>
+  <!-- 2 tissue -->
+  <g transform="translate(605 142) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><rect x="52" y="130" width="61" height="46" rx="8" fill="#88c6df" stroke="#3f7f9b" stroke-width="5"/><path d="M70 132q8-37 25 0" fill="#fff" stroke="#b8dce8" stroke-width="4"/>
+  </g>
+  <!-- 3 listen -->
+  <g transform="translate(990 142) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M-109 55q-27 0-27 29 0 30 29 30 25 0 25-28" fill="none" stroke="#f58db7" stroke-width="9" stroke-linecap="round"/><path d="M-128 130q18 16 36 0" fill="none" stroke="#f58db7" stroke-width="7"/><use href="#spark" transform="translate(105 39)"/>
+  </g>
+  <!-- 4 thumbs up -->
+  <g transform="translate(1375 142) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M74 142q19-13 18-42-1-21 16-20 15 1 11 29l-3 18 22 1c21 1 18 18 12 37-7 22-20 30-45 29l-28-1Z" fill="#292a30" stroke="#15161a" stroke-width="6"/><use href="#spark" transform="translate(126 61)"/>
+  </g>
+  <!-- 5 umbrella -->
+  <g transform="translate(220 407) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M-121 15q121-103 242 0-26-12-47 7-25-20-49 0-25-20-50 0-22-19-46-7Z" fill="#d8eff6" fill-opacity=".8" stroke="#659caf" stroke-width="6"/><path d="M0 18v145q0 31 23 31 20 0 20-22" fill="none" stroke="#659caf" stroke-width="6"/>
+  </g>
+  <!-- 6 warm drink -->
+  <g transform="translate(605 407) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><rect x="-42" y="131" width="84" height="59" rx="12" fill="#f3b36c" stroke="#a96539" stroke-width="6"/><path d="M41 142q35-3 35 20 0 24-35 20M-24 126q-15-22 3-37M6 126q-15-22 3-37M31 126q-15-22 3-37" fill="none" stroke="#a96539" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <!-- 7 toolbox -->
+  <g transform="translate(990 407) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><rect x="-68" y="141" width="136" height="55" rx="12" fill="#f2b24d" stroke="#9a6826" stroke-width="6"/><path d="M-35 141v-20h70v20M0 142v54" fill="none" stroke="#9a6826" stroke-width="6"/><path d="M92 113l37-37 15 15-37 37Z" fill="#9fc0ca" stroke="#557986" stroke-width="5"/>
+  </g>
+  <!-- 8 guardian -->
+  <g transform="translate(1375 407) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M94 95l55 20v48c0 35-22 61-55 75-33-14-55-40-55-75v-48Z" fill="#f58db7" stroke="#9f4d6c" stroke-width="6"/><path d="M94 124v79M60 162h68" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <!-- 9 joyful jump -->
+  <g transform="translate(220 670) rotate(-7) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M-71 117q-50-19-66-59M71 117q50-19 66-59" fill="none" stroke="#292a30" stroke-width="18" stroke-linecap="round"/><use href="#spark" transform="translate(-118 18)"/><use href="#spark" transform="translate(126 34) scale(.8)"/>
+  </g>
+  <!-- 10 brave tears -->
+  <g transform="translate(605 672) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M-39 75q-18 26 0 36 18-10 0-36ZM39 75q-18 26 0 36 18-10 0-36Z" fill="#7ec7e8"/><use href="#heart" transform="translate(90 126) scale(.42)"/>
+  </g>
+  <!-- 11 calm breathing -->
+  <g transform="translate(990 672) scale(.7)" filter="url(#sticker)">
+    <use href="#mini"/><path d="M-35 57q15 12 30 0M5 57q15 12 30 0" fill="none" stroke="#17181c" stroke-width="6" stroke-linecap="round"/><path d="M-114 118q114 58 228 0" fill="none" stroke="#f5a5bd" stroke-width="7" stroke-dasharray="12 12"/><use href="#spark" transform="translate(109 54) scale(.75)"/>
+  </g>
+  <!-- 12 sleeping curl -->
+  <g transform="translate(1375 738) scale(.72)" filter="url(#sticker)">
+    <ellipse cx="0" cy="29" rx="126" ry="88" fill="url(#black)" stroke="#15161a" stroke-width="6"/>
+    <path d="M-112 6q29-71 102-68c58 2 96 38 117 93-60-26-141-33-219-25Z" fill="url(#gray)" stroke="#85847f" stroke-width="5"/>
+    <circle cx="-48" cy="-13" r="25" fill="#292a30" stroke="#15161a" stroke-width="5"/>
+    <path d="M-72 22q17 14 34 0M-19 22q17 14 34 0" fill="none" stroke="#fff8e8" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="-28" cy="44" rx="16" ry="11" fill="#15161a"/><path d="M-49 62q22 17 44 0" fill="none" stroke="#efa0ba" stroke-width="6"/>
+    <use href="#bowS" transform="translate(-54 -53) rotate(-7)"/>
+    <text x="86" y="-37" font-family="Arial,sans-serif" font-size="36" font-weight="700" fill="#9f6e97">Z</text><text x="117" y="-66" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#bd92b7">Z</text>
+  </g>
+</svg>
