@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>经典训练 · 领导质问进度</title>
+    <title>错不起我对了 · 沟通与 PUA 应对训练</title>
     <link rel="stylesheet" href="/static/styles.css?v=2" />
   </head>
   <body>
@@ -12,13 +12,14 @@
         当前打开的是静态文件，无法连接后端。请先启动 FastAPI，再访问 http://127.0.0.1:8000/。
       </aside>
       <header>
-        <p class="eyebrow">错不起我对了 · 经典训练</p>
+        <p class="eyebrow">错不起我对了 · 表达与边界训练</p>
         <h1 id="scene-title">领导质问项目进度</h1>
         <p id="scene-description">练习在压力下先说现状，再给事实、方案和明确时间。</p>
       </header>
 
       <nav class="path-switcher" aria-label="训练方式">
-        <button id="classic-path-button" class="path-button active" type="button">经典场景</button>
+        <button id="classic-path-button" class="path-button active" type="button">普通沟通训练</button>
+        <button id="pua-path-button" class="path-button" type="button">女性 PUA 应对训练</button>
         <button id="incident-path-button" class="path-button" type="button">整理真实经历</button>
       </nav>
 
@@ -140,6 +141,8 @@
       </section>
 
       <section class="setup" id="setup-panel">
+        <label for="scenario-select">训练场景</label>
+        <select id="scenario-select" aria-label="训练场景"></select>
         <label for="difficulty">训练难度</label>
         <select id="difficulty">
           <option value="1">基础</option>

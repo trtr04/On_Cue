@@ -35,6 +35,8 @@ class ScenarioSummary(BaseModel):
     difficulty_options: list[int]
     default_difficulty: int
     max_turns: int
+    module: str = "classic_training"
+    training_mode: Literal["ordinary", "pua_response"] = "ordinary"
 
 
 class Message(BaseModel):
@@ -49,6 +51,12 @@ class SessionState(BaseModel):
     resolved_goal_ids: list[str]
     unresolved_goal_ids: list[str]
     end_reason: str | None = None
+    asked_move_ids: list[str] = Field(default_factory=list)
+    asked_question_intents: list[str] = Field(default_factory=list)
+    covered_fact_slots: list[str] = Field(default_factory=list)
+    last_move_id: str | None = None
+    last_user_response_type: str | None = None
+    closure_type: str | None = None
 
 
 class TrainingSession(BaseModel):
@@ -106,6 +114,12 @@ class SimulatorOutput(BaseModel):
     unresolved_goal_ids: list[str]
     end_session: bool
     end_reason: str | None = None
+    move_id: str | None = None
+    question_intent: str | None = None
+    acknowledged_fact_slots: list[str] = Field(default_factory=list)
+    missing_slot: str | None = None
+    user_response_type: str | None = None
+    closure_type: str | None = None
 
 
 class TurnResponse(BaseModel):

@@ -4,6 +4,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
+from .dialogue_policy import apply_output_to_state
 from .llm_service import llm_service
 from .models import (
     CreateSessionRequest,
@@ -84,6 +85,16 @@ class TrainingService:
         )
         opening_output = self.llm.generate_opening(session, scenario, role)
         opening = opening_output.opponent_message
+        ledger_output = opening_output.model_copy(update={
+            "resolved_goal_ids": [],
+            "unresolved_goal_ids": session.learning_goal_ids,
+        })
+        session.state = apply_output_to_state(
+            session.state,
+            ledger_output,
+            session.learning_goal_ids,
+            end_reason=None,
+        )
         session.messages.append(Message(turn=0, speaker="opponent", content=opening))
         self.sessions.save(session)
         return CreateSessionResponse(
@@ -119,11 +130,10 @@ class TrainingService:
         end_session = output.end_session or reached_limit
         end_reason = output.end_reason or ("max_turns_reached" if reached_limit else None)
         session.current_turn = user_turn
-        session.state = SessionState(
-            phase=output.phase,
-            pressure_level=output.pressure_level,
-            resolved_goal_ids=output.resolved_goal_ids,
-            unresolved_goal_ids=output.unresolved_goal_ids,
+        session.state = apply_output_to_state(
+            session.state,
+            output,
+            session.learning_goal_ids,
             end_reason=end_reason,
         )
         session.messages.append(Message(turn=user_turn, speaker="opponent", content=output.opponent_message))

@@ -3,11 +3,13 @@ const state = {
   currentTurn: 0,
   maxTurns: 0,
   incidentId: null,
-  mode: "classic",
+  mode: "ordinary",
   classicTitle: "领导质问项目进度",
   classicDescription: "练习在压力下先说现状，再给事实、方案和明确时间。",
   incidentStatus: null,
   activeCustomTraining: false,
+  scenarios: [],
+  selectedScenarioId: "workplace-progress",
 };
 
 const messages = document.querySelector("#messages");
@@ -16,6 +18,7 @@ const sendButton = document.querySelector("#send-button");
 const hintButton = document.querySelector("#hint-button");
 const finishButton = document.querySelector("#finish-button");
 const startButton = document.querySelector("#start-button");
+const scenarioSelect = document.querySelector("#scenario-select");
 const form = document.querySelector("#message-form");
 const turnLabel = document.querySelector("#turn-label");
 const statusText = document.querySelector("#status-text");
@@ -24,6 +27,7 @@ const hintCard = document.querySelector("#hint-card");
 const classicFlow = document.querySelector("#classic-flow");
 const incidentFlow = document.querySelector("#incident-flow");
 const classicPathButton = document.querySelector("#classic-path-button");
+const puaPathButton = document.querySelector("#pua-path-button");
 const incidentPathButton = document.querySelector("#incident-path-button");
 const incidentForm = document.querySelector("#incident-form");
 const incidentDescription = document.querySelector("#incident-description");
@@ -43,20 +47,40 @@ let activeRecording = null;
 
 function setMode(mode) {
   state.mode = mode;
-  const isClassic = mode === "classic";
-  classicFlow.hidden = !isClassic;
-  incidentFlow.hidden = isClassic;
-  classicPathButton.classList.toggle("active", isClassic);
-  incidentPathButton.classList.toggle("active", !isClassic);
-  document.querySelector("#scene-title").textContent = isClassic
-    ? state.classicTitle
-    : "把真实经历变成可练的场景";
-  document.querySelector("#scene-description").textContent = isClassic
-    ? state.classicDescription
-    : "不需要一次讲完整，系统会逐步帮你补齐关键事实。";
-  if (isClassic && !state.sessionId && !state.activeCustomTraining) {
+  const isPreset = mode === "ordinary" || mode === "pua";
+  classicFlow.hidden = !isPreset;
+  incidentFlow.hidden = isPreset;
+  classicPathButton.classList.toggle("active", mode === "ordinary");
+  puaPathButton.classList.toggle("active", mode === "pua");
+  incidentPathButton.classList.toggle("active", mode === "incident");
+  if (isPreset) {
+    refreshScenarioOptions(mode);
+  } else {
+    document.querySelector("#scene-title").textContent = "把真实经历变成可练的场景";
+    document.querySelector("#scene-description").textContent = "不需要一次讲完整，系统会逐步帮你补齐关键事实。";
+  }
+  if (isPreset && !state.sessionId && !state.activeCustomTraining) {
     document.querySelector("#setup-panel").hidden = false;
   }
+}
+
+function refreshScenarioOptions(mode) {
+  if (!state.scenarios.length) return;
+  const targetMode = mode === "pua" ? "pua_response" : "ordinary";
+  const candidates = state.scenarios.filter((item) => item.training_mode === targetMode);
+  if (!candidates.some((item) => item.scenario_id === state.selectedScenarioId)) {
+    state.selectedScenarioId = candidates[0]?.scenario_id || "workplace-progress";
+  }
+  scenarioSelect.replaceChildren();
+  candidates.forEach((item) => {
+    const option = document.createElement("option");
+    option.value = item.scenario_id;
+    option.textContent = item.title;
+    scenarioSelect.appendChild(option);
+  });
+  scenarioSelect.value = state.selectedScenarioId;
+  const scenario = candidates.find((item) => item.scenario_id === state.selectedScenarioId);
+  if (scenario) renderSelectedScenario(scenario);
 }
 
 function setIncidentBusy(isBusy, label = "") {
@@ -174,6 +198,7 @@ function setBusy(isBusy, label = "") {
   hintButton.disabled = isBusy || !state.sessionId;
   finishButton.disabled = isBusy || !state.sessionId;
   startButton.disabled = isBusy || Boolean(state.sessionId);
+  scenarioSelect.disabled = isBusy || Boolean(state.sessionId);
   classicRecordButton.disabled = isBusy || !state.sessionId || Boolean(activeRecording);
   statusText.textContent = label || "所有角色对话均由 LLM 生成";
 }
@@ -501,14 +526,8 @@ recordButtons.forEach((button) => {
 async function loadScenario() {
   try {
     const scenarios = await api("/api/scenarios");
-    const scenario = scenarios.find((item) => item.scenario_id === "workplace-progress");
-    if (!scenario) throw new Error("没有找到领导进度场景");
-    document.querySelector("#scene-title").textContent = scenario.title;
-    document.querySelector("#scene-description").textContent = scenario.short_description;
-    state.classicTitle = scenario.title;
-    state.classicDescription = scenario.short_description;
-    if (state.mode === "classic") setMode("classic");
-    renderBriefing(scenario.briefing);
+    state.scenarios = scenarios;
+    setMode(state.mode);
   } catch (error) {
     document.querySelector("#briefing-setting").textContent = "场景加载失败";
     document.querySelector("#briefing-summary").textContent = error.message;
@@ -516,7 +535,21 @@ async function loadScenario() {
   }
 }
 
+function renderSelectedScenario(scenario) {
+  document.querySelector("#scene-title").textContent = scenario.title;
+  document.querySelector("#scene-description").textContent = scenario.short_description;
+  state.classicTitle = scenario.title;
+  state.classicDescription = scenario.short_description;
+  renderBriefing(scenario.briefing);
+}
+
 loadScenario();
+
+scenarioSelect.addEventListener("change", () => {
+  state.selectedScenarioId = scenarioSelect.value;
+  const scenario = state.scenarios.find((item) => item.scenario_id === state.selectedScenarioId);
+  if (scenario) renderSelectedScenario(scenario);
+});
 
 startButton.addEventListener("click", async () => {
   setBusy(true, "正在创建训练……");
@@ -527,9 +560,11 @@ startButton.addEventListener("click", async () => {
     const difficulty = Number(document.querySelector("#difficulty").value);
     const data = await api("/api/training/sessions", {
       method: "POST",
-      body: JSON.stringify({ scenario_id: "workplace-progress", difficulty }),
+      body: JSON.stringify({ scenario_id: state.selectedScenarioId, difficulty }),
     });
-    activateTrainingSession(data);
+    const selectedScenario = state.scenarios.find((item) => item.scenario_id === state.selectedScenarioId);
+    const isPUA = selectedScenario?.training_mode === "pua_response";
+    activateTrainingSession(data, null, isPUA ? "压力方" : "直属领导");
   } catch (error) {
     state.sessionId = null;
     messages.innerHTML = `<p class="empty-state"></p>`;
@@ -569,7 +604,8 @@ form.addEventListener("submit", async (event) => {
 finishButton.addEventListener("click", finishAndReview);
 hintButton.addEventListener("click", requestHint);
 
-classicPathButton.addEventListener("click", () => setMode("classic"));
+classicPathButton.addEventListener("click", () => setMode("ordinary"));
+puaPathButton.addEventListener("click", () => setMode("pua"));
 incidentPathButton.addEventListener("click", () => setMode("incident"));
 
 incidentForm.addEventListener("submit", async (event) => {
@@ -630,7 +666,7 @@ startCustomTrainingButton.addEventListener("click", async () => {
   try {
     const result = await api(`/api/incidents/${state.incidentId}/training`, { method: "POST" });
     setIncidentBusy(false, "专属训练已开始");
-    setMode("classic");
+    setMode("ordinary");
     activateTrainingSession(result.session, result.scenario, result.role_display_name);
   } catch (error) {
     setIncidentBusy(false, `训练生成失败：${error.message}`);

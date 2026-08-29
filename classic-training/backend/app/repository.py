@@ -9,6 +9,7 @@ from fastapi import HTTPException
 from .config import PROJECT_DIR
 from .database import Database, database
 from .models import HintResponse, IncidentRecord, ReviewResponse, TrainingSession
+from .pua_modules import get_pua_role, get_pua_scenario, list_pua_scenarios
 
 
 class ContentRepository:
@@ -25,15 +26,22 @@ class ContentRepository:
             raise HTTPException(status_code=404, detail=f"Content not found: {path.stem}") from exc
 
     def list_scenarios(self) -> list[dict]:
-        return [self._read_json(path) for path in sorted(self.scenario_dir.glob("*.json"))]
+        ordinary = [self._read_json(path) for path in sorted(self.scenario_dir.glob("*.json"))]
+        return [*ordinary, *list_pua_scenarios()]
 
     def get_scenario(self, scenario_id: str) -> dict:
+        pua_scenario = get_pua_scenario(scenario_id)
+        if pua_scenario is not None:
+            return pua_scenario
         for scenario in self.list_scenarios():
             if scenario.get("scenario_id") == scenario_id:
                 return deepcopy(scenario)
         raise HTTPException(status_code=404, detail="Scenario not found")
 
     def get_role(self, role_id: str) -> dict:
+        pua_role = get_pua_role(role_id)
+        if pua_role is not None:
+            return pua_role
         path = self.role_dir / f"{role_id}.json"
         role = self._read_json(path)
         if role.get("role_id") != role_id:

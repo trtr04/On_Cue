@@ -11,6 +11,11 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from backend.app.llm_service import LLMService
+from backend.app.dialogue_policy import apply_output_to_state, build_allowed_moves
+from backend.app.expression_retriever import ExpressionRetriever
+from backend.app.pua_corpus import load_pua_corpus
+from backend.app.pua_modules import MODULES
+from backend.app.pua_rag import PUARetriever
 from backend.app.database import Database
 from backend.app.incident_service import IncidentService
 from backend.app.custom_training_service import CustomTrainingService
@@ -339,6 +344,460 @@ class ZhipuRequestContractTests(unittest.TestCase):
                 previous,
             )
         )
+        self.assertTrue(
+            LLMService._repeats_previous_question(
+                "先别解释背景，给我一个明确的完成时间。",
+                ["这个完整版本什么时候能交？"],
+            )
+        )
+
+    def test_repeated_intent_detection_handles_paraphrases(self) -> None:
+        self.assertTrue(
+            LLMService._repeats_previous_intent(
+                "确认明确完成时间",
+                ["确认最终交付时间"],
+            )
+        )
+        self.assertFalse(
+            LLMService._repeats_previous_intent(
+                "确认延迟上报责任",
+                ["确认最终交付时间"],
+            )
+        )
+
+
+class DialoguePolicyTests(unittest.TestCase):
+    @staticmethod
+    def _pua_session(
+        current_turn: int,
+        messages: list[Message],
+        difficulty: int = 2,
+    ) -> tuple[dict, dict, TrainingSession]:
+        scenario = content_repository.get_scenario("pua-workplace-interview")
+        role = content_repository.get_role(scenario["role_id"])
+        session = TrainingSession(
+            session_id="session-pua-policy-test",
+            scenario_id=scenario["scenario_id"],
+            role_id=role["role_id"],
+            difficulty=difficulty,
+            status="active",
+            current_turn=current_turn,
+            max_turns=5,
+            learning_goal_ids=scenario["learning_goal_ids"],
+            response_framework=scenario["response_framework"],
+            state=SessionState(
+                **scenario["initial_state"],
+                asked_move_ids=["pua_opening"],
+            ),
+            messages=messages,
+        )
+        return scenario, role, session
+
+    def test_internal_move_label_is_never_exposed_after_retries(self) -> None:
+        scenario, role, session = self._pua_session(
+            1,
+            [
+                Message(turn=0, speaker="opponent", content="未来三年考虑要孩子吗？"),
+                Message(turn=1, speaker="user", content="这个问题与面试无关，请回到岗位要求。"),
+            ],
+        )
+        invalid = SimulatorOutput(
+            opponent_message="你还是没有回应。现在谈的是：弱化用户边界并要求其继续自证。",
+            phase="pressure",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=scenario["learning_goal_ids"],
+            end_session=False,
+            move_id="dismiss_boundary",
+        )
+        llm = LLMService()
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            llm,
+            "_remote_turn",
+            side_effect=[invalid, invalid, invalid],
+        ):
+            result = llm.generate_turn(session, scenario, role)
+        self.assertNotIn("用户边界", result.opponent_message)
+        self.assertNotIn("继续自证", result.opponent_message)
+        self.assertEqual(
+            result.opponent_message,
+            "你一直在回避我的顾虑，但我还没有听到一个让我放心的答复。",
+        )
+
+    def test_last_turn_rejects_new_question_and_forces_natural_closing(self) -> None:
+        scenario, role, session = self._pua_session(
+            4,
+            [
+                Message(turn=0, speaker="opponent", content="未来三年考虑要孩子吗？"),
+                Message(turn=4, speaker="user", content="我已经说明了自己的情况。"),
+            ],
+        )
+        invalid_question = SimulatorOutput(
+            opponent_message="那你到底能不能保证长期稳定投入？",
+            phase="pressure",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=scenario["learning_goal_ids"],
+            end_session=False,
+            move_id="close_with_disagreement",
+        )
+        natural_close = invalid_question.model_copy(update={
+            "opponent_message": "行，你的意思我知道了。我们保留各自意见，今天先到这里。",
+        })
+        llm = LLMService()
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            llm,
+            "_remote_turn",
+            side_effect=[invalid_question, natural_close],
+        ) as remote:
+            result = llm.generate_turn(session, scenario, role)
+        self.assertEqual(remote.call_count, 2)
+        self.assertTrue(result.end_session)
+        self.assertEqual(result.end_reason, "max_turns_reached")
+        self.assertFalse(LLMService._contains_question(result.opponent_message))
+
+    def test_compliance_ends_pua_dialogue_without_waiting_for_turn_five(self) -> None:
+        scenario, role, session = self._pua_session(
+            2,
+            [
+                Message(turn=0, speaker="opponent", content="我们需要了解你的个人安排。"),
+                Message(turn=2, speaker="user", content="没问题，我会按你说的安排，也会配合。"),
+            ],
+        )
+        close = SimulatorOutput(
+            opponent_message="好，那就按刚才确认的安排执行，今天先谈到这里。",
+            phase="closed",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=scenario["learning_goal_ids"],
+            end_session=True,
+            move_id="close_after_compliance",
+        )
+        llm = LLMService()
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            llm,
+            "_remote_turn",
+            return_value=close,
+        ) as remote:
+            result = llm.generate_turn(session, scenario, role)
+        sent_context = remote.call_args.args[0]
+        self.assertEqual(sent_context["request_type"], "closing")
+        self.assertEqual(sent_context["server_user_response_hint"], "compliance")
+        self.assertEqual(result.end_reason, "user_complied")
+        self.assertTrue(result.end_session)
+
+    def test_second_clear_boundary_ends_pua_dialogue(self) -> None:
+        scenario, role, session = self._pua_session(
+            2,
+            [
+                Message(turn=0, speaker="opponent", content="未来三年考虑要孩子吗？"),
+                Message(turn=1, speaker="user", content="这个问题与面试无关，请回到岗位要求。"),
+                Message(turn=1, speaker="opponent", content="我们只是想了解稳定性。"),
+                Message(turn=2, speaker="user", content="我不接受婚育询问，只讨论岗位能力。"),
+            ],
+        )
+        close = SimulatorOutput(
+            opponent_message="好，你的立场我听到了。这个问题今天先到这里。",
+            phase="closed",
+            pressure_level=2,
+            resolved_goal_ids=["set_boundary"],
+            unresolved_goal_ids=[goal for goal in scenario["learning_goal_ids"] if goal != "set_boundary"],
+            end_session=True,
+            move_id="close_after_boundary",
+        )
+        llm = LLMService()
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            llm,
+            "_remote_turn",
+            return_value=close,
+        ):
+            result = llm.generate_turn(session, scenario, role)
+        self.assertEqual(result.end_reason, "boundary_held")
+        self.assertEqual(result.closure_type, "boundary_held")
+
+    def test_easy_pua_closes_on_first_clear_boundary(self) -> None:
+        scenario, role, session = self._pua_session(
+            current_turn=1,
+            messages=[
+                Message(turn=0, speaker="opponent", content="你以后是不是会因为家庭影响工作？"),
+                Message(turn=1, speaker="user", content="这是我的隐私，请只讨论岗位能力。"),
+            ],
+            difficulty=1,
+        )
+        service = LLMService()
+        natural_close = SimulatorOutput(
+            opponent_message="好，那我们回到岗位本身，今天先到这里。",
+            phase="closed",
+            pressure_level=1,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=session.learning_goal_ids,
+            move_id="close_after_boundary",
+            end_session=True,
+        )
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            service,
+            "_remote_turn",
+            return_value=natural_close,
+        ):
+            result = service.generate_turn(session, scenario, role)
+
+        self.assertTrue(result.end_session)
+        self.assertEqual(result.end_reason, "boundary_held")
+
+    def test_soft_redirect_after_boundary_also_closes_dialogue(self) -> None:
+        scenario, role, session = self._pua_session(
+            current_turn=2,
+            messages=[
+                Message(turn=0, speaker="opponent", content="未来三年考虑要孩子吗？"),
+                Message(turn=1, speaker="user", content="这个问题和面试没有关系吧，我们可以聊项目。"),
+                Message(turn=1, speaker="opponent", content="我们需要了解你能不能长期稳定投入。"),
+                Message(turn=2, speaker="user", content="我会安排好工作。您这边还有什么其他感兴趣的吗？"),
+            ],
+        )
+        service = LLMService()
+        natural_close = SimulatorOutput(
+            opponent_message="好，你的立场我知道了，我们回到岗位本身。今天先到这里。",
+            phase="closed",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=session.learning_goal_ids,
+            move_id="close_after_boundary",
+            end_session=True,
+        )
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            service,
+            "_remote_turn",
+            return_value=natural_close,
+        ):
+            result = service.generate_turn(session, scenario, role)
+
+        self.assertTrue(result.end_session)
+        self.assertEqual(result.user_response_type, "boundary")
+        self.assertEqual(result.end_reason, "boundary_held")
+
+    def test_generate_turn_retries_semantic_duplicate_and_changes_direction(self) -> None:
+        scenario = content_repository.get_scenario("workplace-progress")
+        role = content_repository.get_role("direct-manager")
+        session = TrainingSession(
+            session_id="session-retry-test",
+            scenario_id=scenario["scenario_id"],
+            role_id=role["role_id"],
+            difficulty=2,
+            status="active",
+            current_turn=1,
+            max_turns=5,
+            learning_goal_ids=scenario["learning_goal_ids"],
+            response_framework=scenario["response_framework"],
+            state=SessionState(
+                **scenario["initial_state"],
+                asked_move_ids=["ask_actual_status"],
+            ),
+            messages=[
+                Message(turn=0, speaker="opponent", content="完整版本什么时候能交？"),
+                Message(turn=1, speaker="user", content="支付回调还在适配。"),
+            ],
+        )
+        repeated = SimulatorOutput(
+            opponent_message="给我一个明确的完成时间。",
+            phase="plan",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=scenario["learning_goal_ids"],
+            end_session=False,
+            move_id="request_specific_status",
+            question_intent="确认完成时间",
+        )
+        fresh = SimulatorOutput(
+            opponent_message="支付公司的变更我知道了，你昨晚为什么没有及时预警？",
+            phase="ownership",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=scenario["learning_goal_ids"],
+            end_session=False,
+            move_id="challenge_late_reporting",
+            question_intent="确认延迟上报原因",
+        )
+        llm = LLMService()
+        with patch("backend.app.llm_service.settings", SimpleNamespace(llm_enabled=True)), patch.object(
+            llm,
+            "_remote_turn",
+            side_effect=[repeated, fresh],
+        ) as remote:
+            result = llm.generate_turn(session, scenario, role)
+        self.assertEqual(remote.call_count, 2)
+        self.assertEqual(result.move_id, "challenge_late_reporting")
+        self.assertIn("及时预警", result.opponent_message)
+
+    def test_used_move_is_removed_from_allowed_moves(self) -> None:
+        scenario = content_repository.get_scenario("workplace-progress")
+        role = content_repository.get_role("direct-manager")
+        session = TrainingSession(
+            session_id="session-policy-test",
+            scenario_id=scenario["scenario_id"],
+            role_id=role["role_id"],
+            difficulty=2,
+            status="active",
+            current_turn=1,
+            max_turns=5,
+            learning_goal_ids=scenario["learning_goal_ids"],
+            response_framework=scenario["response_framework"],
+            state=SessionState(
+                **scenario["initial_state"],
+                asked_move_ids=["ask_actual_status", "request_specific_status"],
+            ),
+            messages=[],
+        )
+        allowed_ids = [move["move_id"] for move in build_allowed_moves(session, role)]
+        self.assertNotIn("ask_actual_status", allowed_ids)
+        self.assertNotIn("request_specific_status", allowed_ids)
+        self.assertIn("challenge_late_reporting", allowed_ids)
+
+    def test_state_ledger_is_monotonic(self) -> None:
+        previous = SessionState(
+            phase="status",
+            pressure_level=2,
+            resolved_goal_ids=["status_first"],
+            unresolved_goal_ids=["actionable_plan"],
+            asked_move_ids=["request_specific_status"],
+            asked_question_intents=["确认当前进度"],
+            covered_fact_slots=["完成度"],
+        )
+        output = SimulatorOutput(
+            opponent_message="下一步谁负责？",
+            phase="plan",
+            pressure_level=2,
+            resolved_goal_ids=[],
+            unresolved_goal_ids=["status_first", "actionable_plan"],
+            end_session=False,
+            move_id="request_actionable_plan",
+            question_intent="确认下一步负责人",
+            acknowledged_fact_slots=["延期原因"],
+        )
+        merged = apply_output_to_state(
+            previous,
+            output,
+            ["status_first", "actionable_plan"],
+            None,
+        )
+        self.assertEqual(merged.resolved_goal_ids, ["status_first"])
+        self.assertEqual(merged.asked_move_ids[-1], "request_actionable_plan")
+        self.assertEqual(merged.covered_fact_slots, ["完成度", "延期原因"])
+
+    def test_expression_retrieval_excludes_previous_utterance(self) -> None:
+        role = content_repository.get_role("direct-manager")
+        previous = ["为什么这个风险昨天没说？"]
+        results = ExpressionRetriever().retrieve(
+            "项目延期 风险上报",
+            role,
+            previous_opponent_messages=previous,
+            top=3,
+        )
+        self.assertTrue(results)
+        self.assertNotIn(previous[0], [item["utterance"] for item in results])
+
+    def test_pressure_corpus_is_retrieved_only_as_anti_examples(self) -> None:
+        role = content_repository.get_role("direct-manager")
+        results = PUARetriever().retrieve_anti_examples(
+            "领导说公司不养闲人，不想干就走",
+            role,
+            top=2,
+        )
+        self.assertTrue(results)
+        self.assertTrue(all(item["domain"] == "workplace" for item in results))
+        self.assertTrue(all(item["usage"].startswith("反例") for item in results))
+
+    def test_every_pua_utterance_has_scene_tactics_and_difficulty(self) -> None:
+        entries = load_pua_corpus()
+        self.assertTrue(entries)
+        self.assertTrue(all(entry.scenario_types for entry in entries))
+        self.assertTrue(all(entry.tactic_tags for entry in entries))
+        self.assertTrue(all(entry.severity in {1, 2, 3} for entry in entries))
+        self.assertTrue(all(entry.difficulty_label in {"容易", "中等", "困难"} for entry in entries))
+
+    def test_pua_modules_are_independent_compatible_scenarios(self) -> None:
+        self.assertEqual(len(MODULES), 10)
+        for module in MODULES:
+            scenario = content_repository.get_scenario(module["module_id"])
+            role = content_repository.get_role(scenario["role_id"])
+            self.assertEqual(scenario["training_mode"], "pua_response")
+            self.assertEqual(role["applies_to_scenarios"], [scenario["scenario_id"]])
+            self.assertEqual(set(scenario["learning_goal_ids"]), set(role["learning_goal_alignment"]))
+            forbidden_ids = {
+                item["rule_id"] for item in role["behavior_policy"]["forbidden_behaviors"]
+            }
+            self.assertNotIn("no_personal_humiliation", forbidden_ids)
+            self.assertNotIn("no_gender_discrimination", forbidden_ids)
+
+    def test_controlled_retrieval_is_module_and_difficulty_scoped(self) -> None:
+        results = PUARetriever().retrieve_controlled(
+            module_id="pua-family-marriage",
+            difficulty=1,
+            query="过年家里催婚",
+            previous_opponent_messages=[],
+            top=5,
+        )
+        self.assertTrue(results)
+        self.assertTrue(all(item["domain"] == "family" for item in results))
+        self.assertTrue(all("family_marriage_pressure" in item["scenario_types"] for item in results))
+        self.assertTrue(all(item["severity"] <= 1 for item in results))
+
+    def test_llm_context_uses_only_one_rag_channel(self) -> None:
+        llm = LLMService()
+        ordinary = content_repository.get_scenario("workplace-progress")
+        ordinary_role = content_repository.get_role(ordinary["role_id"])
+        ordinary_session = TrainingSession(
+            session_id="ordinary-rag",
+            scenario_id=ordinary["scenario_id"],
+            role_id=ordinary_role["role_id"],
+            difficulty=2,
+            status="active",
+            current_turn=0,
+            max_turns=5,
+            learning_goal_ids=ordinary["learning_goal_ids"],
+            response_framework=ordinary["response_framework"],
+            state=SessionState.model_validate(ordinary["initial_state"]),
+            messages=[],
+        )
+        ordinary_context = {}
+        llm._attach_retrieval(
+            ordinary_context,
+            ordinary_session,
+            ordinary,
+            ordinary_role,
+            "项目进度",
+            [],
+            build_allowed_moves(ordinary_session, ordinary_role),
+        )
+        self.assertEqual(ordinary_context["controlled_pressure_examples"], [])
+
+        pua = content_repository.get_scenario("pua-workplace-overtime")
+        pua_role = content_repository.get_role(pua["role_id"])
+        pua_session = TrainingSession(
+            session_id="pua-rag",
+            scenario_id=pua["scenario_id"],
+            role_id=pua_role["role_id"],
+            difficulty=2,
+            status="active",
+            current_turn=0,
+            max_turns=5,
+            learning_goal_ids=pua["learning_goal_ids"],
+            response_framework=pua["response_framework"],
+            state=SessionState.model_validate(pua["initial_state"]),
+            messages=[],
+        )
+        pua_context = {}
+        llm._attach_retrieval(
+            pua_context,
+            pua_session,
+            pua,
+            pua_role,
+            "周末加班",
+            [],
+            build_allowed_moves(pua_session, pua_role),
+        )
+        self.assertTrue(pua_context["controlled_pressure_examples"])
+        self.assertEqual(pua_context["expression_references"], [])
+        self.assertEqual(pua_context["pressure_anti_examples"], [])
 
 
 class SQLitePersistenceTests(unittest.TestCase):
