@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Voice router v0.2",
+  "type": "object",
+  "required": [
+    "version",
+    "always_output_all_voices",
+    "public_labels_only",
+    "default_voice_order",
+    "category_primary",
+    "urgent_voice_order",
+    "rename_contract",
+    "review_status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "0.2"
+    },
+    "always_output_all_voices": {
+      "const": true
+    },
+    "public_labels_only": {
+      "const": true
+    },
+    "default_voice_order": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "category_primary": {
+      "type": "object",
+      "required": [
+        "family",
+        "workplace",
+        "interview",
+        "intimate",
+        "friends",
+        "campus",
+        "housing",
+        "consumer",
+        "online",
+        "freelance",
+        "caregiving",
+        "public"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "workplace": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "interview": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "intimate": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "friends": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "campus": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "housing": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "consumer": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "online": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "freelance": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "caregiving": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "public": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      }
+    },
+    "urgent_voice_order": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "rename_contract": {
+      "type": "object",
+      "required": [
+        "stable_ids",
+        "editable_field",
+        "instruction"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "stable_ids": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true
+        },
+        "editable_field": {
+          "const": "display_name"
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        }
+      }
+    },
+    "review_status": {
+      "const": "pending_human_review"
+    }
+  }
+}

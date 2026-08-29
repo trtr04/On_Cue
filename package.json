@@ -7,6 +7,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "predev": "npm run build:frontend",
     "dev": "vinext dev",
     "build": "npm run build:frontend && vinext build",
     "build:frontend": "vite build --config vite.frontend.config.js && node scripts/sync-frontend.mjs",

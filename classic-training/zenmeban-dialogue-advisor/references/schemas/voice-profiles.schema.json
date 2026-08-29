@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Voice profiles v0.2",
+  "type": "array",
+  "minItems": 3,
+  "maxItems": 3,
+  "items": {
+    "type": "object",
+    "required": [
+      "voice_id",
+      "display_name",
+      "version",
+      "role",
+      "core_question",
+      "thinking_order",
+      "voice_dna",
+      "preferred_vocabulary",
+      "sentence_patterns",
+      "anti_ai_rules",
+      "strength",
+      "review_status"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "voice_id": {
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "display_name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "version": {
+        "const": "0.2"
+      },
+      "role": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "core_question": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "thinking_order": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "voice_dna": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "preferred_vocabulary": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "sentence_patterns": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "anti_ai_rules": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "strength": {
+        "const": "strong"
+      },
+      "review_status": {
+        "const": "pending_human_review"
+      }
+    }
+  }
+}

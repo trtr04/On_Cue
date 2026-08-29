@@ -1154,14 +1154,34 @@ button { cursor: pointer; }
 }
 .subpage-header small { color: var(--text-secondary); font-size: 11px; font-weight: 700; }
 .subpage-header h1 { margin: 2px 0 0; font-size: 22px; }
+.classic-difficulty {
+  position: absolute;
+  left: 24px;
+  top: 112px;
+  width: 342px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.classic-difficulty span { margin-right: 2px; color: var(--text-secondary); font-size: 11px; font-weight: 700; }
+.classic-difficulty button {
+  height: 30px;
+  padding: 0 12px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.classic-difficulty button.active { background: var(--brand); }
 .levels-list {
   position: absolute;
   left: 24px;
-  top: 118px;
+  top: 152px;
   width: 342px;
   display: grid;
   gap: 12px;
-  max-height: 650px;
+  max-height: 596px;
   padding-bottom: 24px;
   overflow-y: auto;
 }

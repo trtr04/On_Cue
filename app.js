@@ -2,12 +2,14 @@ import { installPhoneViewportFitting } from "./responsive.js";
 import { analyzeConfirmedTranscript, loadKnowledgeBase } from "./knowledge-analysis.js";
 import {
   TRAINING_MODULES,
-  buildTrainingReview,
-  createTrainingSession,
   getTrainingHints,
   getTrainingModule,
-  submitTrainingTurn,
 } from "./training-game.js";
+import {
+  createClassicTrainingSession,
+  finishClassicTrainingSession,
+  sendClassicTrainingTurn,
+} from "./classic-training-api.js";
 import {
   blobFromDataUrl,
   formatTranscriptText,
@@ -520,6 +522,7 @@ let drillOrigin = "levels";
 let currentDrill = null;
 let currentTrainingSession = null;
 let drillStep = 0;
+let selectedClassicDifficulty = 1;
 let knowledgePromise = null;
 let currentKnowledgeAnalysis = null;
 let selectedKnowledgeVoice = "A";
@@ -1665,36 +1668,37 @@ function updateDrillProgress() {
     drillProgress.textContent = "";
     return;
   }
-  drillProgress.textContent = `技能包离线训练 · 第 ${Math.min(currentTrainingSession.turn + 1, 5)} / 5 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
+  const difficulty = ["", "容易", "中等", "困难"][currentTrainingSession.difficulty] || "容易";
+  drillProgress.textContent = `new_classic_mode · ${difficulty} · 第 ${Math.min(currentTrainingSession.turn + 1, currentTrainingSession.maxTurns)} / ${currentTrainingSession.maxTurns} 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
 }
 
-function appendTrainingReview() {
-  const review = buildTrainingReview(currentTrainingSession);
+function appendTrainingReview(review) {
   const card = document.createElement("article");
   card.className = "drill-review";
   const title = document.createElement("strong");
-  title.textContent = `训练复盘 · 已覆盖 ${review.achievedNames.length} / ${review.totalGoals}`;
+  title.textContent = "AI 训练复盘";
   const achieved = document.createElement("p");
-  achieved.textContent = review.achievedNames.length
-    ? `你已经做到：${review.achievedNames.join("、")}`
-    : "这一轮还没有覆盖到明确能力点。";
+  achieved.textContent = review.summary || "本轮训练已经结束。";
   const next = document.createElement("p");
-  next.textContent = `下一步：${review.nextStep}`;
+  next.textContent = `下一步：${review.next_practice || "换一个场景继续练习。"}`;
+  const better = document.createElement("p");
+  better.textContent = review.better_response ? `可以换成：${review.better_response}` : "";
   card.append(title, achieved, next);
+  if (better.textContent) card.append(better);
   drillThread.appendChild(card);
   drillThread.scrollTop = drillThread.scrollHeight;
 }
 
-function startDrill(id, extra = {}) {
+async function startDrill(id, extra = {}) {
   const trainingModule = getTrainingModule(id);
-  currentTrainingSession = trainingModule ? createTrainingSession(id) : null;
+  currentTrainingSession = null;
   currentDrill = { ...(DRILLS[id] || DRILLS.custom), ...extra };
   if (trainingModule) {
     currentDrill = {
       role: trainingModule.role,
       title: trainingModule.title,
-      opener: trainingModule.opener,
-      suggestions: getTrainingHints(currentTrainingSession),
+      opener: "",
+      suggestions: [],
       replies: [],
     };
   }
@@ -1703,31 +1707,76 @@ function startDrill(id, extra = {}) {
   document.querySelector("#drill-role").textContent = currentDrill.role;
   document.querySelector("#drill-title").textContent = extra.title || currentDrill.title;
   drillThread.innerHTML = "";
-  appendDrill("ai", currentDrill.opener);
+  if (currentDrill.opener) appendDrill("ai", currentDrill.opener);
   renderSuggestions(currentDrill.suggestions);
-  drillForm.classList.remove("is-disabled");
-  document.querySelector("#drill-input").disabled = false;
-  updateDrillProgress();
   showScreen("drill");
+  if (!trainingModule) {
+    drillForm.classList.remove("is-disabled");
+    document.querySelector("#drill-input").disabled = false;
+    updateDrillProgress();
+    return;
+  }
+
+  drillForm.classList.add("is-disabled");
+  document.querySelector("#drill-input").disabled = true;
+  drillProgress.textContent = "正在连接 new_classic_mode 训练服务…";
+  try {
+    const data = await createClassicTrainingSession(id, selectedClassicDifficulty);
+    currentTrainingSession = {
+      sessionId: data.session_id,
+      turn: data.current_turn,
+      maxTurns: data.max_turns,
+      difficulty: selectedClassicDifficulty,
+      achievedGoalIds: [],
+      finished: false,
+    };
+    appendDrill("ai", data.opponent_message);
+    renderSuggestions(getTrainingHints(currentTrainingSession));
+    drillForm.classList.remove("is-disabled");
+    document.querySelector("#drill-input").disabled = false;
+    updateDrillProgress();
+  } catch (error) {
+    appendDrill("ai", `系统提示：${error.message}。没有启用旧版预设回复。`);
+    drillProgress.textContent = "经典训练服务未连接";
+  }
 }
 
-function sendDrill(text) {
+async function sendDrill(text) {
   if (!currentDrill || !text.trim()) return;
   appendDrill("me", text.trim());
   if (currentTrainingSession) {
-    currentTrainingSession = submitTrainingTurn(currentTrainingSession, text);
-    updateDrillProgress();
-    window.setTimeout(() => {
-      appendDrill("ai", currentTrainingSession.reply);
-      if (currentTrainingSession.finished) {
-        appendTrainingReview();
+    drillForm.classList.add("is-disabled");
+    document.querySelector("#drill-input").disabled = true;
+    drillProgress.textContent = "对方正在回应…";
+    try {
+      const data = await sendClassicTrainingTurn(currentTrainingSession.sessionId, text.trim());
+      currentTrainingSession = {
+        ...currentTrainingSession,
+        turn: data.current_turn,
+        maxTurns: data.max_turns,
+        achievedGoalIds: data.state?.resolved_goal_ids || currentTrainingSession.achievedGoalIds,
+        finished: data.end_session,
+      };
+      appendDrill("ai", data.opponent_message);
+      updateDrillProgress();
+      if (data.end_session) {
         renderSuggestions([]);
-        drillForm.classList.add("is-disabled");
-        document.querySelector("#drill-input").disabled = true;
-      } else {
-        renderSuggestions(getTrainingHints(currentTrainingSession));
+        drillProgress.textContent = "正在生成 AI 复盘…";
+        const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
+        appendTrainingReview(review);
+        drillProgress.textContent = "训练与复盘已完成";
+        return;
       }
-    }, 260);
+      renderSuggestions(getTrainingHints(currentTrainingSession));
+      drillForm.classList.remove("is-disabled");
+      document.querySelector("#drill-input").disabled = false;
+      document.querySelector("#drill-input").focus();
+    } catch (error) {
+      appendDrill("ai", `系统提示：${error.message}`);
+      drillProgress.textContent = "发送失败，请稍后重试";
+      drillForm.classList.remove("is-disabled");
+      document.querySelector("#drill-input").disabled = false;
+    }
     return;
   }
   const reply = currentDrill.replies[Math.min(drillStep, currentDrill.replies.length - 1)];
@@ -1752,7 +1801,16 @@ document.addEventListener("click", async (event) => {
       showScreen("analysis");
       return;
     }
-    sendDrill(suggest.dataset.suggest);
+    await sendDrill(suggest.dataset.suggest);
+    return;
+  }
+
+  const difficulty = event.target.closest("[data-classic-difficulty]");
+  if (difficulty) {
+    selectedClassicDifficulty = Number(difficulty.dataset.classicDifficulty) || 1;
+    document.querySelectorAll("[data-classic-difficulty]").forEach((button) => {
+      button.classList.toggle("active", button === difficulty);
+    });
     return;
   }
 
@@ -1919,7 +1977,7 @@ document.addEventListener("click", async (event) => {
       showScreen("custom");
       break;
     case "start-drill":
-      startDrill(control.dataset.drill);
+      await startDrill(control.dataset.drill);
       break;
     case "end-drill":
       showToast(COPY.toastEndDrill);
@@ -1946,18 +2004,18 @@ document.addEventListener("click", async (event) => {
   }
 });
 
-document.querySelector("#custom-form").addEventListener("submit", (event) => {
+document.querySelector("#custom-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const role = document.querySelector("#custom-role").value.trim() || COPY.opponent;
   const scene = document.querySelector("#custom-scene").value.trim() || COPY.customOpener;
   showToast(COPY.toastCustom);
-  startDrill("custom", { role, title: COPY.customTitle, opener: scene, origin: "custom" });
+  await startDrill("custom", { role, title: COPY.customTitle, opener: scene, origin: "custom" });
 });
 
-document.querySelector("#drill-form").addEventListener("submit", (event) => {
+document.querySelector("#drill-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const input = document.querySelector("#drill-input");
-  sendDrill(input.value);
+  await sendDrill(input.value);
   input.value = "";
 });
 

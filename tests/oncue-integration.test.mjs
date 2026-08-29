@@ -209,16 +209,17 @@ test("personal settings stay device-local until account sync exists", async () =
   assert.match(route, /mergeSettings\(DEFAULT_SETTINGS, patch\)/);
 });
 
-test("the packaged classic training has ten interactive PUA modules", async () => {
+test("the packaged classic training has all eleven new_classic_mode PUA modules", async () => {
   const {
     TRAINING_MODULES,
     createTrainingSession,
     submitTrainingTurn,
   } = await import("../training-game.js");
 
-  assert.equal(TRAINING_MODULES.length, 10);
-  assert.equal(TRAINING_MODULES.filter((item) => item.domain === "work").length, 6);
+  assert.equal(TRAINING_MODULES.length, 11);
+  assert.equal(TRAINING_MODULES.filter((item) => item.domain === "work").length, 7);
   assert.equal(TRAINING_MODULES.filter((item) => item.domain === "home").length, 4);
+  assert.ok(TRAINING_MODULES.some((item) => item.id === "pua-workplace-general"));
 
   let session = createTrainingSession("pua-workplace-overtime");
   session = submitTrainingTurn(session, "请先说清楚今晚必须完成的具体事项和优先级。");
@@ -230,6 +231,22 @@ test("the packaged classic training has ten interactive PUA modules", async () =
   session = submitTrainingTurn(session, "我的边界不变，今天先到这里。");
   assert.equal(session.finished, true);
   assert.equal(session.endReason, "boundary_held");
+});
+
+test("the live practice UI uses the new_classic_mode backend contract", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const client = await readFile(new URL("classic-training-api.js", projectRoot), "utf8");
+  const proxy = await readFile(new URL("app/api/classic/[...path]/route.ts", projectRoot), "utf8");
+
+  assert.match(html, /id="classic-difficulty"/);
+  assert.match(script, /createClassicTrainingSession/);
+  assert.match(script, /sendClassicTrainingTurn/);
+  assert.doesNotMatch(script, /submitTrainingTurn\(currentTrainingSession/);
+  assert.match(client, /CLASSIC_API_BASE = "\/api\/classic"/);
+  assert.match(client, /requestClassic\("\/training\/sessions"/);
+  assert.match(proxy, /CLASSIC_API_ORIGIN/);
+  assert.match(proxy, /classic_backend_not_configured/);
 });
 
 test("classic training stops at five turns and returns a review", async () => {

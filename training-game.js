@@ -8,6 +8,14 @@ export const TRAINING_GOALS = [
 
 export const TRAINING_MODULES = [
   {
+    id: "pua-workplace-general",
+    domain: "work",
+    title: "通用职场 PUA · 综合施压",
+    role: "综合使用态度、加班、薪资和能力话术的领导",
+    summary: "覆盖感恩绑架、无偿加班、薪资回避、责任转移、能力贬低与离职威胁。",
+    opener: "公司给了你机会，大家也都在加班。现在谈条件，是不是有点只顾自己？",
+  },
+  {
     id: "pua-workplace-interview",
     domain: "work",
     title: "面试越界询问",

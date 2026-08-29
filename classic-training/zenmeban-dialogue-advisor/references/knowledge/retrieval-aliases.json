@@ -1,0 +1,8642 @@
+[
+  {
+    "id": "alias-0001",
+    "version": "0.2",
+    "canonical": "父母出资买房并附同住条件",
+    "alias": "父母出资买房并附同住条件",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0002",
+    "version": "0.2",
+    "canonical": "父母出资买房并附同住条件",
+    "alias": "父母出资买房并附同住条件怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0003",
+    "version": "0.2",
+    "canonical": "父母出资买房并附同住条件",
+    "alias": "遇到父母出资买房并附同住条件怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0004",
+    "version": "0.2",
+    "canonical": "父母出资买房并附同住条件",
+    "alias": "家庭压力与人生选择里父母出资买房并附同住条件",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0005",
+    "version": "0.2",
+    "canonical": "春节回谁家引发三方拉扯",
+    "alias": "春节回谁家引发三方拉扯",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0006",
+    "version": "0.2",
+    "canonical": "春节回谁家引发三方拉扯",
+    "alias": "春节回谁家引发三方拉扯怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0007",
+    "version": "0.2",
+    "canonical": "春节回谁家引发三方拉扯",
+    "alias": "遇到春节回谁家引发三方拉扯怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0008",
+    "version": "0.2",
+    "canonical": "春节回谁家引发三方拉扯",
+    "alias": "家庭压力与人生选择里春节回谁家引发三方拉扯",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0009",
+    "version": "0.2",
+    "canonical": "用户在催婚饭局上说话过重",
+    "alias": "用户在催婚饭局上说话过重",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0010",
+    "version": "0.2",
+    "canonical": "用户在催婚饭局上说话过重",
+    "alias": "用户在催婚饭局上说话过重怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0011",
+    "version": "0.2",
+    "canonical": "用户在催婚饭局上说话过重",
+    "alias": "遇到用户在催婚饭局上说话过重怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0012",
+    "version": "0.2",
+    "canonical": "用户在催婚饭局上说话过重",
+    "alias": "家庭压力与人生选择里用户在催婚饭局上说话过重",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0013",
+    "version": "0.2",
+    "canonical": "用户未经同意公开手足收入",
+    "alias": "用户未经同意公开手足收入",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0014",
+    "version": "0.2",
+    "canonical": "用户未经同意公开手足收入",
+    "alias": "用户未经同意公开手足收入怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0015",
+    "version": "0.2",
+    "canonical": "用户未经同意公开手足收入",
+    "alias": "遇到用户未经同意公开手足收入怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0016",
+    "version": "0.2",
+    "canonical": "用户未经同意公开手足收入",
+    "alias": "家庭压力与人生选择里用户未经同意公开手足收入",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0017",
+    "version": "0.2",
+    "canonical": "兄妹重新分配老人陪诊",
+    "alias": "兄妹重新分配老人陪诊",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0018",
+    "version": "0.2",
+    "canonical": "兄妹重新分配老人陪诊",
+    "alias": "兄妹重新分配老人陪诊怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0019",
+    "version": "0.2",
+    "canonical": "兄妹重新分配老人陪诊",
+    "alias": "遇到兄妹重新分配老人陪诊怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0020",
+    "version": "0.2",
+    "canonical": "兄妹重新分配老人陪诊",
+    "alias": "家庭压力与人生选择里兄妹重新分配老人陪诊",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0021",
+    "version": "0.2",
+    "canonical": "亲戚饭桌追问存款和房产",
+    "alias": "亲戚饭桌追问存款和房产",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0022",
+    "version": "0.2",
+    "canonical": "亲戚饭桌追问存款和房产",
+    "alias": "亲戚饭桌追问存款和房产怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0023",
+    "version": "0.2",
+    "canonical": "亲戚饭桌追问存款和房产",
+    "alias": "遇到亲戚饭桌追问存款和房产怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0024",
+    "version": "0.2",
+    "canonical": "亲戚饭桌追问存款和房产",
+    "alias": "家庭压力与人生选择里亲戚饭桌追问存款和房产",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0025",
+    "version": "0.2",
+    "canonical": "父母替成年子女答应本地工作",
+    "alias": "父母替成年子女答应本地工作",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0026",
+    "version": "0.2",
+    "canonical": "父母替成年子女答应本地工作",
+    "alias": "父母替成年子女答应本地工作怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0027",
+    "version": "0.2",
+    "canonical": "父母替成年子女答应本地工作",
+    "alias": "遇到父母替成年子女答应本地工作怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0028",
+    "version": "0.2",
+    "canonical": "父母替成年子女答应本地工作",
+    "alias": "家庭压力与人生选择里父母替成年子女答应本地工作",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0029",
+    "version": "0.2",
+    "canonical": "家庭借款与赡养责任混在一起",
+    "alias": "家庭借款与赡养责任混在一起",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0030",
+    "version": "0.2",
+    "canonical": "家庭借款与赡养责任混在一起",
+    "alias": "家庭借款与赡养责任混在一起怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0031",
+    "version": "0.2",
+    "canonical": "家庭借款与赡养责任混在一起",
+    "alias": "遇到家庭借款与赡养责任混在一起怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0032",
+    "version": "0.2",
+    "canonical": "家庭借款与赡养责任混在一起",
+    "alias": "家庭压力与人生选择里家庭借款与赡养责任混在一起",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0033",
+    "version": "0.2",
+    "canonical": "育儿隐形劳动被当成顺手",
+    "alias": "育儿隐形劳动被当成顺手",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0034",
+    "version": "0.2",
+    "canonical": "育儿隐形劳动被当成顺手",
+    "alias": "育儿隐形劳动被当成顺手怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0035",
+    "version": "0.2",
+    "canonical": "育儿隐形劳动被当成顺手",
+    "alias": "遇到育儿隐形劳动被当成顺手怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0036",
+    "version": "0.2",
+    "canonical": "育儿隐形劳动被当成顺手",
+    "alias": "家庭压力与人生选择里育儿隐形劳动被当成顺手",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0037",
+    "version": "0.2",
+    "canonical": "家庭群公开指责其实是提醒失误",
+    "alias": "家庭群公开指责其实是提醒失误",
+    "alias_type": "synonym",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0038",
+    "version": "0.2",
+    "canonical": "家庭群公开指责其实是提醒失误",
+    "alias": "家庭群公开指责其实是提醒失误怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0039",
+    "version": "0.2",
+    "canonical": "家庭群公开指责其实是提醒失误",
+    "alias": "遇到家庭群公开指责其实是提醒失误怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0040",
+    "version": "0.2",
+    "canonical": "家庭群公开指责其实是提醒失误",
+    "alias": "家庭压力与人生选择里家庭群公开指责其实是提醒失误",
+    "alias_type": "typo",
+    "category_ids": [
+      "family"
+    ],
+    "target_ids": [
+      "scene-family-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0041",
+    "version": "0.2",
+    "canonical": "两个领导同时给出最高优先级",
+    "alias": "两个领导同时给出最高优先级",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0042",
+    "version": "0.2",
+    "canonical": "两个领导同时给出最高优先级",
+    "alias": "两个领导同时给出最高优先级怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0043",
+    "version": "0.2",
+    "canonical": "两个领导同时给出最高优先级",
+    "alias": "遇到两个领导同时给出最高优先级怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0044",
+    "version": "0.2",
+    "canonical": "两个领导同时给出最高优先级",
+    "alias": "职场中的不舒服对话里两个领导同时给出最高优先级",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0045",
+    "version": "0.2",
+    "canonical": "跨部门延期责任出现新时间线",
+    "alias": "跨部门延期责任出现新时间线",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0046",
+    "version": "0.2",
+    "canonical": "跨部门延期责任出现新时间线",
+    "alias": "跨部门延期责任出现新时间线怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0047",
+    "version": "0.2",
+    "canonical": "跨部门延期责任出现新时间线",
+    "alias": "遇到跨部门延期责任出现新时间线怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0048",
+    "version": "0.2",
+    "canonical": "跨部门延期责任出现新时间线",
+    "alias": "职场中的不舒服对话里跨部门延期责任出现新时间线",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0049",
+    "version": "0.2",
+    "canonical": "用户延迟交付后先责怪协作者",
+    "alias": "用户延迟交付后先责怪协作者",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0050",
+    "version": "0.2",
+    "canonical": "用户延迟交付后先责怪协作者",
+    "alias": "用户延迟交付后先责怪协作者怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0051",
+    "version": "0.2",
+    "canonical": "用户延迟交付后先责怪协作者",
+    "alias": "遇到用户延迟交付后先责怪协作者怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0052",
+    "version": "0.2",
+    "canonical": "用户延迟交付后先责怪协作者",
+    "alias": "职场中的不舒服对话里用户延迟交付后先责怪协作者",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0053",
+    "version": "0.2",
+    "canonical": "用户把正常反馈理解成打压",
+    "alias": "用户把正常反馈理解成打压",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0054",
+    "version": "0.2",
+    "canonical": "用户把正常反馈理解成打压",
+    "alias": "用户把正常反馈理解成打压怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0055",
+    "version": "0.2",
+    "canonical": "用户把正常反馈理解成打压",
+    "alias": "遇到用户把正常反馈理解成打压怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0056",
+    "version": "0.2",
+    "canonical": "用户把正常反馈理解成打压",
+    "alias": "职场中的不舒服对话里用户把正常反馈理解成打压",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0057",
+    "version": "0.2",
+    "canonical": "临下班加急任务需要排序",
+    "alias": "临下班加急任务需要排序",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0058",
+    "version": "0.2",
+    "canonical": "临下班加急任务需要排序",
+    "alias": "临下班加急任务需要排序怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0059",
+    "version": "0.2",
+    "canonical": "临下班加急任务需要排序",
+    "alias": "遇到临下班加急任务需要排序怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0060",
+    "version": "0.2",
+    "canonical": "临下班加急任务需要排序",
+    "alias": "职场中的不舒服对话里临下班加急任务需要排序",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0061",
+    "version": "0.2",
+    "canonical": "同事汇报模糊了成果归属",
+    "alias": "同事汇报模糊了成果归属",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0062",
+    "version": "0.2",
+    "canonical": "同事汇报模糊了成果归属",
+    "alias": "同事汇报模糊了成果归属怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0063",
+    "version": "0.2",
+    "canonical": "同事汇报模糊了成果归属",
+    "alias": "遇到同事汇报模糊了成果归属怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0064",
+    "version": "0.2",
+    "canonical": "同事汇报模糊了成果归属",
+    "alias": "职场中的不舒服对话里同事汇报模糊了成果归属",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0065",
+    "version": "0.2",
+    "canonical": "饭局外貌玩笑越过边界",
+    "alias": "饭局外貌玩笑越过边界",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0066",
+    "version": "0.2",
+    "canonical": "饭局外貌玩笑越过边界",
+    "alias": "饭局外貌玩笑越过边界怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0067",
+    "version": "0.2",
+    "canonical": "饭局外貌玩笑越过边界",
+    "alias": "遇到饭局外貌玩笑越过边界怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0068",
+    "version": "0.2",
+    "canonical": "饭局外貌玩笑越过边界",
+    "alias": "职场中的不舒服对话里饭局外貌玩笑越过边界",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0069",
+    "version": "0.2",
+    "canonical": "画饼晋升换取免费新增职责",
+    "alias": "画饼晋升换取免费新增职责",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0070",
+    "version": "0.2",
+    "canonical": "画饼晋升换取免费新增职责",
+    "alias": "画饼晋升换取免费新增职责怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0071",
+    "version": "0.2",
+    "canonical": "画饼晋升换取免费新增职责",
+    "alias": "遇到画饼晋升换取免费新增职责怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0072",
+    "version": "0.2",
+    "canonical": "画饼晋升换取免费新增职责",
+    "alias": "职场中的不舒服对话里画饼晋升换取免费新增职责",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0073",
+    "version": "0.2",
+    "canonical": "远程办公消息延迟是普通协商",
+    "alias": "远程办公消息延迟是普通协商",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0074",
+    "version": "0.2",
+    "canonical": "远程办公消息延迟是普通协商",
+    "alias": "远程办公消息延迟是普通协商怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0075",
+    "version": "0.2",
+    "canonical": "远程办公消息延迟是普通协商",
+    "alias": "遇到远程办公消息延迟是普通协商怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0076",
+    "version": "0.2",
+    "canonical": "远程办公消息延迟是普通协商",
+    "alias": "职场中的不舒服对话里远程办公消息延迟是普通协商",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0077",
+    "version": "0.2",
+    "canonical": "下属拒绝配合源于目标冲突",
+    "alias": "下属拒绝配合源于目标冲突",
+    "alias_type": "synonym",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0078",
+    "version": "0.2",
+    "canonical": "下属拒绝配合源于目标冲突",
+    "alias": "下属拒绝配合源于目标冲突怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0079",
+    "version": "0.2",
+    "canonical": "下属拒绝配合源于目标冲突",
+    "alias": "遇到下属拒绝配合源于目标冲突怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0080",
+    "version": "0.2",
+    "canonical": "下属拒绝配合源于目标冲突",
+    "alias": "职场中的不舒服对话里下属拒绝配合源于目标冲突",
+    "alias_type": "typo",
+    "category_ids": [
+      "workplace"
+    ],
+    "target_ids": [
+      "scene-workplace-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0081",
+    "version": "0.2",
+    "canonical": "终面岗位内容突然改变",
+    "alias": "终面岗位内容突然改变",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0082",
+    "version": "0.2",
+    "canonical": "终面岗位内容突然改变",
+    "alias": "终面岗位内容突然改变怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0083",
+    "version": "0.2",
+    "canonical": "终面岗位内容突然改变",
+    "alias": "遇到终面岗位内容突然改变怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0084",
+    "version": "0.2",
+    "canonical": "终面岗位内容突然改变",
+    "alias": "面试与招聘里终面岗位内容突然改变",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0085",
+    "version": "0.2",
+    "canonical": "无偿试岗与过长作业叠加",
+    "alias": "无偿试岗与过长作业叠加",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0086",
+    "version": "0.2",
+    "canonical": "无偿试岗与过长作业叠加",
+    "alias": "无偿试岗与过长作业叠加怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0087",
+    "version": "0.2",
+    "canonical": "无偿试岗与过长作业叠加",
+    "alias": "遇到无偿试岗与过长作业叠加怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0088",
+    "version": "0.2",
+    "canonical": "无偿试岗与过长作业叠加",
+    "alias": "面试与招聘里无偿试岗与过长作业叠加",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0089",
+    "version": "0.2",
+    "canonical": "候选人隐瞒竞业限制",
+    "alias": "候选人隐瞒竞业限制",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0090",
+    "version": "0.2",
+    "canonical": "候选人隐瞒竞业限制",
+    "alias": "候选人隐瞒竞业限制怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0091",
+    "version": "0.2",
+    "canonical": "候选人隐瞒竞业限制",
+    "alias": "遇到候选人隐瞒竞业限制怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0092",
+    "version": "0.2",
+    "canonical": "候选人隐瞒竞业限制",
+    "alias": "面试与招聘里候选人隐瞒竞业限制",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0093",
+    "version": "0.2",
+    "canonical": "候选人夸大项目角色被追问",
+    "alias": "候选人夸大项目角色被追问",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0094",
+    "version": "0.2",
+    "canonical": "候选人夸大项目角色被追问",
+    "alias": "候选人夸大项目角色被追问怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0095",
+    "version": "0.2",
+    "canonical": "候选人夸大项目角色被追问",
+    "alias": "遇到候选人夸大项目角色被追问怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0096",
+    "version": "0.2",
+    "canonical": "候选人夸大项目角色被追问",
+    "alias": "面试与招聘里候选人夸大项目角色被追问",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0097",
+    "version": "0.2",
+    "canonical": "婚恋问题被重定向到到岗",
+    "alias": "婚恋问题被重定向到到岗",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0098",
+    "version": "0.2",
+    "canonical": "婚恋问题被重定向到到岗",
+    "alias": "婚恋问题被重定向到到岗怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0099",
+    "version": "0.2",
+    "canonical": "婚恋问题被重定向到到岗",
+    "alias": "遇到婚恋问题被重定向到到岗怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0100",
+    "version": "0.2",
+    "canonical": "婚恋问题被重定向到到岗",
+    "alias": "面试与招聘里婚恋问题被重定向到到岗",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0101",
+    "version": "0.2",
+    "canonical": "夜班和出差是合理岗位询问",
+    "alias": "夜班和出差是合理岗位询问",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0102",
+    "version": "0.2",
+    "canonical": "夜班和出差是合理岗位询问",
+    "alias": "夜班和出差是合理岗位询问怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0103",
+    "version": "0.2",
+    "canonical": "夜班和出差是合理岗位询问",
+    "alias": "遇到夜班和出差是合理岗位询问怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0104",
+    "version": "0.2",
+    "canonical": "夜班和出差是合理岗位询问",
+    "alias": "面试与招聘里夜班和出差是合理岗位询问",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0105",
+    "version": "0.2",
+    "canonical": "年龄被用来推断学习速度",
+    "alias": "年龄被用来推断学习速度",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0106",
+    "version": "0.2",
+    "canonical": "年龄被用来推断学习速度",
+    "alias": "年龄被用来推断学习速度怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0107",
+    "version": "0.2",
+    "canonical": "年龄被用来推断学习速度",
+    "alias": "遇到年龄被用来推断学习速度怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0108",
+    "version": "0.2",
+    "canonical": "年龄被用来推断学习速度",
+    "alias": "面试与招聘里年龄被用来推断学习速度",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0109",
+    "version": "0.2",
+    "canonical": "家庭资产被当作稳定性指标",
+    "alias": "家庭资产被当作稳定性指标",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0110",
+    "version": "0.2",
+    "canonical": "家庭资产被当作稳定性指标",
+    "alias": "家庭资产被当作稳定性指标怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0111",
+    "version": "0.2",
+    "canonical": "家庭资产被当作稳定性指标",
+    "alias": "遇到家庭资产被当作稳定性指标怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0112",
+    "version": "0.2",
+    "canonical": "家庭资产被当作稳定性指标",
+    "alias": "面试与招聘里家庭资产被当作稳定性指标",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0113",
+    "version": "0.2",
+    "canonical": "当场offer稀缺压力与临时降薪",
+    "alias": "当场offer稀缺压力与临时降薪",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0114",
+    "version": "0.2",
+    "canonical": "当场offer稀缺压力与临时降薪",
+    "alias": "当场offer稀缺压力与临时降薪怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0115",
+    "version": "0.2",
+    "canonical": "当场offer稀缺压力与临时降薪",
+    "alias": "遇到当场offer稀缺压力与临时降薪怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0116",
+    "version": "0.2",
+    "canonical": "当场offer稀缺压力与临时降薪",
+    "alias": "面试与招聘里当场offer稀缺压力与临时降薪",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0117",
+    "version": "0.2",
+    "canonical": "背景调查授权范围得到澄清",
+    "alias": "背景调查授权范围得到澄清",
+    "alias_type": "synonym",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0118",
+    "version": "0.2",
+    "canonical": "背景调查授权范围得到澄清",
+    "alias": "背景调查授权范围得到澄清怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0119",
+    "version": "0.2",
+    "canonical": "背景调查授权范围得到澄清",
+    "alias": "遇到背景调查授权范围得到澄清怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0120",
+    "version": "0.2",
+    "canonical": "背景调查授权范围得到澄清",
+    "alias": "面试与招聘里背景调查授权范围得到澄清",
+    "alias_type": "typo",
+    "category_ids": [
+      "interview"
+    ],
+    "target_ids": [
+      "scene-interview-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0121",
+    "version": "0.2",
+    "canonical": "争吵时堵门不让离开",
+    "alias": "争吵时堵门不让离开",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0122",
+    "version": "0.2",
+    "canonical": "争吵时堵门不让离开",
+    "alias": "争吵时堵门不让离开怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0123",
+    "version": "0.2",
+    "canonical": "争吵时堵门不让离开",
+    "alias": "遇到争吵时堵门不让离开怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0124",
+    "version": "0.2",
+    "canonical": "争吵时堵门不让离开",
+    "alias": "亲密关系里争吵时堵门不让离开",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0125",
+    "version": "0.2",
+    "canonical": "以自伤威胁阻止分手",
+    "alias": "以自伤威胁阻止分手",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0126",
+    "version": "0.2",
+    "canonical": "以自伤威胁阻止分手",
+    "alias": "以自伤威胁阻止分手怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0127",
+    "version": "0.2",
+    "canonical": "以自伤威胁阻止分手",
+    "alias": "遇到以自伤威胁阻止分手怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0128",
+    "version": "0.2",
+    "canonical": "以自伤威胁阻止分手",
+    "alias": "亲密关系里以自伤威胁阻止分手",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0129",
+    "version": "0.2",
+    "canonical": "用户隐瞒债务后请求修复",
+    "alias": "用户隐瞒债务后请求修复",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0130",
+    "version": "0.2",
+    "canonical": "用户隐瞒债务后请求修复",
+    "alias": "用户隐瞒债务后请求修复怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0131",
+    "version": "0.2",
+    "canonical": "用户隐瞒债务后请求修复",
+    "alias": "遇到用户隐瞒债务后请求修复怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0132",
+    "version": "0.2",
+    "canonical": "用户隐瞒债务后请求修复",
+    "alias": "亲密关系里用户隐瞒债务后请求修复",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0133",
+    "version": "0.2",
+    "canonical": "用户泄露伴侣病史后辩解",
+    "alias": "用户泄露伴侣病史后辩解",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0134",
+    "version": "0.2",
+    "canonical": "用户泄露伴侣病史后辩解",
+    "alias": "用户泄露伴侣病史后辩解怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0135",
+    "version": "0.2",
+    "canonical": "用户泄露伴侣病史后辩解",
+    "alias": "遇到用户泄露伴侣病史后辩解怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0136",
+    "version": "0.2",
+    "canonical": "用户泄露伴侣病史后辩解",
+    "alias": "亲密关系里用户泄露伴侣病史后辩解",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0137",
+    "version": "0.2",
+    "canonical": "检查手机与具体疑点分开处理",
+    "alias": "检查手机与具体疑点分开处理",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0138",
+    "version": "0.2",
+    "canonical": "检查手机与具体疑点分开处理",
+    "alias": "检查手机与具体疑点分开处理怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0139",
+    "version": "0.2",
+    "canonical": "检查手机与具体疑点分开处理",
+    "alias": "遇到检查手机与具体疑点分开处理怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0140",
+    "version": "0.2",
+    "canonical": "检查手机与具体疑点分开处理",
+    "alias": "亲密关系里检查手机与具体疑点分开处理",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0141",
+    "version": "0.2",
+    "canonical": "秒回要求改成紧急联系规则",
+    "alias": "秒回要求改成紧急联系规则",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0142",
+    "version": "0.2",
+    "canonical": "秒回要求改成紧急联系规则",
+    "alias": "秒回要求改成紧急联系规则怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0143",
+    "version": "0.2",
+    "canonical": "秒回要求改成紧急联系规则",
+    "alias": "遇到秒回要求改成紧急联系规则怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0144",
+    "version": "0.2",
+    "canonical": "秒回要求改成紧急联系规则",
+    "alias": "亲密关系里秒回要求改成紧急联系规则",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0145",
+    "version": "0.2",
+    "canonical": "共同开销长期单方垫付",
+    "alias": "共同开销长期单方垫付",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0146",
+    "version": "0.2",
+    "canonical": "共同开销长期单方垫付",
+    "alias": "共同开销长期单方垫付怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0147",
+    "version": "0.2",
+    "canonical": "共同开销长期单方垫付",
+    "alias": "遇到共同开销长期单方垫付怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0148",
+    "version": "0.2",
+    "canonical": "共同开销长期单方垫付",
+    "alias": "亲密关系里共同开销长期单方垫付",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0149",
+    "version": "0.2",
+    "canonical": "单方面退租并以收入高为由",
+    "alias": "单方面退租并以收入高为由",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0150",
+    "version": "0.2",
+    "canonical": "单方面退租并以收入高为由",
+    "alias": "单方面退租并以收入高为由怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0151",
+    "version": "0.2",
+    "canonical": "单方面退租并以收入高为由",
+    "alias": "遇到单方面退租并以收入高为由怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0152",
+    "version": "0.2",
+    "canonical": "单方面退租并以收入高为由",
+    "alias": "亲密关系里单方面退租并以收入高为由",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0153",
+    "version": "0.2",
+    "canonical": "合理冷静期被误解为冷处理",
+    "alias": "合理冷静期被误解为冷处理",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0154",
+    "version": "0.2",
+    "canonical": "合理冷静期被误解为冷处理",
+    "alias": "合理冷静期被误解为冷处理怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0155",
+    "version": "0.2",
+    "canonical": "合理冷静期被误解为冷处理",
+    "alias": "遇到合理冷静期被误解为冷处理怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0156",
+    "version": "0.2",
+    "canonical": "合理冷静期被误解为冷处理",
+    "alias": "亲密关系里合理冷静期被误解为冷处理",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0157",
+    "version": "0.2",
+    "canonical": "双方家庭介入后重新划界",
+    "alias": "双方家庭介入后重新划界",
+    "alias_type": "synonym",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0158",
+    "version": "0.2",
+    "canonical": "双方家庭介入后重新划界",
+    "alias": "双方家庭介入后重新划界怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0159",
+    "version": "0.2",
+    "canonical": "双方家庭介入后重新划界",
+    "alias": "遇到双方家庭介入后重新划界怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0160",
+    "version": "0.2",
+    "canonical": "双方家庭介入后重新划界",
+    "alias": "亲密关系里双方家庭介入后重新划界",
+    "alias_type": "typo",
+    "category_ids": [
+      "intimate"
+    ],
+    "target_ids": [
+      "scene-intimate-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0161",
+    "version": "0.2",
+    "canonical": "三人群聊被要求立即站队",
+    "alias": "三人群聊被要求立即站队",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0162",
+    "version": "0.2",
+    "canonical": "三人群聊被要求立即站队",
+    "alias": "三人群聊被要求立即站队怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0163",
+    "version": "0.2",
+    "canonical": "三人群聊被要求立即站队",
+    "alias": "遇到三人群聊被要求立即站队怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0164",
+    "version": "0.2",
+    "canonical": "三人群聊被要求立即站队",
+    "alias": "朋友和社交关系里三人群聊被要求立即站队",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0165",
+    "version": "0.2",
+    "canonical": "婚礼礼金压力与共同朋友比较",
+    "alias": "婚礼礼金压力与共同朋友比较",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0166",
+    "version": "0.2",
+    "canonical": "婚礼礼金压力与共同朋友比较",
+    "alias": "婚礼礼金压力与共同朋友比较怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0167",
+    "version": "0.2",
+    "canonical": "婚礼礼金压力与共同朋友比较",
+    "alias": "遇到婚礼礼金压力与共同朋友比较怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0168",
+    "version": "0.2",
+    "canonical": "婚礼礼金压力与共同朋友比较",
+    "alias": "朋友和社交关系里婚礼礼金压力与共同朋友比较",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0169",
+    "version": "0.2",
+    "canonical": "用户误发吐槽截图需要公开修复",
+    "alias": "用户误发吐槽截图需要公开修复",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0170",
+    "version": "0.2",
+    "canonical": "用户误发吐槽截图需要公开修复",
+    "alias": "用户误发吐槽截图需要公开修复怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0171",
+    "version": "0.2",
+    "canonical": "用户误发吐槽截图需要公开修复",
+    "alias": "遇到用户误发吐槽截图需要公开修复怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0172",
+    "version": "0.2",
+    "canonical": "用户误发吐槽截图需要公开修复",
+    "alias": "朋友和社交关系里用户误发吐槽截图需要公开修复",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0173",
+    "version": "0.2",
+    "canonical": "用户泄露朋友隐私后强调好意",
+    "alias": "用户泄露朋友隐私后强调好意",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0174",
+    "version": "0.2",
+    "canonical": "用户泄露朋友隐私后强调好意",
+    "alias": "用户泄露朋友隐私后强调好意怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0175",
+    "version": "0.2",
+    "canonical": "用户泄露朋友隐私后强调好意",
+    "alias": "遇到用户泄露朋友隐私后强调好意怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0176",
+    "version": "0.2",
+    "canonical": "用户泄露朋友隐私后强调好意",
+    "alias": "朋友和社交关系里用户泄露朋友隐私后强调好意",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0177",
+    "version": "0.2",
+    "canonical": "多年朋友借钱提供完整计划",
+    "alias": "多年朋友借钱提供完整计划",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0178",
+    "version": "0.2",
+    "canonical": "多年朋友借钱提供完整计划",
+    "alias": "多年朋友借钱提供完整计划怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0179",
+    "version": "0.2",
+    "canonical": "多年朋友借钱提供完整计划",
+    "alias": "遇到多年朋友借钱提供完整计划怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0180",
+    "version": "0.2",
+    "canonical": "多年朋友借钱提供完整计划",
+    "alias": "朋友和社交关系里多年朋友借钱提供完整计划",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0181",
+    "version": "0.2",
+    "canonical": "资源介绍限定为转递不背书",
+    "alias": "资源介绍限定为转递不背书",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0182",
+    "version": "0.2",
+    "canonical": "资源介绍限定为转递不背书",
+    "alias": "资源介绍限定为转递不背书怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0183",
+    "version": "0.2",
+    "canonical": "资源介绍限定为转递不背书",
+    "alias": "遇到资源介绍限定为转递不背书怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0184",
+    "version": "0.2",
+    "canonical": "资源介绍限定为转递不背书",
+    "alias": "朋友和社交关系里资源介绍限定为转递不背书",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0185",
+    "version": "0.2",
+    "canonical": "群聊拿相亲经历反复开玩笑",
+    "alias": "群聊拿相亲经历反复开玩笑",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0186",
+    "version": "0.2",
+    "canonical": "群聊拿相亲经历反复开玩笑",
+    "alias": "群聊拿相亲经历反复开玩笑怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0187",
+    "version": "0.2",
+    "canonical": "群聊拿相亲经历反复开玩笑",
+    "alias": "遇到群聊拿相亲经历反复开玩笑怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0188",
+    "version": "0.2",
+    "canonical": "群聊拿相亲经历反复开玩笑",
+    "alias": "朋友和社交关系里群聊拿相亲经历反复开玩笑",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0189",
+    "version": "0.2",
+    "canonical": "深夜情绪热线挤压考试准备",
+    "alias": "深夜情绪热线挤压考试准备",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0190",
+    "version": "0.2",
+    "canonical": "深夜情绪热线挤压考试准备",
+    "alias": "深夜情绪热线挤压考试准备怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0191",
+    "version": "0.2",
+    "canonical": "深夜情绪热线挤压考试准备",
+    "alias": "遇到深夜情绪热线挤压考试准备怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0192",
+    "version": "0.2",
+    "canonical": "深夜情绪热线挤压考试准备",
+    "alias": "朋友和社交关系里深夜情绪热线挤压考试准备",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0193",
+    "version": "0.2",
+    "canonical": "被排除聚会其实源于旧行程",
+    "alias": "被排除聚会其实源于旧行程",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0194",
+    "version": "0.2",
+    "canonical": "被排除聚会其实源于旧行程",
+    "alias": "被排除聚会其实源于旧行程怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0195",
+    "version": "0.2",
+    "canonical": "被排除聚会其实源于旧行程",
+    "alias": "遇到被排除聚会其实源于旧行程怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0196",
+    "version": "0.2",
+    "canonical": "被排除聚会其实源于旧行程",
+    "alias": "朋友和社交关系里被排除聚会其实源于旧行程",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0197",
+    "version": "0.2",
+    "canonical": "旅行费用误会由记账遗漏造成",
+    "alias": "旅行费用误会由记账遗漏造成",
+    "alias_type": "synonym",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0198",
+    "version": "0.2",
+    "canonical": "旅行费用误会由记账遗漏造成",
+    "alias": "旅行费用误会由记账遗漏造成怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0199",
+    "version": "0.2",
+    "canonical": "旅行费用误会由记账遗漏造成",
+    "alias": "遇到旅行费用误会由记账遗漏造成怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0200",
+    "version": "0.2",
+    "canonical": "旅行费用误会由记账遗漏造成",
+    "alias": "朋友和社交关系里旅行费用误会由记账遗漏造成",
+    "alias_type": "typo",
+    "category_ids": [
+      "friends"
+    ],
+    "target_ids": [
+      "scene-friends-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0201",
+    "version": "0.2",
+    "canonical": "导师额外劳动与推荐机会绑定",
+    "alias": "导师额外劳动与推荐机会绑定",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0202",
+    "version": "0.2",
+    "canonical": "导师额外劳动与推荐机会绑定",
+    "alias": "导师额外劳动与推荐机会绑定怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0203",
+    "version": "0.2",
+    "canonical": "导师额外劳动与推荐机会绑定",
+    "alias": "遇到导师额外劳动与推荐机会绑定怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0204",
+    "version": "0.2",
+    "canonical": "导师额外劳动与推荐机会绑定",
+    "alias": "校园、导师、同学与小组协作里导师额外劳动与推荐机会绑定",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0205",
+    "version": "0.2",
+    "canonical": "小组竞赛资源被一人控制",
+    "alias": "小组竞赛资源被一人控制",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0206",
+    "version": "0.2",
+    "canonical": "小组竞赛资源被一人控制",
+    "alias": "小组竞赛资源被一人控制怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0207",
+    "version": "0.2",
+    "canonical": "小组竞赛资源被一人控制",
+    "alias": "遇到小组竞赛资源被一人控制怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0208",
+    "version": "0.2",
+    "canonical": "小组竞赛资源被一人控制",
+    "alias": "校园、导师、同学与小组协作里小组竞赛资源被一人控制",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0209",
+    "version": "0.2",
+    "canonical": "用户未完成小组任务先指责分工",
+    "alias": "用户未完成小组任务先指责分工",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0210",
+    "version": "0.2",
+    "canonical": "用户未完成小组任务先指责分工",
+    "alias": "用户未完成小组任务先指责分工怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0211",
+    "version": "0.2",
+    "canonical": "用户未完成小组任务先指责分工",
+    "alias": "遇到用户未完成小组任务先指责分工怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0212",
+    "version": "0.2",
+    "canonical": "用户未完成小组任务先指责分工",
+    "alias": "校园、导师、同学与小组协作里用户未完成小组任务先指责分工",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0213",
+    "version": "0.2",
+    "canonical": "用户引用同学成果未署名",
+    "alias": "用户引用同学成果未署名",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0214",
+    "version": "0.2",
+    "canonical": "用户引用同学成果未署名",
+    "alias": "用户引用同学成果未署名怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0215",
+    "version": "0.2",
+    "canonical": "用户引用同学成果未署名",
+    "alias": "遇到用户引用同学成果未署名怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0216",
+    "version": "0.2",
+    "canonical": "用户引用同学成果未署名",
+    "alias": "校园、导师、同学与小组协作里用户引用同学成果未署名",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0217",
+    "version": "0.2",
+    "canonical": "导师反馈具体而非打压",
+    "alias": "导师反馈具体而非打压",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0218",
+    "version": "0.2",
+    "canonical": "导师反馈具体而非打压",
+    "alias": "导师反馈具体而非打压怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0219",
+    "version": "0.2",
+    "canonical": "导师反馈具体而非打压",
+    "alias": "遇到导师反馈具体而非打压怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0220",
+    "version": "0.2",
+    "canonical": "导师反馈具体而非打压",
+    "alias": "校园、导师、同学与小组协作里导师反馈具体而非打压",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0221",
+    "version": "0.2",
+    "canonical": "室友作息通过共同规则协调",
+    "alias": "室友作息通过共同规则协调",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0222",
+    "version": "0.2",
+    "canonical": "室友作息通过共同规则协调",
+    "alias": "室友作息通过共同规则协调怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0223",
+    "version": "0.2",
+    "canonical": "室友作息通过共同规则协调",
+    "alias": "遇到室友作息通过共同规则协调怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0224",
+    "version": "0.2",
+    "canonical": "室友作息通过共同规则协调",
+    "alias": "校园、导师、同学与小组协作里室友作息通过共同规则协调",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0225",
+    "version": "0.2",
+    "canonical": "老师公开比较奖学金排名",
+    "alias": "老师公开比较奖学金排名",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0226",
+    "version": "0.2",
+    "canonical": "老师公开比较奖学金排名",
+    "alias": "老师公开比较奖学金排名怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0227",
+    "version": "0.2",
+    "canonical": "老师公开比较奖学金排名",
+    "alias": "遇到老师公开比较奖学金排名怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0228",
+    "version": "0.2",
+    "canonical": "老师公开比较奖学金排名",
+    "alias": "校园、导师、同学与小组协作里老师公开比较奖学金排名",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0229",
+    "version": "0.2",
+    "canonical": "实习推荐要求隐瞒课程冲突",
+    "alias": "实习推荐要求隐瞒课程冲突",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0230",
+    "version": "0.2",
+    "canonical": "实习推荐要求隐瞒课程冲突",
+    "alias": "实习推荐要求隐瞒课程冲突怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0231",
+    "version": "0.2",
+    "canonical": "实习推荐要求隐瞒课程冲突",
+    "alias": "遇到实习推荐要求隐瞒课程冲突怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0232",
+    "version": "0.2",
+    "canonical": "实习推荐要求隐瞒课程冲突",
+    "alias": "校园、导师、同学与小组协作里实习推荐要求隐瞒课程冲突",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0233",
+    "version": "0.2",
+    "canonical": "同学借钱后主动更新计划",
+    "alias": "同学借钱后主动更新计划",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0234",
+    "version": "0.2",
+    "canonical": "同学借钱后主动更新计划",
+    "alias": "同学借钱后主动更新计划怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0235",
+    "version": "0.2",
+    "canonical": "同学借钱后主动更新计划",
+    "alias": "遇到同学借钱后主动更新计划怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0236",
+    "version": "0.2",
+    "canonical": "同学借钱后主动更新计划",
+    "alias": "校园、导师、同学与小组协作里同学借钱后主动更新计划",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0237",
+    "version": "0.2",
+    "canonical": "校园排斥误会来自群邀请失败",
+    "alias": "校园排斥误会来自群邀请失败",
+    "alias_type": "synonym",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0238",
+    "version": "0.2",
+    "canonical": "校园排斥误会来自群邀请失败",
+    "alias": "校园排斥误会来自群邀请失败怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0239",
+    "version": "0.2",
+    "canonical": "校园排斥误会来自群邀请失败",
+    "alias": "遇到校园排斥误会来自群邀请失败怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0240",
+    "version": "0.2",
+    "canonical": "校园排斥误会来自群邀请失败",
+    "alias": "校园、导师、同学与小组协作里校园排斥误会来自群邀请失败",
+    "alias_type": "typo",
+    "category_ids": [
+      "campus"
+    ],
+    "target_ids": [
+      "scene-campus-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0241",
+    "version": "0.2",
+    "canonical": "房东深夜持钥匙试图进门",
+    "alias": "房东深夜持钥匙试图进门",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0242",
+    "version": "0.2",
+    "canonical": "房东深夜持钥匙试图进门",
+    "alias": "房东深夜持钥匙试图进门怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0243",
+    "version": "0.2",
+    "canonical": "房东深夜持钥匙试图进门",
+    "alias": "遇到房东深夜持钥匙试图进门怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0244",
+    "version": "0.2",
+    "canonical": "房东深夜持钥匙试图进门",
+    "alias": "室友、邻居、房东与物业里房东深夜持钥匙试图进门",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0245",
+    "version": "0.2",
+    "canonical": "室友带陌生人过夜引发安全争议",
+    "alias": "室友带陌生人过夜引发安全争议",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0246",
+    "version": "0.2",
+    "canonical": "室友带陌生人过夜引发安全争议",
+    "alias": "室友带陌生人过夜引发安全争议怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0247",
+    "version": "0.2",
+    "canonical": "室友带陌生人过夜引发安全争议",
+    "alias": "遇到室友带陌生人过夜引发安全争议怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0248",
+    "version": "0.2",
+    "canonical": "室友带陌生人过夜引发安全争议",
+    "alias": "室友、邻居、房东与物业里室友带陌生人过夜引发安全争议",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0249",
+    "version": "0.2",
+    "canonical": "用户长期制造噪声后反驳邻居",
+    "alias": "用户长期制造噪声后反驳邻居",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0250",
+    "version": "0.2",
+    "canonical": "用户长期制造噪声后反驳邻居",
+    "alias": "用户长期制造噪声后反驳邻居怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0251",
+    "version": "0.2",
+    "canonical": "用户长期制造噪声后反驳邻居",
+    "alias": "遇到用户长期制造噪声后反驳邻居怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0252",
+    "version": "0.2",
+    "canonical": "用户长期制造噪声后反驳邻居",
+    "alias": "室友、邻居、房东与物业里用户长期制造噪声后反驳邻居",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0253",
+    "version": "0.2",
+    "canonical": "用户违反清洁轮值需要补救",
+    "alias": "用户违反清洁轮值需要补救",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0254",
+    "version": "0.2",
+    "canonical": "用户违反清洁轮值需要补救",
+    "alias": "用户违反清洁轮值需要补救怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0255",
+    "version": "0.2",
+    "canonical": "用户违反清洁轮值需要补救",
+    "alias": "遇到用户违反清洁轮值需要补救怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0256",
+    "version": "0.2",
+    "canonical": "用户违反清洁轮值需要补救",
+    "alias": "室友、邻居、房东与物业里用户违反清洁轮值需要补救",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0257",
+    "version": "0.2",
+    "canonical": "合租提前退租协商真实成本",
+    "alias": "合租提前退租协商真实成本",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0258",
+    "version": "0.2",
+    "canonical": "合租提前退租协商真实成本",
+    "alias": "合租提前退租协商真实成本怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0259",
+    "version": "0.2",
+    "canonical": "合租提前退租协商真实成本",
+    "alias": "遇到合租提前退租协商真实成本怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0260",
+    "version": "0.2",
+    "canonical": "合租提前退租协商真实成本",
+    "alias": "室友、邻居、房东与物业里合租提前退租协商真实成本",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0261",
+    "version": "0.2",
+    "canonical": "维修拖延改为书面时限",
+    "alias": "维修拖延改为书面时限",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0262",
+    "version": "0.2",
+    "canonical": "维修拖延改为书面时限",
+    "alias": "维修拖延改为书面时限怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0263",
+    "version": "0.2",
+    "canonical": "维修拖延改为书面时限",
+    "alias": "遇到维修拖延改为书面时限怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0264",
+    "version": "0.2",
+    "canonical": "维修拖延改为书面时限",
+    "alias": "室友、邻居、房东与物业里维修拖延改为书面时限",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0265",
+    "version": "0.2",
+    "canonical": "物业和房东互相推诿漏水",
+    "alias": "物业和房东互相推诿漏水",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0266",
+    "version": "0.2",
+    "canonical": "物业和房东互相推诿漏水",
+    "alias": "物业和房东互相推诿漏水怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0267",
+    "version": "0.2",
+    "canonical": "物业和房东互相推诿漏水",
+    "alias": "遇到物业和房东互相推诿漏水怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0268",
+    "version": "0.2",
+    "canonical": "物业和房东互相推诿漏水",
+    "alias": "室友、邻居、房东与物业里物业和房东互相推诿漏水",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0269",
+    "version": "0.2",
+    "canonical": "邻居占用消防通道放鞋柜",
+    "alias": "邻居占用消防通道放鞋柜",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0270",
+    "version": "0.2",
+    "canonical": "邻居占用消防通道放鞋柜",
+    "alias": "邻居占用消防通道放鞋柜怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0271",
+    "version": "0.2",
+    "canonical": "邻居占用消防通道放鞋柜",
+    "alias": "遇到邻居占用消防通道放鞋柜怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0272",
+    "version": "0.2",
+    "canonical": "邻居占用消防通道放鞋柜",
+    "alias": "室友、邻居、房东与物业里邻居占用消防通道放鞋柜",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0273",
+    "version": "0.2",
+    "canonical": "水电费争议源于抄表日期不同",
+    "alias": "水电费争议源于抄表日期不同",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0274",
+    "version": "0.2",
+    "canonical": "水电费争议源于抄表日期不同",
+    "alias": "水电费争议源于抄表日期不同怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0275",
+    "version": "0.2",
+    "canonical": "水电费争议源于抄表日期不同",
+    "alias": "遇到水电费争议源于抄表日期不同怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0276",
+    "version": "0.2",
+    "canonical": "水电费争议源于抄表日期不同",
+    "alias": "室友、邻居、房东与物业里水电费争议源于抄表日期不同",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0277",
+    "version": "0.2",
+    "canonical": "邻居宠物冲突通过时段管理",
+    "alias": "邻居宠物冲突通过时段管理",
+    "alias_type": "synonym",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0278",
+    "version": "0.2",
+    "canonical": "邻居宠物冲突通过时段管理",
+    "alias": "邻居宠物冲突通过时段管理怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0279",
+    "version": "0.2",
+    "canonical": "邻居宠物冲突通过时段管理",
+    "alias": "遇到邻居宠物冲突通过时段管理怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0280",
+    "version": "0.2",
+    "canonical": "邻居宠物冲突通过时段管理",
+    "alias": "室友、邻居、房东与物业里邻居宠物冲突通过时段管理",
+    "alias_type": "typo",
+    "category_ids": [
+      "housing"
+    ],
+    "target_ids": [
+      "scene-housing-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0281",
+    "version": "0.2",
+    "canonical": "美容院强迫办卡并阻挡离店",
+    "alias": "美容院强迫办卡并阻挡离店",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0282",
+    "version": "0.2",
+    "canonical": "美容院强迫办卡并阻挡离店",
+    "alias": "美容院强迫办卡并阻挡离店怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0283",
+    "version": "0.2",
+    "canonical": "美容院强迫办卡并阻挡离店",
+    "alias": "遇到美容院强迫办卡并阻挡离店怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0284",
+    "version": "0.2",
+    "canonical": "美容院强迫办卡并阻挡离店",
+    "alias": "消费、退款、销售和服务争议里美容院强迫办卡并阻挡离店",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0285",
+    "version": "0.2",
+    "canonical": "预付费机构闭店前继续售卡",
+    "alias": "预付费机构闭店前继续售卡",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0286",
+    "version": "0.2",
+    "canonical": "预付费机构闭店前继续售卡",
+    "alias": "预付费机构闭店前继续售卡怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0287",
+    "version": "0.2",
+    "canonical": "预付费机构闭店前继续售卡",
+    "alias": "遇到预付费机构闭店前继续售卡怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0288",
+    "version": "0.2",
+    "canonical": "预付费机构闭店前继续售卡",
+    "alias": "消费、退款、销售和服务争议里预付费机构闭店前继续售卡",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0289",
+    "version": "0.2",
+    "canonical": "用户未看清退款规则后辱骂客服",
+    "alias": "用户未看清退款规则后辱骂客服",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0290",
+    "version": "0.2",
+    "canonical": "用户未看清退款规则后辱骂客服",
+    "alias": "用户未看清退款规则后辱骂客服怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0291",
+    "version": "0.2",
+    "canonical": "用户未看清退款规则后辱骂客服",
+    "alias": "遇到用户未看清退款规则后辱骂客服怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0292",
+    "version": "0.2",
+    "canonical": "用户未看清退款规则后辱骂客服",
+    "alias": "消费、退款、销售和服务争议里用户未看清退款规则后辱骂客服",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0293",
+    "version": "0.2",
+    "canonical": "用户恶意差评后需要更正",
+    "alias": "用户恶意差评后需要更正",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0294",
+    "version": "0.2",
+    "canonical": "用户恶意差评后需要更正",
+    "alias": "用户恶意差评后需要更正怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0295",
+    "version": "0.2",
+    "canonical": "用户恶意差评后需要更正",
+    "alias": "遇到用户恶意差评后需要更正怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0296",
+    "version": "0.2",
+    "canonical": "用户恶意差评后需要更正",
+    "alias": "消费、退款、销售和服务争议里用户恶意差评后需要更正",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0297",
+    "version": "0.2",
+    "canonical": "健身房稀缺优惠有真实期限",
+    "alias": "健身房稀缺优惠有真实期限",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0298",
+    "version": "0.2",
+    "canonical": "健身房稀缺优惠有真实期限",
+    "alias": "健身房稀缺优惠有真实期限怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0299",
+    "version": "0.2",
+    "canonical": "健身房稀缺优惠有真实期限",
+    "alias": "遇到健身房稀缺优惠有真实期限怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0300",
+    "version": "0.2",
+    "canonical": "健身房稀缺优惠有真实期限",
+    "alias": "消费、退款、销售和服务争议里健身房稀缺优惠有真实期限",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0301",
+    "version": "0.2",
+    "canonical": "理发推销用幽默守住预算",
+    "alias": "理发推销用幽默守住预算",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0302",
+    "version": "0.2",
+    "canonical": "理发推销用幽默守住预算",
+    "alias": "理发推销用幽默守住预算怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0303",
+    "version": "0.2",
+    "canonical": "理发推销用幽默守住预算",
+    "alias": "遇到理发推销用幽默守住预算怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0304",
+    "version": "0.2",
+    "canonical": "理发推销用幽默守住预算",
+    "alias": "消费、退款、销售和服务争议里理发推销用幽默守住预算",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0305",
+    "version": "0.2",
+    "canonical": "酒店房型与宣传不符",
+    "alias": "酒店房型与宣传不符",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0306",
+    "version": "0.2",
+    "canonical": "酒店房型与宣传不符",
+    "alias": "酒店房型与宣传不符怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0307",
+    "version": "0.2",
+    "canonical": "酒店房型与宣传不符",
+    "alias": "遇到酒店房型与宣传不符怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0308",
+    "version": "0.2",
+    "canonical": "酒店房型与宣传不符",
+    "alias": "消费、退款、销售和服务争议里酒店房型与宣传不符",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0309",
+    "version": "0.2",
+    "canonical": "客服反复转接需要单一工单",
+    "alias": "客服反复转接需要单一工单",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0310",
+    "version": "0.2",
+    "canonical": "客服反复转接需要单一工单",
+    "alias": "客服反复转接需要单一工单怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0311",
+    "version": "0.2",
+    "canonical": "客服反复转接需要单一工单",
+    "alias": "遇到客服反复转接需要单一工单怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0312",
+    "version": "0.2",
+    "canonical": "客服反复转接需要单一工单",
+    "alias": "消费、退款、销售和服务争议里客服反复转接需要单一工单",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0313",
+    "version": "0.2",
+    "canonical": "维修报价变化源于新发现故障",
+    "alias": "维修报价变化源于新发现故障",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0314",
+    "version": "0.2",
+    "canonical": "维修报价变化源于新发现故障",
+    "alias": "维修报价变化源于新发现故障怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0315",
+    "version": "0.2",
+    "canonical": "维修报价变化源于新发现故障",
+    "alias": "遇到维修报价变化源于新发现故障怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0316",
+    "version": "0.2",
+    "canonical": "维修报价变化源于新发现故障",
+    "alias": "消费、退款、销售和服务争议里维修报价变化源于新发现故障",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0317",
+    "version": "0.2",
+    "canonical": "餐厅错菜后双方轻松修复",
+    "alias": "餐厅错菜后双方轻松修复",
+    "alias_type": "synonym",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0318",
+    "version": "0.2",
+    "canonical": "餐厅错菜后双方轻松修复",
+    "alias": "餐厅错菜后双方轻松修复怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0319",
+    "version": "0.2",
+    "canonical": "餐厅错菜后双方轻松修复",
+    "alias": "遇到餐厅错菜后双方轻松修复怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0320",
+    "version": "0.2",
+    "canonical": "餐厅错菜后双方轻松修复",
+    "alias": "消费、退款、销售和服务争议里餐厅错菜后双方轻松修复",
+    "alias_type": "typo",
+    "category_ids": [
+      "consumer"
+    ],
+    "target_ids": [
+      "scene-consumer-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0321",
+    "version": "0.2",
+    "canonical": "陌生人持续私信并线下跟踪",
+    "alias": "陌生人持续私信并线下跟踪",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0322",
+    "version": "0.2",
+    "canonical": "陌生人持续私信并线下跟踪",
+    "alias": "陌生人持续私信并线下跟踪怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0323",
+    "version": "0.2",
+    "canonical": "陌生人持续私信并线下跟踪",
+    "alias": "遇到陌生人持续私信并线下跟踪怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0324",
+    "version": "0.2",
+    "canonical": "陌生人持续私信并线下跟踪",
+    "alias": "网络社交、群聊、朋友圈和隐私里陌生人持续私信并线下跟踪",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0325",
+    "version": "0.2",
+    "canonical": "群聊文本诱导忽略系统规则",
+    "alias": "群聊文本诱导忽略系统规则",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0326",
+    "version": "0.2",
+    "canonical": "群聊文本诱导忽略系统规则",
+    "alias": "群聊文本诱导忽略系统规则怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0327",
+    "version": "0.2",
+    "canonical": "群聊文本诱导忽略系统规则",
+    "alias": "遇到群聊文本诱导忽略系统规则怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0328",
+    "version": "0.2",
+    "canonical": "群聊文本诱导忽略系统规则",
+    "alias": "网络社交、群聊、朋友圈和隐私里群聊文本诱导忽略系统规则",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0329",
+    "version": "0.2",
+    "canonical": "用户误发他人身份证照片",
+    "alias": "用户误发他人身份证照片",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0330",
+    "version": "0.2",
+    "canonical": "用户误发他人身份证照片",
+    "alias": "用户误发他人身份证照片怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0331",
+    "version": "0.2",
+    "canonical": "用户误发他人身份证照片",
+    "alias": "遇到用户误发他人身份证照片怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0332",
+    "version": "0.2",
+    "canonical": "用户误发他人身份证照片",
+    "alias": "网络社交、群聊、朋友圈和隐私里用户误发他人身份证照片",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0333",
+    "version": "0.2",
+    "canonical": "用户断章取义转发后需公开澄清",
+    "alias": "用户断章取义转发后需公开澄清",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0334",
+    "version": "0.2",
+    "canonical": "用户断章取义转发后需公开澄清",
+    "alias": "用户断章取义转发后需公开澄清怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0335",
+    "version": "0.2",
+    "canonical": "用户断章取义转发后需公开澄清",
+    "alias": "遇到用户断章取义转发后需公开澄清怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0336",
+    "version": "0.2",
+    "canonical": "用户断章取义转发后需公开澄清",
+    "alias": "网络社交、群聊、朋友圈和隐私里用户断章取义转发后需公开澄清",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0337",
+    "version": "0.2",
+    "canonical": "朋友发布合照后及时下架",
+    "alias": "朋友发布合照后及时下架",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0338",
+    "version": "0.2",
+    "canonical": "朋友发布合照后及时下架",
+    "alias": "朋友发布合照后及时下架怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0339",
+    "version": "0.2",
+    "canonical": "朋友发布合照后及时下架",
+    "alias": "遇到朋友发布合照后及时下架怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0340",
+    "version": "0.2",
+    "canonical": "朋友发布合照后及时下架",
+    "alias": "网络社交、群聊、朋友圈和隐私里朋友发布合照后及时下架",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0341",
+    "version": "0.2",
+    "canonical": "兴趣群玩笑通过规则收口",
+    "alias": "兴趣群玩笑通过规则收口",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0342",
+    "version": "0.2",
+    "canonical": "兴趣群玩笑通过规则收口",
+    "alias": "兴趣群玩笑通过规则收口怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0343",
+    "version": "0.2",
+    "canonical": "兴趣群玩笑通过规则收口",
+    "alias": "遇到兴趣群玩笑通过规则收口怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0344",
+    "version": "0.2",
+    "canonical": "兴趣群玩笑通过规则收口",
+    "alias": "网络社交、群聊、朋友圈和隐私里兴趣群玩笑通过规则收口",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0345",
+    "version": "0.2",
+    "canonical": "朋友圈影射引发多种解释",
+    "alias": "朋友圈影射引发多种解释",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0346",
+    "version": "0.2",
+    "canonical": "朋友圈影射引发多种解释",
+    "alias": "朋友圈影射引发多种解释怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0347",
+    "version": "0.2",
+    "canonical": "朋友圈影射引发多种解释",
+    "alias": "遇到朋友圈影射引发多种解释怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0348",
+    "version": "0.2",
+    "canonical": "朋友圈影射引发多种解释",
+    "alias": "网络社交、群聊、朋友圈和隐私里朋友圈影射引发多种解释",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0349",
+    "version": "0.2",
+    "canonical": "游戏社群公开点名但事实有误",
+    "alias": "游戏社群公开点名但事实有误",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0350",
+    "version": "0.2",
+    "canonical": "游戏社群公开点名但事实有误",
+    "alias": "游戏社群公开点名但事实有误怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0351",
+    "version": "0.2",
+    "canonical": "游戏社群公开点名但事实有误",
+    "alias": "遇到游戏社群公开点名但事实有误怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0352",
+    "version": "0.2",
+    "canonical": "游戏社群公开点名但事实有误",
+    "alias": "网络社交、群聊、朋友圈和隐私里游戏社群公开点名但事实有误",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0353",
+    "version": "0.2",
+    "canonical": "账号共享改成权限分级",
+    "alias": "账号共享改成权限分级",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0354",
+    "version": "0.2",
+    "canonical": "账号共享改成权限分级",
+    "alias": "账号共享改成权限分级怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0355",
+    "version": "0.2",
+    "canonical": "账号共享改成权限分级",
+    "alias": "遇到账号共享改成权限分级怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0356",
+    "version": "0.2",
+    "canonical": "账号共享改成权限分级",
+    "alias": "网络社交、群聊、朋友圈和隐私里账号共享改成权限分级",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0357",
+    "version": "0.2",
+    "canonical": "已读不回源于平台提醒异常",
+    "alias": "已读不回源于平台提醒异常",
+    "alias_type": "synonym",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0358",
+    "version": "0.2",
+    "canonical": "已读不回源于平台提醒异常",
+    "alias": "已读不回源于平台提醒异常怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0359",
+    "version": "0.2",
+    "canonical": "已读不回源于平台提醒异常",
+    "alias": "遇到已读不回源于平台提醒异常怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0360",
+    "version": "0.2",
+    "canonical": "已读不回源于平台提醒异常",
+    "alias": "网络社交、群聊、朋友圈和隐私里已读不回源于平台提醒异常",
+    "alias_type": "typo",
+    "category_ids": [
+      "online"
+    ],
+    "target_ids": [
+      "scene-online-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0361",
+    "version": "0.2",
+    "canonical": "多方项目互相改变验收标准",
+    "alias": "多方项目互相改变验收标准",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0362",
+    "version": "0.2",
+    "canonical": "多方项目互相改变验收标准",
+    "alias": "多方项目互相改变验收标准怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0363",
+    "version": "0.2",
+    "canonical": "多方项目互相改变验收标准",
+    "alias": "遇到多方项目互相改变验收标准怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0364",
+    "version": "0.2",
+    "canonical": "多方项目互相改变验收标准",
+    "alias": "自由职业、客户与商务合作里多方项目互相改变验收标准",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0365",
+    "version": "0.2",
+    "canonical": "客户延迟付款并要求继续交付",
+    "alias": "客户延迟付款并要求继续交付",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0366",
+    "version": "0.2",
+    "canonical": "客户延迟付款并要求继续交付",
+    "alias": "客户延迟付款并要求继续交付怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0367",
+    "version": "0.2",
+    "canonical": "客户延迟付款并要求继续交付",
+    "alias": "遇到客户延迟付款并要求继续交付怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0368",
+    "version": "0.2",
+    "canonical": "客户延迟付款并要求继续交付",
+    "alias": "自由职业、客户与商务合作里客户延迟付款并要求继续交付",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0369",
+    "version": "0.2",
+    "canonical": "用户延期却未主动更新客户",
+    "alias": "用户延期却未主动更新客户",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0370",
+    "version": "0.2",
+    "canonical": "用户延期却未主动更新客户",
+    "alias": "用户延期却未主动更新客户怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0371",
+    "version": "0.2",
+    "canonical": "用户延期却未主动更新客户",
+    "alias": "遇到用户延期却未主动更新客户怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0372",
+    "version": "0.2",
+    "canonical": "用户延期却未主动更新客户",
+    "alias": "自由职业、客户与商务合作里用户延期却未主动更新客户",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0373",
+    "version": "0.2",
+    "canonical": "用户作品未达标先指责客户挑剔",
+    "alias": "用户作品未达标先指责客户挑剔",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0374",
+    "version": "0.2",
+    "canonical": "用户作品未达标先指责客户挑剔",
+    "alias": "用户作品未达标先指责客户挑剔怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0375",
+    "version": "0.2",
+    "canonical": "用户作品未达标先指责客户挑剔",
+    "alias": "遇到用户作品未达标先指责客户挑剔怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0376",
+    "version": "0.2",
+    "canonical": "用户作品未达标先指责客户挑剔",
+    "alias": "自由职业、客户与商务合作里用户作品未达标先指责客户挑剔",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0377",
+    "version": "0.2",
+    "canonical": "免费试稿改为付费小样",
+    "alias": "免费试稿改为付费小样",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0378",
+    "version": "0.2",
+    "canonical": "免费试稿改为付费小样",
+    "alias": "免费试稿改为付费小样怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0379",
+    "version": "0.2",
+    "canonical": "免费试稿改为付费小样",
+    "alias": "遇到免费试稿改为付费小样怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0380",
+    "version": "0.2",
+    "canonical": "免费试稿改为付费小样",
+    "alias": "自由职业、客户与商务合作里免费试稿改为付费小样",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0381",
+    "version": "0.2",
+    "canonical": "无限修改通过轮次约束",
+    "alias": "无限修改通过轮次约束",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0382",
+    "version": "0.2",
+    "canonical": "无限修改通过轮次约束",
+    "alias": "无限修改通过轮次约束怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0383",
+    "version": "0.2",
+    "canonical": "无限修改通过轮次约束",
+    "alias": "遇到无限修改通过轮次约束怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0384",
+    "version": "0.2",
+    "canonical": "无限修改通过轮次约束",
+    "alias": "自由职业、客户与商务合作里无限修改通过轮次约束",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0385",
+    "version": "0.2",
+    "canonical": "未来机会不能替代当前费用",
+    "alias": "未来机会不能替代当前费用",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0386",
+    "version": "0.2",
+    "canonical": "未来机会不能替代当前费用",
+    "alias": "未来机会不能替代当前费用怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0387",
+    "version": "0.2",
+    "canonical": "未来机会不能替代当前费用",
+    "alias": "遇到未来机会不能替代当前费用怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0388",
+    "version": "0.2",
+    "canonical": "未来机会不能替代当前费用",
+    "alias": "自由职业、客户与商务合作里未来机会不能替代当前费用",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0389",
+    "version": "0.2",
+    "canonical": "临时压价用范围交换",
+    "alias": "临时压价用范围交换",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0390",
+    "version": "0.2",
+    "canonical": "临时压价用范围交换",
+    "alias": "临时压价用范围交换怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0391",
+    "version": "0.2",
+    "canonical": "临时压价用范围交换",
+    "alias": "遇到临时压价用范围交换怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0392",
+    "version": "0.2",
+    "canonical": "临时压价用范围交换",
+    "alias": "自由职业、客户与商务合作里临时压价用范围交换",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0393",
+    "version": "0.2",
+    "canonical": "口头承诺与合同冲突",
+    "alias": "口头承诺与合同冲突",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0394",
+    "version": "0.2",
+    "canonical": "口头承诺与合同冲突",
+    "alias": "口头承诺与合同冲突怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0395",
+    "version": "0.2",
+    "canonical": "口头承诺与合同冲突",
+    "alias": "遇到口头承诺与合同冲突怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0396",
+    "version": "0.2",
+    "canonical": "口头承诺与合同冲突",
+    "alias": "自由职业、客户与商务合作里口头承诺与合同冲突",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0397",
+    "version": "0.2",
+    "canonical": "合作方合理返工被误判",
+    "alias": "合作方合理返工被误判",
+    "alias_type": "synonym",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0398",
+    "version": "0.2",
+    "canonical": "合作方合理返工被误判",
+    "alias": "合作方合理返工被误判怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0399",
+    "version": "0.2",
+    "canonical": "合作方合理返工被误判",
+    "alias": "遇到合作方合理返工被误判怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0400",
+    "version": "0.2",
+    "canonical": "合作方合理返工被误判",
+    "alias": "自由职业、客户与商务合作里合作方合理返工被误判",
+    "alias_type": "typo",
+    "category_ids": [
+      "freelance"
+    ],
+    "target_ids": [
+      "scene-freelance-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0401",
+    "version": "0.2",
+    "canonical": "家属阻止患者离院并争夺决定权",
+    "alias": "家属阻止患者离院并争夺决定权",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0402",
+    "version": "0.2",
+    "canonical": "家属阻止患者离院并争夺决定权",
+    "alias": "家属阻止患者离院并争夺决定权怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0403",
+    "version": "0.2",
+    "canonical": "家属阻止患者离院并争夺决定权",
+    "alias": "遇到家属阻止患者离院并争夺决定权怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0404",
+    "version": "0.2",
+    "canonical": "家属阻止患者离院并争夺决定权",
+    "alias": "照护、就医沟通和家庭健康安排里家属阻止患者离院并争夺决定权",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0405",
+    "version": "0.2",
+    "canonical": "自伤风险被当成普通安慰话题",
+    "alias": "自伤风险被当成普通安慰话题",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0406",
+    "version": "0.2",
+    "canonical": "自伤风险被当成普通安慰话题",
+    "alias": "自伤风险被当成普通安慰话题怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0407",
+    "version": "0.2",
+    "canonical": "自伤风险被当成普通安慰话题",
+    "alias": "遇到自伤风险被当成普通安慰话题怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0408",
+    "version": "0.2",
+    "canonical": "自伤风险被当成普通安慰话题",
+    "alias": "照护、就医沟通和家庭健康安排里自伤风险被当成普通安慰话题",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0409",
+    "version": "0.2",
+    "canonical": "用户隐瞒用药信息后需要补充",
+    "alias": "用户隐瞒用药信息后需要补充",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0410",
+    "version": "0.2",
+    "canonical": "用户隐瞒用药信息后需要补充",
+    "alias": "用户隐瞒用药信息后需要补充怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0411",
+    "version": "0.2",
+    "canonical": "用户隐瞒用药信息后需要补充",
+    "alias": "遇到用户隐瞒用药信息后需要补充怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0412",
+    "version": "0.2",
+    "canonical": "用户隐瞒用药信息后需要补充",
+    "alias": "照护、就医沟通和家庭健康安排里用户隐瞒用药信息后需要补充",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0413",
+    "version": "0.2",
+    "canonical": "用户误解医生表达并责怪家属",
+    "alias": "用户误解医生表达并责怪家属",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0414",
+    "version": "0.2",
+    "canonical": "用户误解医生表达并责怪家属",
+    "alias": "用户误解医生表达并责怪家属怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0415",
+    "version": "0.2",
+    "canonical": "用户误解医生表达并责怪家属",
+    "alias": "遇到用户误解医生表达并责怪家属怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0416",
+    "version": "0.2",
+    "canonical": "用户误解医生表达并责怪家属",
+    "alias": "照护、就医沟通和家庭健康安排里用户误解医生表达并责怪家属",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0417",
+    "version": "0.2",
+    "canonical": "兄妹陪诊按时间能力分工",
+    "alias": "兄妹陪诊按时间能力分工",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0418",
+    "version": "0.2",
+    "canonical": "兄妹陪诊按时间能力分工",
+    "alias": "兄妹陪诊按时间能力分工怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0419",
+    "version": "0.2",
+    "canonical": "兄妹陪诊按时间能力分工",
+    "alias": "遇到兄妹陪诊按时间能力分工怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0420",
+    "version": "0.2",
+    "canonical": "兄妹陪诊按时间能力分工",
+    "alias": "照护、就医沟通和家庭健康安排里兄妹陪诊按时间能力分工",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0421",
+    "version": "0.2",
+    "canonical": "健康信息公开前征得本人同意",
+    "alias": "健康信息公开前征得本人同意",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0422",
+    "version": "0.2",
+    "canonical": "健康信息公开前征得本人同意",
+    "alias": "健康信息公开前征得本人同意怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0423",
+    "version": "0.2",
+    "canonical": "健康信息公开前征得本人同意",
+    "alias": "遇到健康信息公开前征得本人同意怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0424",
+    "version": "0.2",
+    "canonical": "健康信息公开前征得本人同意",
+    "alias": "照护、就医沟通和家庭健康安排里健康信息公开前征得本人同意",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0425",
+    "version": "0.2",
+    "canonical": "照护者疲惫被道德压力覆盖",
+    "alias": "照护者疲惫被道德压力覆盖",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0426",
+    "version": "0.2",
+    "canonical": "照护者疲惫被道德压力覆盖",
+    "alias": "照护者疲惫被道德压力覆盖怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0427",
+    "version": "0.2",
+    "canonical": "照护者疲惫被道德压力覆盖",
+    "alias": "遇到照护者疲惫被道德压力覆盖怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0428",
+    "version": "0.2",
+    "canonical": "照护者疲惫被道德压力覆盖",
+    "alias": "照护、就医沟通和家庭健康安排里照护者疲惫被道德压力覆盖",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0429",
+    "version": "0.2",
+    "canonical": "老人拒绝帮助需要尊重与风险平衡",
+    "alias": "老人拒绝帮助需要尊重与风险平衡",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0430",
+    "version": "0.2",
+    "canonical": "老人拒绝帮助需要尊重与风险平衡",
+    "alias": "老人拒绝帮助需要尊重与风险平衡怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0431",
+    "version": "0.2",
+    "canonical": "老人拒绝帮助需要尊重与风险平衡",
+    "alias": "遇到老人拒绝帮助需要尊重与风险平衡怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0432",
+    "version": "0.2",
+    "canonical": "老人拒绝帮助需要尊重与风险平衡",
+    "alias": "照护、就医沟通和家庭健康安排里老人拒绝帮助需要尊重与风险平衡",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0433",
+    "version": "0.2",
+    "canonical": "家属争论治疗方案时先确认事实",
+    "alias": "家属争论治疗方案时先确认事实",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0434",
+    "version": "0.2",
+    "canonical": "家属争论治疗方案时先确认事实",
+    "alias": "家属争论治疗方案时先确认事实怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0435",
+    "version": "0.2",
+    "canonical": "家属争论治疗方案时先确认事实",
+    "alias": "遇到家属争论治疗方案时先确认事实怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0436",
+    "version": "0.2",
+    "canonical": "家属争论治疗方案时先确认事实",
+    "alias": "照护、就医沟通和家庭健康安排里家属争论治疗方案时先确认事实",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0437",
+    "version": "0.2",
+    "canonical": "低风险复查焦虑用轻松语气缓和",
+    "alias": "低风险复查焦虑用轻松语气缓和",
+    "alias_type": "synonym",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0438",
+    "version": "0.2",
+    "canonical": "低风险复查焦虑用轻松语气缓和",
+    "alias": "低风险复查焦虑用轻松语气缓和怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0439",
+    "version": "0.2",
+    "canonical": "低风险复查焦虑用轻松语气缓和",
+    "alias": "遇到低风险复查焦虑用轻松语气缓和怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0440",
+    "version": "0.2",
+    "canonical": "低风险复查焦虑用轻松语气缓和",
+    "alias": "照护、就医沟通和家庭健康安排里低风险复查焦虑用轻松语气缓和",
+    "alias_type": "typo",
+    "category_ids": [
+      "caregiving"
+    ],
+    "target_ids": [
+      "scene-caregiving-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0441",
+    "version": "0.2",
+    "canonical": "陌生人偷拍并拒绝删除",
+    "alias": "陌生人偷拍并拒绝删除",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0442",
+    "version": "0.2",
+    "canonical": "陌生人偷拍并拒绝删除",
+    "alias": "陌生人偷拍并拒绝删除怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0443",
+    "version": "0.2",
+    "canonical": "陌生人偷拍并拒绝删除",
+    "alias": "遇到陌生人偷拍并拒绝删除怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0444",
+    "version": "0.2",
+    "canonical": "陌生人偷拍并拒绝删除",
+    "alias": "公共场所、陌生人和日常边界里陌生人偷拍并拒绝删除",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-001"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0445",
+    "version": "0.2",
+    "canonical": "陌生人尾随搭讪到停车场",
+    "alias": "陌生人尾随搭讪到停车场",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0446",
+    "version": "0.2",
+    "canonical": "陌生人尾随搭讪到停车场",
+    "alias": "陌生人尾随搭讪到停车场怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0447",
+    "version": "0.2",
+    "canonical": "陌生人尾随搭讪到停车场",
+    "alias": "遇到陌生人尾随搭讪到停车场怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0448",
+    "version": "0.2",
+    "canonical": "陌生人尾随搭讪到停车场",
+    "alias": "公共场所、陌生人和日常边界里陌生人尾随搭讪到停车场",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-002"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0449",
+    "version": "0.2",
+    "canonical": "用户插队后先指责提醒者",
+    "alias": "用户插队后先指责提醒者",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0450",
+    "version": "0.2",
+    "canonical": "用户插队后先指责提醒者",
+    "alias": "用户插队后先指责提醒者怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0451",
+    "version": "0.2",
+    "canonical": "用户插队后先指责提醒者",
+    "alias": "遇到用户插队后先指责提醒者怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0452",
+    "version": "0.2",
+    "canonical": "用户插队后先指责提醒者",
+    "alias": "公共场所、陌生人和日常边界里用户插队后先指责提醒者",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-003"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0453",
+    "version": "0.2",
+    "canonical": "用户孩子影响他人后需要修复",
+    "alias": "用户孩子影响他人后需要修复",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0454",
+    "version": "0.2",
+    "canonical": "用户孩子影响他人后需要修复",
+    "alias": "用户孩子影响他人后需要修复怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0455",
+    "version": "0.2",
+    "canonical": "用户孩子影响他人后需要修复",
+    "alias": "遇到用户孩子影响他人后需要修复怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0456",
+    "version": "0.2",
+    "canonical": "用户孩子影响他人后需要修复",
+    "alias": "公共场所、陌生人和日常边界里用户孩子影响他人后需要修复",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-004"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0457",
+    "version": "0.2",
+    "canonical": "地铁占座用轻松方式确认",
+    "alias": "地铁占座用轻松方式确认",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0458",
+    "version": "0.2",
+    "canonical": "地铁占座用轻松方式确认",
+    "alias": "地铁占座用轻松方式确认怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0459",
+    "version": "0.2",
+    "canonical": "地铁占座用轻松方式确认",
+    "alias": "遇到地铁占座用轻松方式确认怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0460",
+    "version": "0.2",
+    "canonical": "地铁占座用轻松方式确认",
+    "alias": "公共场所、陌生人和日常边界里地铁占座用轻松方式确认",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-005"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0461",
+    "version": "0.2",
+    "canonical": "公共噪声先确认是否可调整",
+    "alias": "公共噪声先确认是否可调整",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0462",
+    "version": "0.2",
+    "canonical": "公共噪声先确认是否可调整",
+    "alias": "公共噪声先确认是否可调整怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0463",
+    "version": "0.2",
+    "canonical": "公共噪声先确认是否可调整",
+    "alias": "遇到公共噪声先确认是否可调整怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0464",
+    "version": "0.2",
+    "canonical": "公共噪声先确认是否可调整",
+    "alias": "公共场所、陌生人和日常边界里公共噪声先确认是否可调整",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-006"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0465",
+    "version": "0.2",
+    "canonical": "外卖员要求进门放餐",
+    "alias": "外卖员要求进门放餐",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0466",
+    "version": "0.2",
+    "canonical": "外卖员要求进门放餐",
+    "alias": "外卖员要求进门放餐怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0467",
+    "version": "0.2",
+    "canonical": "外卖员要求进门放餐",
+    "alias": "遇到外卖员要求进门放餐怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0468",
+    "version": "0.2",
+    "canonical": "外卖员要求进门放餐",
+    "alias": "公共场所、陌生人和日常边界里外卖员要求进门放餐",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-007"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0469",
+    "version": "0.2",
+    "canonical": "宠物冲突需要工作人员介入",
+    "alias": "宠物冲突需要工作人员介入",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0470",
+    "version": "0.2",
+    "canonical": "宠物冲突需要工作人员介入",
+    "alias": "宠物冲突需要工作人员介入怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0471",
+    "version": "0.2",
+    "canonical": "宠物冲突需要工作人员介入",
+    "alias": "遇到宠物冲突需要工作人员介入怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0472",
+    "version": "0.2",
+    "canonical": "宠物冲突需要工作人员介入",
+    "alias": "公共场所、陌生人和日常边界里宠物冲突需要工作人员介入",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-008"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0473",
+    "version": "0.2",
+    "canonical": "陌生人评论外貌被幽默收口",
+    "alias": "陌生人评论外貌被幽默收口",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0474",
+    "version": "0.2",
+    "canonical": "陌生人评论外貌被幽默收口",
+    "alias": "陌生人评论外貌被幽默收口怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0475",
+    "version": "0.2",
+    "canonical": "陌生人评论外貌被幽默收口",
+    "alias": "遇到陌生人评论外貌被幽默收口怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0476",
+    "version": "0.2",
+    "canonical": "陌生人评论外貌被幽默收口",
+    "alias": "公共场所、陌生人和日常边界里陌生人评论外貌被幽默收口",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-009"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0477",
+    "version": "0.2",
+    "canonical": "公交占座误会来自座位故障",
+    "alias": "公交占座误会来自座位故障",
+    "alias_type": "synonym",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0478",
+    "version": "0.2",
+    "canonical": "公交占座误会来自座位故障",
+    "alias": "公交占座误会来自座位故障怎么办",
+    "alias_type": "colloquial",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0479",
+    "version": "0.2",
+    "canonical": "公交占座误会来自座位故障",
+    "alias": "遇到公交占座误会来自座位故障怎么说",
+    "alias_type": "paraphrase",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  },
+  {
+    "id": "alias-0480",
+    "version": "0.2",
+    "canonical": "公交占座误会来自座位故障",
+    "alias": "公共场所、陌生人和日常边界里公交占座误会来自座位故障",
+    "alias_type": "typo",
+    "category_ids": [
+      "public"
+    ],
+    "target_ids": [
+      "scene-public-010"
+    ],
+    "negative_contexts": [
+      "对方已经接受解释时不要升级",
+      "普通合理询问不应强行匹配风险"
+    ],
+    "review_status": "pending_human_review"
+  }
+]
