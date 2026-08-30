@@ -390,6 +390,24 @@ const DRILLS = {
   }
 };
 
+const LEGACY_TRAINING_MODULES = Object.freeze({
+  "progress": "pua-workplace-accountability",
+  "public": "pua-workplace-accountability",
+  "overtime": "pua-workplace-overtime",
+  "marriage": "pua-family-marriage",
+  "compare": "pua-family-emotion-dumping",
+  "group": "pua-workplace-accountability",
+  "delay": "pua-workplace-general",
+});
+
+function resolveTrainingModuleId(id, drill) {
+  if (getTrainingModule(id)) return id;
+  if (LEGACY_TRAINING_MODULES[id]) return LEGACY_TRAINING_MODULES[id];
+  return /亲戚|父母|妈妈|爸爸|家人|长辈|伴侣|家庭/.test(`${drill?.role || ""} ${drill?.title || ""}`)
+    ? "pua-family-emotion-dumping"
+    : "pua-workplace-general";
+}
+
 function applyLocalization() {
   document.title = I18N.title;
   document.querySelectorAll("[data-i18n]").forEach((node) => {
@@ -1713,38 +1731,37 @@ async function startDrill(id, extra = {}) {
     currentDrill = {
       role: trainingModule.role,
       title: trainingModule.title,
+      summary: trainingModule.summary,
       opener: "",
       suggestions: [],
       replies: [],
     };
   }
+  const trainingModuleId = resolveTrainingModuleId(id, currentDrill);
   drillOrigin = extra.origin || "levels";
   drillStep = 0;
   boundaryWins = 0;
-  const isFamily = id.includes("family");
+  const isFamily = trainingModuleId.includes("family");
   const drillScreen = document.querySelector(".drill-screen");
   drillScreen?.classList.toggle("scene-family", isFamily);
   drillScreen?.classList.toggle("scene-workplace", !isFamily);
-  drillScreen?.classList.toggle("use-boss-two", /general|overtime|emotional|gender/.test(id));
+  drillScreen?.classList.toggle("use-boss-two", /general|overtime|emotional|gender/.test(trainingModuleId));
   document.querySelector(".family-dinner-stage")?.classList.remove("is-softened");
   document.querySelector("#drill-role").textContent = currentDrill.role;
   document.querySelector("#drill-title").textContent = extra.title || currentDrill.title;
   drillThread.innerHTML = "";
   drillInput.value = "";
-  if (currentDrill.opener) appendDrill("ai", currentDrill.opener);
   showScreen("drill");
-  if (!trainingModule) {
-    drillForm.classList.remove("is-disabled");
-    drillInput.disabled = false;
-    updateDrillProgress();
-    return;
-  }
 
   drillForm.classList.add("is-disabled");
   drillInput.disabled = true;
   drillProgress.textContent = "正在进入训练场景…";
   try {
-    const data = await createClassicTrainingSession(id, selectedClassicDifficulty);
+    const data = await createClassicTrainingSession(trainingModuleId, selectedClassicDifficulty, {
+      title: currentDrill.title,
+      role: currentDrill.role,
+      summary: currentDrill.summary || currentDrill.title,
+    });
     currentTrainingSession = {
       sessionId: data.session_id,
       turn: data.current_turn,
@@ -1768,50 +1785,46 @@ async function startDrill(id, extra = {}) {
 async function sendDrill(text) {
   if (!currentDrill || !text.trim()) return;
   appendDrill("me", text.trim());
-  if (currentTrainingSession) {
-    if (/请.{0,8}(尊重|不要|别)|我(会|想|决定|安排).{0,12}(自己|以后|再说)|不想.{0,8}(讨论|回答)/.test(text)) {
-      boundaryWins += 1;
-    }
-    drillForm.classList.add("is-disabled");
-    drillInput.disabled = true;
-    drillProgress.textContent = "对方正在回应…";
-    try {
-      const data = await sendClassicTrainingTurn(currentTrainingSession.sessionId, text.trim());
-      currentTrainingSession = {
-        ...currentTrainingSession,
-        turn: data.current_turn,
-        maxTurns: data.max_turns,
-        achievedGoalIds: data.state?.resolved_goal_ids || currentTrainingSession.achievedGoalIds,
-        finished: data.end_session,
-      };
-      appendDrill("ai", data.opponent_message);
-      if (boundaryWins >= 2 && currentDrill?.role && currentDrill.title.includes("家庭")) {
-        document.querySelector(".family-dinner-stage")?.classList.add("is-softened");
-      }
-      updateDrillProgress();
-      if (data.end_session) {
-        drillProgress.textContent = "正在生成练习复盘…";
-        const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
-        currentTrainingSession = null;
-        renderClassicTrainingReview(review);
-        return;
-      }
-      drillForm.classList.remove("is-disabled");
-      drillInput.disabled = false;
-      drillInput.focus();
-    } catch (error) {
-      appendDrill("ai", `系统提示：${error.message}`);
-      drillProgress.textContent = "发送失败，请稍后重试";
-      drillForm.classList.remove("is-disabled");
-      drillInput.disabled = false;
-    }
+  if (!currentTrainingSession) {
+    appendDrill("ai", "系统提示：训练会话尚未建立，请返回后重新进入这一关。");
     return;
   }
-  const reply = currentDrill.replies[Math.min(drillStep, currentDrill.replies.length - 1)];
-  drillStep += 1;
-  window.setTimeout(() => {
-    appendDrill("ai", reply);
-  }, 420);
+  if (/请.{0,8}(尊重|不要|别)|我(会|想|决定|安排).{0,12}(自己|以后|再说)|不想.{0,8}(讨论|回答)/.test(text)) {
+    boundaryWins += 1;
+  }
+  drillForm.classList.add("is-disabled");
+  drillInput.disabled = true;
+  drillProgress.textContent = "对方正在回应…";
+  try {
+    const data = await sendClassicTrainingTurn(currentTrainingSession.sessionId, text.trim());
+    currentTrainingSession = {
+      ...currentTrainingSession,
+      turn: data.current_turn,
+      maxTurns: data.max_turns,
+      achievedGoalIds: data.state?.resolved_goal_ids || currentTrainingSession.achievedGoalIds,
+      finished: data.end_session,
+    };
+    appendDrill("ai", data.opponent_message);
+    if (boundaryWins >= 2 && currentDrill?.role && /家|亲戚|长辈|父母/.test(currentDrill.title)) {
+      document.querySelector(".family-dinner-stage")?.classList.add("is-softened");
+    }
+    updateDrillProgress();
+    if (data.end_session) {
+      drillProgress.textContent = "正在生成练习复盘…";
+      const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
+      currentTrainingSession = null;
+      renderClassicTrainingReview(review);
+      return;
+    }
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
+    drillInput.focus();
+  } catch (error) {
+    appendDrill("ai", `系统提示：${error.message}`);
+    drillProgress.textContent = "发送失败，请稍后重试";
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
+  }
 }
 
 async function finishClassicTraining() {

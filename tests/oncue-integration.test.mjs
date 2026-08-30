@@ -108,6 +108,22 @@ test("classic dialogue must directly answer the latest user turn and reject gene
   assert.equal(isWeakTrainingReply("我是怕你以后吃亏，才一直拿别人和你比。", "为我好什么？", false), false);
 });
 
+test("every packaged legacy level uses the model API instead of fixed reply arrays", async () => {
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const client = await readFile(new URL("classic-training-api.js", projectRoot), "utf8");
+  const service = await readFile(new URL("lib/classic-service.ts", projectRoot), "utf8");
+
+  for (const id of ["progress", "public", "overtime", "marriage", "compare", "group", "delay"]) {
+    assert.match(script, new RegExp(`"${id}"\\s*:\\s*"pua-`));
+  }
+  assert.match(script, /createClassicTrainingSession\(trainingModuleId, selectedClassicDifficulty/);
+  assert.doesNotMatch(script, /currentDrill\.replies\[/);
+  assert.match(client, /display_title/);
+  assert.match(client, /display_role/);
+  assert.match(service, /display_title/);
+  assert.match(service, /session\.presentation/);
+});
+
 test("the transcription provider has a working OpenAI Next fallback before overloaded mini models", async () => {
   const route = await readFile(new URL("app/api/transcribe/route.ts", projectRoot), "utf8");
 

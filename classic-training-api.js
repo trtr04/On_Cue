@@ -27,10 +27,16 @@ export function listClassicScenarios() {
   return requestClassic("/scenarios");
 }
 
-export function createClassicTrainingSession(scenarioId, difficulty = 1) {
+export function createClassicTrainingSession(scenarioId, difficulty = 1, presentation = {}) {
   return requestClassic("/training/sessions", {
     method: "POST",
-    body: JSON.stringify({ scenario_id: scenarioId, difficulty }),
+    body: JSON.stringify({
+      scenario_id: scenarioId,
+      difficulty,
+      display_title: presentation.title || "",
+      display_role: presentation.role || "",
+      display_summary: presentation.summary || "",
+    }),
   });
 }
 

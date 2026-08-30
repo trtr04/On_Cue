@@ -18,6 +18,7 @@ type Session = {
   id: string;
   moduleId: string;
   difficulty: number;
+  presentation: { title: string; role: string; summary: string };
   state: ReturnType<typeof createTrainingSession>;
   messages: Array<{ role: "assistant" | "user"; content: string }>;
   updatedAt: number;
@@ -86,8 +87,9 @@ function evidenceFor(session: Session, query = "") {
 }
 
 async function roleReply(session: Session, close = false) {
-  const module = getTrainingModule(session.moduleId);
-  if (!module) throw new Error("scenario_not_found");
+  const knowledgeModule = getTrainingModule(session.moduleId);
+  if (!knowledgeModule) throw new Error("scenario_not_found");
+  const module = session.presentation || knowledgeModule;
   const pressure = ["", "轻度", "中度", "高压"][session.difficulty] || "轻度";
   const latest = session.messages.at(-1)?.content || `${module.title} ${module.summary}`;
   const { evidence, metadata } = evidenceFor(session, `${module.title} ${module.summary} ${latest}`);
@@ -117,8 +119,9 @@ function shortText(value: unknown, fallback: string, max = 500) {
 }
 
 async function generateTrainingHint(session: Session) {
-  const module = getTrainingModule(session.moduleId);
-  if (!module) throw new Error("scenario_not_found");
+  const knowledgeModule = getTrainingModule(session.moduleId);
+  if (!knowledgeModule) throw new Error("scenario_not_found");
+  const module = session.presentation || knowledgeModule;
   const { evidence, metadata } = evidenceFor(session, session.messages.map((item) => item.content).join(" "));
   const output = parseModelJson(await modelText([
     {
@@ -146,8 +149,9 @@ async function generateTrainingHint(session: Session) {
 }
 
 async function generateTrainingReview(session: Session) {
-  const module = getTrainingModule(session.moduleId);
-  if (!module) throw new Error("scenario_not_found");
+  const knowledgeModule = getTrainingModule(session.moduleId);
+  if (!knowledgeModule) throw new Error("scenario_not_found");
+  const module = session.presentation || knowledgeModule;
   const { evidence, metadata } = evidenceFor(session, session.messages.map((item) => item.content).join(" "));
   const achieved = TRAINING_GOALS.filter((goal) => session.state.achievedGoalIds.includes(goal.id));
   const output = parseModelJson(await modelText([
@@ -212,13 +216,24 @@ export async function handleInternalClassicRequest(request: Request, path: strin
     if (request.method === "GET" && path === "scenarios") return Response.json(scenarioSummaries());
 
     if (request.method === "POST" && path === "training/sessions") {
-      const body = await request.json().catch(() => null) as { scenario_id?: unknown; difficulty?: unknown } | null;
+      const body = await request.json().catch(() => null) as {
+        scenario_id?: unknown;
+        difficulty?: unknown;
+        display_title?: unknown;
+        display_role?: unknown;
+        display_summary?: unknown;
+      } | null;
       const moduleId = String(body?.scenario_id || "");
       const module = getTrainingModule(moduleId);
       if (!module) return Response.json({ detail: "没有找到这个训练场景。" }, { status: 404 });
       const difficulty = Math.max(1, Math.min(3, Number(body?.difficulty) || 1));
       const state = createTrainingSession(moduleId);
-      const session: Session = { id: crypto.randomUUID(), moduleId, difficulty, state, messages: [], updatedAt: Date.now() };
+      const presentation = {
+        title: shortText(body?.display_title, module.title, 120),
+        role: shortText(body?.display_role, module.role, 120),
+        summary: shortText(body?.display_summary, module.summary, 300),
+      };
+      const session: Session = { id: crypto.randomUUID(), moduleId, difficulty, presentation, state, messages: [], updatedAt: Date.now() };
       session.messages.push({ role: "user", content: "请直接开始这个场景。" });
       const opening = await roleReply(session);
       session.messages.push({ role: "assistant", content: opening.text });
