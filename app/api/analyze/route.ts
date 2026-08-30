@@ -3,10 +3,12 @@ import scenes from "../../../classic-training/zenmeban-dialogue-advisor/referenc
 import strategies from "../../../classic-training/zenmeban-dialogue-advisor/references/knowledge/strategies.json";
 import voiceProfiles from "../../../classic-training/zenmeban-dialogue-advisor/references/core/voice-profiles.json";
 import voiceRouter from "../../../classic-training/zenmeban-dialogue-advisor/references/core/voice-router.json";
-import systemPrompt from "../../../classic-training/zenmeban-dialogue-advisor/references/core/system-prompt.md?raw";
 import {
-  buildGroundedPrompt,
+  buildSingleSkillPrompt,
+  buildSingleSkillSystemPrompt,
+  buildSkillRepairPrompt,
   retrieveKnowledgeEvidence,
+  skillVoiceQualityIssues,
   validateGroundedAnalysis,
 } from "../../../lib/knowledge-grounding.js";
 import { runtimeEnv } from "../../../lib/runtime-env";
@@ -62,6 +64,71 @@ function sanitizeSegments(value: unknown): InputSegment[] {
   }).filter((segment) => segment.text);
 }
 
+async function requestSkillAnalysis({
+  key,
+  profile,
+  transcript,
+  context,
+  segments,
+  retrieved,
+}: {
+  key: string;
+  profile: (typeof voiceProfiles)[number];
+  transcript: string;
+  context: string;
+  segments: InputSegment[];
+  retrieved: ReturnType<typeof retrieveKnowledgeEvidence>;
+}) {
+  const callModel = async (repairIssues: string[] = [], previousVoice?: unknown) => {
+    const response = await fetch(modelEndpoint(), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: runtimeEnv("ONCUE_ANALYSIS_MODEL") || DEFAULT_MODEL,
+        temperature: repairIssues.length ? 0.32 : 0.48,
+        max_tokens: 2_400,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: buildSingleSkillSystemPrompt(profile) },
+          {
+            role: "user",
+            content: repairIssues.length
+              ? buildSkillRepairPrompt({ transcript, context, profile, previousVoice, issues: repairIssues })
+              : buildSingleSkillPrompt({ transcript, context, segments, retrieved, profile }),
+          },
+        ],
+      }),
+      signal: AbortSignal.timeout(45_000),
+    });
+    const payload = await response.json().catch(() => null) as {
+      choices?: Array<{ message?: { content?: unknown } }>;
+    } | null;
+    if (!response.ok) throw new Error(`analysis_model_failed_${profile.voice_id}`);
+    return readModelJson(payload?.choices?.[0]?.message?.content);
+  };
+
+  let output = await callModel();
+  const firstIssues = skillVoiceQualityIssues(output, profile, transcript);
+  if (firstIssues.length) {
+    const repaired = await callModel(firstIssues, output.voice);
+    output = { ...output, voice: repaired.voice };
+  }
+  const remainingIssues = skillVoiceQualityIssues(output, profile, transcript);
+  if (remainingIssues.length) {
+    throw new Error(`skill_quality_failed_${profile.voice_id}:${remainingIssues.join("|")}`);
+  }
+  return { profile, output };
+}
+
+function primaryVoiceForScene(retrieved: ReturnType<typeof retrieveKnowledgeEvidence>) {
+  const category = String(retrieved[0]?.scene?.category_id || "");
+  const candidate = (voiceRouter.category_primary as Record<string, string>)[category];
+  return ["A", "B", "C"].includes(candidate) ? candidate : "B";
+}
+
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null) as {
     transcript?: unknown;
@@ -81,41 +148,35 @@ export async function POST(request: Request) {
 
   try {
     const retrieved = retrieveKnowledgeEvidence(`${transcript}\n${context}`, knowledge, 5);
-    const response = await fetch(modelEndpoint(), {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: runtimeEnv("ONCUE_ANALYSIS_MODEL") || DEFAULT_MODEL,
-        temperature: 0.25,
-        max_tokens: 3_500,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: systemPrompt },
-          {
-            role: "user",
-            content: buildGroundedPrompt({
-              transcript,
-              context,
-              segments,
-              retrieved,
-              voiceProfiles,
-              voiceRouter,
-            }),
-          },
-        ],
-      }),
-      signal: AbortSignal.timeout(45_000),
-    });
-    const payload = await response.json().catch(() => null) as {
-      choices?: Array<{ message?: { content?: unknown } }>;
-    } | null;
-    if (!response.ok) return Response.json({ error: "analysis_model_failed" }, { status: 502 });
-    const output = readModelJson(payload?.choices?.[0]?.message?.content);
+    const roleResults = await Promise.all(voiceProfiles.map((profile) => requestSkillAnalysis({
+      key,
+      profile,
+      transcript,
+      context,
+      segments,
+      retrieved,
+    })));
+    const primaryVoice = primaryVoiceForScene(retrieved);
+    const shared = roleResults.find(({ profile }) => profile.voice_id === primaryVoice)?.output
+      || roleResults[0].output;
+    const riskLevel = String(shared.risk_level || "none");
+    const defaultOrder = [primaryVoice, ...["A", "B", "C"].filter((id) => id !== primaryVoice)];
+    const voiceOrder = riskLevel === "urgent" ? voiceRouter.urgent_voice_order : defaultOrder;
+    const output = {
+      ...shared,
+      uncertainty: shared.uncertainty
+        || shared.ambiguity_analysis?.missing_information?.[0]
+        || "仍需确认对方最在意的结果。",
+      primary_voice: primaryVoice,
+      voice_order: voiceOrder,
+      voice_versions: Object.fromEntries(roleResults.map(({ profile, output: roleOutput }) => [
+        profile.voice_id,
+        roleOutput.voice,
+      ])),
+    };
     return Response.json(validateGroundedAnalysis(output, retrieved, knowledge, { transcript, voiceProfiles }));
-  } catch {
+  } catch (error) {
+    console.error("Grounded skill analysis failed", error instanceof Error ? error.message : "unknown_error");
     return Response.json({ error: "grounded_analysis_failed" }, { status: 502 });
   }
 }

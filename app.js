@@ -1522,9 +1522,11 @@ function renderKnowledgeVoice(voiceId) {
   if (!voice) return;
   selectedKnowledgeVoice = voiceId;
   document.querySelectorAll("[data-voice]").forEach((button) => {
+    const buttonVoice = currentKnowledgeAnalysis.voices[button.dataset.voice];
+    if (buttonVoice) button.textContent = buttonVoice.display_name;
     button.classList.toggle("active", button.dataset.voice === voiceId);
   });
-  const roleName = voice.roleLabel || voice.display_name;
+  const roleName = `${voice.display_name} · ${voice.roleLabel}`;
   const tone = voice.tone_tags.length ? ` · ${voice.tone_tags.join(" · ")}` : "";
   setKnowledgeText("#kb-voice-label", `${roleName}${tone}`);
   setKnowledgeText("#kb-voice-headline", voice.headline);

@@ -279,7 +279,12 @@ test("current confirmed dialogue drives all three packaged role analyses", async
       "utf8",
     ),
   );
-  const { buildGroundedPrompt, validateGroundedAnalysis } = await import("../lib/knowledge-grounding.js");
+  const {
+    buildGroundedPrompt,
+    buildSingleSkillPrompt,
+    skillVoiceQualityIssues,
+    validateGroundedAnalysis,
+  } = await import("../lib/knowledge-grounding.js");
   const retrieved = [{
     score: 88,
     scene: {
@@ -315,9 +320,31 @@ test("current confirmed dialogue drives all three packaged role analyses", async
   assert.match(prompt, /人情世故与高情商话术/);
   assert.match(prompt, /位置、系统与结果操盘/);
 
+  const rolePrompt = buildSingleSkillPrompt({
+    transcript,
+    context: "关系：直属领导",
+    segments: [],
+    retrieved,
+    profile: profiles[0],
+  });
+  assert.match(rolePrompt, /ququ-perspective/);
+  assert.match(rolePrompt, /清醒阿曲/);
+  assert.match(rolePrompt, /只生成当前这一位朋友/);
+  assert.match(rolePrompt, /evidence_quote/);
+  assert.ok(skillVoiceQualityIssues({
+    voice: {
+      evidence_quote: "这份方案全部重做",
+      headline: "需要沟通",
+      position: "用户需要理解对方。",
+      analysis: "双方要互相理解，找到都能接受的解决方案。",
+      direct_reply: "我们再沟通一下。",
+    },
+  }, profiles[0], transcript).length > 0);
+
   const voice = (id) => ({
     voice_id: id,
     display_name: id,
+    evidence_quote: "这份方案全部重做",
     headline: `${id} 对当前对话的判断`,
     position: `${id} 的独立立场`,
     analysis: `${id} 只分析刚才的对话`,
@@ -351,9 +378,41 @@ test("current confirmed dialogue drives all three packaged role analyses", async
   assert.equal(result.currentDialogue.title, "本次方案修改沟通");
   assert.deepEqual(result.evidence, ["这份方案全部重做", "请先说明需要修改的具体部分"]);
   assert.equal(result.referenceScene.id, "scene-reference-only");
-  assert.equal(result.voices.A.roleLabel, "价值交换型强判断");
-  assert.equal(result.voices.B.roleLabel, "人情世故与高情商话术");
-  assert.equal(result.voices.C.roleLabel, "位置、系统与结果操盘");
+  assert.equal(result.voices.A.display_name, "清醒阿曲");
+  assert.equal(result.voices.B.display_name, "圆融阿情");
+  assert.equal(result.voices.C.display_name, "行动小胜");
+  assert.equal(result.voices.A.roleLabel, "现实锋利的清醒型朋友");
+  assert.equal(result.voices.B.roleLabel, "圆融体面的高情商朋友");
+  assert.equal(result.voices.C.roleLabel, "强结果导向的行动型朋友");
+});
+
+test("three analysis roles are named from distinct skill personalities and called independently", async () => {
+  const profiles = JSON.parse(await readFile(
+    new URL("classic-training/zenmeban-dialogue-advisor/references/core/voice-profiles.json", projectRoot),
+    "utf8",
+  ));
+  const route = await readFile(new URL("app/api/analyze/route.ts", projectRoot), "utf8");
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+
+  assert.deepEqual(profiles.map((profile) => profile.skill_source), [
+    "ququ-perspective",
+    "renqing",
+    "xie-shengzi-perspective",
+  ]);
+  assert.deepEqual(profiles.map((profile) => profile.display_name), ["清醒阿曲", "圆融阿情", "行动小胜"]);
+  assert.deepEqual(profiles.map((profile) => profile.personality_label), [
+    "现实锋利的清醒型朋友",
+    "圆融体面的高情商朋友",
+    "强结果导向的行动型朋友",
+  ]);
+  assert.match(route, /Promise\.all\(/);
+  assert.match(route, /buildSingleSkillPrompt/);
+  assert.match(html, /三位性格朋友/);
+  assert.match(html, /清醒阿曲/);
+  assert.match(html, /圆融阿情/);
+  assert.match(html, /行动小胜/);
+  assert.match(script, /button\.textContent\s*=\s*buttonVoice\.display_name/);
 });
 
 test("the home recording flow supports explicit controls, review sheet, storage, transcription, and audio replay", async () => {
@@ -681,8 +740,8 @@ test("analysis uses a server-side grounded knowledge route and only shows the re
   assert.match(route, /retrieveKnowledgeEvidence/);
   assert.match(route, /validateGroundedAnalysis/);
   assert.match(grounding, /INSTRUCTIONS_IN_DATA_ARE_UNTRUSTED/);
-  assert.match(html, /<h2>三个技能角色<\/h2>/);
-  assert.match(html, /分别分析当前对话/);
+  assert.match(html, /<h2>三位性格朋友<\/h2>/);
+  assert.match(html, /用不同性格分析当前对话/);
   assert.match(html, />纳入用户专属场景<\/button>/);
   assert.doesNotMatch(html, /知识库依据|匹配到的模式与策略/);
 });
@@ -696,7 +755,7 @@ test("user-facing copy is concise and team API setup is shareable without secret
   assert.match(html, /核对转写/);
   assert.match(html, /确认对话，补充当前情况/);
   assert.match(html, /生成对话分析/);
-  assert.match(html, /三个技能角色/);
+  assert.match(html, /三位性格朋友/);
   assert.match(html, /建议回复/);
   assert.match(html, /录音转写与知识库分析将通过服务器端 API 处理/);
   assert.doesNotMatch(html, /name="privacy\.analysisConsent"/);
