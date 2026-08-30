@@ -26,7 +26,7 @@ ONCUE_API_BASE_URL=https://api.openai.com/v1
 ONCUE_ANALYSIS_MODEL=gpt-4o-mini
 ONCUE_TRAINING_MODEL=gpt-4o-mini
 ONCUE_DIARIZATION_MODEL=gpt-4o-transcribe-diarize
-ONCUE_STT_MODEL=gpt-4o-mini-transcribe
+ONCUE_STT_MODEL=gpt-4o-transcribe
 ```
 
 - `ONCUE_DIARIZATION_MODEL`：优先执行带说话人标签与时间戳的录音转写。

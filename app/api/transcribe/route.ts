@@ -1,7 +1,7 @@
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const OPENAI_URL = "https://api.openai.com/v1/audio/transcriptions";
 const MAX_AUDIO_BYTES = 24 * 1024 * 1024;
-const TRANSCRIBE_PROMPT = "这是一段中文对话现场录音，请逐字转写原话，不要总结，不要翻译。";
+const TRANSCRIBE_PROMPT = "这是一段中文对话现场录音，请逐字转写原话，不要总结，不要翻译。如有多人，请在每次换人时换行并标注说话人1、说话人2。";
 
 type Provider = {
   source: string;
@@ -21,7 +21,7 @@ function providers(): Provider[] {
     if (base.protocol !== "https:") throw new Error("ONCUE_API_BASE_URL must use https");
     base.pathname = `${base.pathname.replace(/\/$/, "")}/audio/transcriptions`;
     const diarizationModel = process.env.ONCUE_DIARIZATION_MODEL?.trim() || "gpt-4o-transcribe-diarize";
-    const fallbackModel = process.env.ONCUE_STT_MODEL?.trim() || "gpt-4o-mini-transcribe";
+    const fallbackModel = process.env.ONCUE_STT_MODEL?.trim() || "gpt-4o-transcribe";
     list.push(
       {
         source: "oncue-diarized",
@@ -30,13 +30,34 @@ function providers(): Provider[] {
         model: diarizationModel,
         responseFormat: "diarized_json",
       },
-      ...(fallbackModel === diarizationModel ? [] : [{
+      {
+        source: "oncue-transcribe",
+        url: base.toString(),
+        key: oncueKey,
+        model: "gpt-4o-transcribe",
+        responseFormat: "json",
+      },
+      ...([diarizationModel, "gpt-4o-transcribe"].includes(fallbackModel) ? [] : [{
         source: "oncue",
         url: base.toString(),
         key: oncueKey,
         model: fallbackModel,
         responseFormat: "json" as const,
       }]),
+      ...(fallbackModel === "gpt-4o-mini-transcribe" ? [] : [{
+        source: "oncue-mini",
+        url: base.toString(),
+        key: oncueKey,
+        model: "gpt-4o-mini-transcribe",
+        responseFormat: "json" as const,
+      }]),
+      {
+        source: "oncue-whisper",
+        url: base.toString(),
+        key: oncueKey,
+        model: "whisper-1",
+        responseFormat: "json",
+      },
     );
   }
   if (groqKey) {

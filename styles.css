@@ -216,6 +216,15 @@ button { cursor: pointer; }
 }
 .home-record:active { transform: scale(.98); }
 .home-record.is-recording, .home-record.is-stopped { color: var(--ink); background: transparent; }
+.home-record.is-recording,
+.home-record.is-paused {
+  top: 442px;
+  height: 204px;
+  grid-template-rows: 92px 28px 32px 40px;
+  gap: 4px;
+}
+.home-record.is-recording .home-record-icon,
+.home-record.is-paused .home-record-icon { width: 92px; height: 92px; }
 .home-record-icon {
   position: relative;
   display: grid;
@@ -235,15 +244,17 @@ button { cursor: pointer; }
 .home-record-icon .mic-icon.live { display: none; width: 72px; height: 72px; }
 .home-record.is-recording .mic-icon.idle { display: none; }
 .home-record.is-recording .mic-icon.live { display: block; }
+.home-record.is-paused .mic-icon.idle { display: none; }
+.home-record.is-paused .mic-icon.live { display: block; }
 .home-record strong { font-size: 18px; font-weight: 900; }
-.home-record small { color: var(--text-secondary); font-size: 11px; font-weight: 700; }
+.home-record small { max-width: 250px; color: var(--text-secondary); font-size: 11px; font-weight: 700; line-height: 16px; }
 .home-record.is-recording small { color: var(--text-secondary); }
 .home-record b { font-family: "Inter", sans-serif; font-size: 28px; line-height: 1; }
 .home-recording-controls {
   position: absolute;
   z-index: 20;
   left: 58px;
-  top: 692px;
+  top: 660px;
   width: 274px;
   height: 42px;
   display: grid;
@@ -271,11 +282,24 @@ button { cursor: pointer; }
 }
 .recording-review-sheet[hidden] { display: none; }
 .recording-review-sheet article {
+  position: relative;
   padding: 18px;
   border: 3px solid var(--ink);
   border-radius: 28px;
   background: var(--canvas);
   box-shadow: 5px 6px 0 var(--ink);
+}
+.recording-review-back {
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  min-width: 54px;
+  height: 32px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--canvas);
+  font-size: 12px;
+  font-weight: 900;
 }
 .recording-review-sheet small { color: var(--text-secondary); font-size: 10px; font-weight: 900; }
 .recording-review-sheet strong { display: block; margin-top: 5px; font-size: 18px; }
@@ -345,14 +369,28 @@ button { cursor: pointer; }
   padding-bottom: 24px;
 }
 .saved-card {
+  position: relative;
   flex: none;
   padding: 14px 16px;
   border: 2px solid var(--ink);
   border-radius: 20px;
   background: var(--brand-soft);
 }
-.saved-card > strong { font-size: 14px; }
+.saved-card > strong { display: block; padding-right: 44px; font-size: 14px; }
 .saved-card .meta { margin-top: 5px; color: var(--text-secondary); font-size: 10px; }
+.saved-delete {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  height: 28px;
+  padding: 0 9px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  color: #b33a36;
+  font-size: 10px;
+  font-weight: 900;
+}
 .saved-bottom { display: grid; grid-template-columns: 1fr 116px; align-items: center; gap: 10px; margin-top: 12px; }
 .mini-wave { height: 36px; display: flex; align-items: center; gap: 4px; }
 .mini-wave i { width: 4px; height: var(--h); border-radius: 99px; background: #cfc7cc; }
@@ -1039,25 +1077,6 @@ button { cursor: pointer; }
   white-space: nowrap;
 }
 .chip.active { background: var(--brand); }
-.new-classic-features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
-}
-.new-classic-features button {
-  min-height: 64px;
-  padding: 10px 11px;
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  background: #fff;
-  text-align: left;
-}
-.new-classic-features button:first-child { background: var(--brand); }
-.new-classic-features b,
-.new-classic-features span { display: block; }
-.new-classic-features b { font-size: 12px; }
-.new-classic-features span { margin-top: 4px; color: var(--text-secondary); font-size: 9px; line-height: 1.35; }
 .practice-hero {
   position: relative;
   height: 120px;
@@ -1380,8 +1399,6 @@ button { cursor: pointer; }
 .drill-bubble small { display: block; color: #b44438; font-size: 11px; font-weight: 800; }
 .drill-bubble.ai { align-self: flex-start; background: rgba(255,250,244,.96); }
 .drill-bubble.me { align-self: flex-end; border-color: #ffd8d0; background: #f96f61; color: #fff; font-weight: 700; }
-.drill-suggestions { position: absolute; z-index: 5; left: 24px; bottom: 92px; width: 342px; display: flex; gap: 8px; overflow-x: auto; }
-.drill-suggestions button { flex: none; max-width: 220px; padding: 8px 12px; border: 2px solid var(--ink); border-radius: 999px; background: var(--brand-soft); font-size: 11px; font-weight: 700; white-space: nowrap; }
 .drill-composer { position: absolute; z-index: 5; left: 24px; bottom: 34px; width: 342px; }
 .drill-composer input { width: 100%; height: 58px; padding: 0 104px 0 16px; border: 1px solid rgba(255,255,255,.75); border-radius: 22px; background: rgba(255,255,255,.96); box-shadow: 0 8px 22px rgba(29,9,4,.3); outline: none; }
 .drill-composer button { position: absolute; top: 7px; width: 44px; height: 44px; border: 0; border-radius: 22px; background: var(--brand); font-size: 18px; font-weight: 700; }

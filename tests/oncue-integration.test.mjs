@@ -30,6 +30,58 @@ test("the home layout centers one large recording action and moves history to th
   assert.match(css, /\.recording-review-sheet\s*\{/);
 });
 
+test("active recording content stays vertically separated from controls and navigation", async () => {
+  const css = await readFile(new URL("styles.css", projectRoot), "utf8");
+
+  assert.match(css, /\.home-record\.is-recording,\s*\.home-record\.is-paused\s*\{[^}]*top:\s*442px;[^}]*height:\s*204px;[^}]*grid-template-rows:\s*92px 28px 32px 40px;/s);
+  assert.match(css, /\.home-recording-controls\s*\{[^}]*top:\s*660px;/s);
+  assert.match(css, /\.figma-nav\s*\{[^}]*top:\s*742px;/s);
+});
+
+test("practice conversations use free input without the horizontal quick-reply module", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const css = await readFile(new URL("styles.css", projectRoot), "utf8");
+
+  assert.match(html, /<form class="drill-composer" id="drill-form">/);
+  assert.doesNotMatch(html, /id="drill-suggestions"|data-suggest=/);
+  assert.doesNotMatch(css, /\.drill-suggestions/);
+  assert.doesNotMatch(script, /drillSuggestions|renderSuggestions|data-suggest/);
+  assert.match(script, /drillInput\.value\s*=\s*lines\[0\]/);
+});
+
+test("recording completion can return safely and saved recordings can be confirmed then deleted", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+
+  assert.match(html, /data-action="close-recording-review"[^>]*>\s*返回\s*</);
+  assert.match(script, /function deleteRecording\(recordingId\)/);
+  assert.match(script, /window\.confirm\("确定删除这条录音记录吗？"\)/);
+  assert.match(script, /data-action="delete-recording"/);
+  assert.match(script, /case "close-recording-review":/);
+  assert.match(script, /case "delete-recording":/);
+});
+
+test("the transcription provider has a working OpenAI Next fallback before overloaded mini models", async () => {
+  const route = await readFile(new URL("app/api/transcribe/route.ts", projectRoot), "utf8");
+
+  assert.match(route, /model:\s*"gpt-4o-transcribe"/);
+  assert.ok(route.indexOf('model: "gpt-4o-transcribe"') < route.indexOf('model: "gpt-4o-mini-transcribe"'));
+});
+
+test("the practice and emotion tabs omit the requested duplicate and explanatory content", async () => {
+  const html = await readFile(new URL("index.html", projectRoot), "utf8");
+  const script = await readFile(new URL("app.js", projectRoot), "utf8");
+  const css = await readFile(new URL("styles.css", projectRoot), "utf8");
+  const mouseGame = await readFile(new URL("mouse-tumbler/index.html", projectRoot), "utf8");
+
+  assert.doesNotMatch(html, /id="new-classic-features"|class="new-classic-features"/);
+  assert.doesNotMatch(css, /\.new-classic-features/);
+  assert.doesNotMatch(html, /data-i18n="vent-copy"/);
+  assert.doesNotMatch(script, /"vent-copy"/);
+  assert.doesNotMatch(mouseGame, /拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏/);
+});
+
 test("transcript and analysis screens remain stacked inside the phone", async () => {
   const css = await readFile(new URL("styles.css", projectRoot), "utf8");
 
@@ -64,7 +116,7 @@ test("the hosted mouse game keeps the team's latest play mode, face pack, and id
   const game = await readFile(new URL("public/mouse-tumbler/index.html", projectRoot));
   const text = game.toString("utf8");
 
-  assert.match(text, /拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏/);
+  assert.doesNotMatch(text, /拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏/);
   assert.match(text, /window\.MouseTumbler = Object\.freeze/);
   assert.match(text, /耐久值/);
   assert.match(text, /function classifyGesture/);
@@ -511,9 +563,7 @@ test("the live practice UI uses the new_classic_mode backend contract", async ()
   const proxy = await readFile(new URL("app/api/classic/[...path]/route.ts", projectRoot), "utf8");
 
   assert.match(html, /id="classic-difficulty"/);
-  assert.match(html, /id="new-classic-features"/);
-  assert.match(html, /沟通压力训练/);
-  assert.match(html, /对话复盘/);
+  assert.doesNotMatch(html, /id="new-classic-features"/);
   assert.match(script, /createClassicTrainingSession/);
   assert.match(script, /sendClassicTrainingTurn/);
   assert.doesNotMatch(script, /submitTrainingTurn\(currentTrainingSession/);

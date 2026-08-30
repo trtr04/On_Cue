@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fbeaf6" />
     <title>On Cue</title>
-    <script type="module" crossorigin src="/assets/oncue-BnJTOsDZ.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/oncue-DE1enPSZ.css">
+    <script type="module" crossorigin src="/assets/oncue-BNmbYYxp.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/oncue-BncIQ4Jy.css">
   </head>
   <body>
     <main class="simulator-shell">
@@ -55,6 +55,7 @@
               </div>
               <div class="recording-review-sheet" id="recording-review-sheet" hidden>
                 <article>
+                  <button type="button" class="recording-review-back" data-action="close-recording-review">返回</button>
                   <small>录音完成</small>
                   <strong>核对转写后即可开始分析</strong>
                   <audio id="recording-sheet-audio" controls></audio>
@@ -105,14 +106,6 @@
                   <button class="chip" data-filter="love" data-i18n="filter-love"></button>
                   <button class="chip" data-filter="friend" data-i18n="filter-friend"></button>
                 </div>
-                <section class="new-classic-features" id="new-classic-features" aria-label="沟通训练功能">
-                  <button type="button" data-action="open-levels" data-scene="work">
-                    <b>沟通压力训练</b><span>11 个职场与家庭场景 · 3 档难度</span>
-                  </button>
-                  <button type="button" data-action="tab-home">
-                    <b>对话复盘</b><span>基于转写与背景生成 3 种应对视角</span>
-                  </button>
-                </section>
                 <article class="practice-hero">
                   <span data-i18n="today-rec"></span>
                   <strong data-i18n="rec-title"></strong>
@@ -264,7 +257,6 @@
               <button class="end-drill" data-action="end-drill" data-i18n="end-drill"></button>
             </div>
             <div class="drill-thread" id="drill-thread"></div>
-            <div class="drill-suggestions" id="drill-suggestions"></div>
             <form class="drill-composer" id="drill-form">
               <input id="drill-input" data-i18n-placeholder="drill-placeholder" />
               <button class="drill-hint" type="button" id="drill-hint" aria-label="获取提示">?</button>
@@ -476,7 +468,6 @@
             <div class="vent-canvas">
               <header class="vent-header">
                 <h1>鼠鼠不倒翁</h1>
-                <p data-i18n="vent-copy"></p>
               </header>
               <article class="vent-identity">
                 <label class="vent-face-picker" for="vent-face-input">

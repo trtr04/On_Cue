@@ -1,7 +1,6 @@
 import { installPhoneViewportFitting } from "./responsive.js";
 import {
   TRAINING_MODULES,
-  getTrainingHints,
   getTrainingModule,
 } from "./training-game.js";
 import {
@@ -105,7 +104,6 @@ const I18N = {
   "end-drill": "\u7ed3\u675f",
   "drill-placeholder": "\u6309\u4f60\u7684\u65b9\u5f0f\u8bf4\u4e0b\u53bb\u2026",
   "vent-title": "\u73b0\u5728\uff0c\u5c3d\u7ba1\u66b4\u51fb",
-  "vent-copy": "\u4e0d\u8bb2\u9053\u7406\u4e5f\u6ca1\u5173\u7cfb\uff0c\u8fd9\u91cc\u4e0d\u4f1a\u4f24\u5bb3\u4efb\u4f55\u4eba",
   "vent-label": "\u66b4\u51fb\u4e0d\u5012\u7fc1",
   "bang": "\u7830\uff01",
   "vent-cue": "\u70b9\u51fb / \u8fde\u6253 / \u957f\u6309\u84c4\u529b",
@@ -419,9 +417,9 @@ const toast = document.querySelector("#toast");
 const mapDetail = document.querySelector("#map-detail");
 const levelsList = document.querySelector("#levels-list");
 const drillThread = document.querySelector("#drill-thread");
-const drillSuggestions = document.querySelector("#drill-suggestions");
 const drillProgress = document.querySelector("#drill-progress");
 const drillForm = document.querySelector("#drill-form");
+const drillInput = document.querySelector("#drill-input");
 const mouseGameFrame = document.querySelector("#mouse-game-frame");
 const ventFaceInput = document.querySelector("#vent-face-input");
 const ventFacePicker = document.querySelector(".vent-face-picker");
@@ -898,13 +896,14 @@ function renderRecordings() {
         <article class="saved-card">
           <strong>${escapeHtml(recording.title)}</strong>
           <div class="meta">${escapeHtml(recording.meta)}</div>
+          <button class="saved-delete" type="button" data-action="delete-recording" data-recording-id="${escapeHtml(recording.id)}">删除</button>
           <div class="saved-bottom">
             ${
               recording.audioDataUrl
                 ? `<audio class="saved-audio" controls src="${escapeHtml(recording.audioDataUrl)}"></audio>`
                 : `<div class="mini-wave" aria-hidden="true">${waveform()}</div>`
             }
-            <button class="figma-button primary" data-action="review-recording" data-recording-id="${recording.id}">查看分析</button>
+            <button class="figma-button primary" data-action="review-recording" data-recording-id="${escapeHtml(recording.id)}">查看分析</button>
           </div>
         </article>
       `,
@@ -1421,6 +1420,18 @@ function addRecording(recording) {
   renderRecordings();
 }
 
+function deleteRecording(recordingId) {
+  const id = String(recordingId || "");
+  if (!recordings.some((recording) => recording.id === id)) return false;
+  if (!window.confirm("确定删除这条录音记录吗？")) return false;
+  recordings = recordings.filter((recording) => recording.id !== id);
+  persistRecordings();
+  renderRecordings();
+  if (currentDraftRecordingId === id) prepareRecordingSession();
+  showToast("录音记录已删除");
+  return true;
+}
+
 function buildCurrentRecording() {
   currentDraftRecordingId ||= `live-${Date.now()}`;
   currentDraftMeta ||= `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
@@ -1616,10 +1627,6 @@ function appendDrill(role, text) {
   drillThread.scrollTop = drillThread.scrollHeight;
 }
 
-function renderSuggestions(list) {
-  drillSuggestions.innerHTML = list.map((line) => `<button type="button" data-suggest="${line}">${line}</button>`).join("");
-}
-
 function updateDrillProgress() {
   if (!currentTrainingSession) {
     drillProgress.textContent = "";
@@ -1723,18 +1730,18 @@ async function startDrill(id, extra = {}) {
   document.querySelector("#drill-role").textContent = currentDrill.role;
   document.querySelector("#drill-title").textContent = extra.title || currentDrill.title;
   drillThread.innerHTML = "";
+  drillInput.value = "";
   if (currentDrill.opener) appendDrill("ai", currentDrill.opener);
-  renderSuggestions(currentDrill.suggestions);
   showScreen("drill");
   if (!trainingModule) {
     drillForm.classList.remove("is-disabled");
-    document.querySelector("#drill-input").disabled = false;
+    drillInput.disabled = false;
     updateDrillProgress();
     return;
   }
 
   drillForm.classList.add("is-disabled");
-  document.querySelector("#drill-input").disabled = true;
+  drillInput.disabled = true;
   drillProgress.textContent = "正在进入训练场景…";
   try {
     const data = await createClassicTrainingSession(id, selectedClassicDifficulty);
@@ -1747,13 +1754,14 @@ async function startDrill(id, extra = {}) {
       finished: false,
     };
     appendDrill("ai", data.opponent_message);
-    renderSuggestions(getTrainingHints(currentTrainingSession));
     drillForm.classList.remove("is-disabled");
-    document.querySelector("#drill-input").disabled = false;
+    drillInput.disabled = false;
     updateDrillProgress();
   } catch (error) {
     appendDrill("ai", `系统提示：${error.message}。没有启用旧版预设回复。`);
     drillProgress.textContent = "训练服务暂时不可用";
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
   }
 }
 
@@ -1765,7 +1773,7 @@ async function sendDrill(text) {
       boundaryWins += 1;
     }
     drillForm.classList.add("is-disabled");
-    document.querySelector("#drill-input").disabled = true;
+    drillInput.disabled = true;
     drillProgress.textContent = "对方正在回应…";
     try {
       const data = await sendClassicTrainingTurn(currentTrainingSession.sessionId, text.trim());
@@ -1782,22 +1790,20 @@ async function sendDrill(text) {
       }
       updateDrillProgress();
       if (data.end_session) {
-        renderSuggestions([]);
         drillProgress.textContent = "正在生成练习复盘…";
         const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
         currentTrainingSession = null;
         renderClassicTrainingReview(review);
         return;
       }
-      renderSuggestions(getTrainingHints(currentTrainingSession));
       drillForm.classList.remove("is-disabled");
-      document.querySelector("#drill-input").disabled = false;
-      document.querySelector("#drill-input").focus();
+      drillInput.disabled = false;
+      drillInput.focus();
     } catch (error) {
       appendDrill("ai", `系统提示：${error.message}`);
       drillProgress.textContent = "发送失败，请稍后重试";
       drillForm.classList.remove("is-disabled");
-      document.querySelector("#drill-input").disabled = false;
+      drillInput.disabled = false;
     }
     return;
   }
@@ -1805,7 +1811,6 @@ async function sendDrill(text) {
   drillStep += 1;
   window.setTimeout(() => {
     appendDrill("ai", reply);
-    if (drillStep >= currentDrill.replies.length) renderSuggestions([COPY.endSuggest]);
   }, 420);
 }
 
@@ -1824,13 +1829,23 @@ async function finishClassicTraining() {
 }
 
 async function showClassicTrainingHint() {
-  if (!currentTrainingSession?.sessionId) return;
+  let lines = currentDrill?.suggestions || [];
+  if (!currentTrainingSession?.sessionId) {
+    if (lines[0]) {
+      drillInput.value = lines[0];
+      drillInput.focus();
+    }
+    return;
+  }
   drillProgress.textContent = "正在整理这一轮提示…";
   try {
     const hint = await getClassicTrainingHint(currentTrainingSession.sessionId);
-    const lines = [hint.sentence_starter, hint.communication_move, ...(hint.facts_to_use || []).slice(0, 1)].filter(Boolean);
-    renderSuggestions(lines);
-    drillProgress.textContent = "提示不会占用训练轮数";
+    lines = [hint.sentence_starter, hint.communication_move, ...(hint.facts_to_use || []).slice(0, 1)].filter(Boolean);
+    if (lines[0]) {
+      drillInput.value = lines[0];
+      drillInput.focus();
+    }
+    drillProgress.textContent = "提示已填入输入框，不会占用训练轮数";
   } catch (error) {
     showToast(`提示生成失败：${error.message}`);
     updateDrillProgress();
@@ -1846,17 +1861,6 @@ document.addEventListener("click", async (event) => {
 
   if (event.target.closest("#drill-hint")) {
     await showClassicTrainingHint();
-    return;
-  }
-
-  const suggest = event.target.closest("[data-suggest]");
-  if (suggest) {
-    if (suggest.dataset.suggest === COPY.endSuggest) {
-      showToast(COPY.toastEndDrill);
-      showScreen("analysis");
-      return;
-    }
-    await sendDrill(suggest.dataset.suggest);
     return;
   }
 
@@ -1919,8 +1923,15 @@ document.addEventListener("click", async (event) => {
       recordingReviewSheet.hidden = true;
       showScreen("transcript");
       break;
+    case "close-recording-review":
+      recordingReviewSheet.hidden = true;
+      showScreen("home");
+      break;
     case "review-recording":
       loadRecordingForReview(control.dataset.recordingId);
+      break;
+    case "delete-recording":
+      deleteRecording(control.dataset.recordingId);
       break;
     case "add-turn":
       addTranscriptTurn();
@@ -2076,9 +2087,8 @@ document.querySelector("#custom-form").addEventListener("submit", async (event) 
 
 document.querySelector("#drill-form").addEventListener("submit", async (event) => {
   event.preventDefault();
-  const input = document.querySelector("#drill-input");
-  await sendDrill(input.value);
-  input.value = "";
+  await sendDrill(drillInput.value);
+  drillInput.value = "";
 });
 
 document.querySelectorAll("[data-settings-form]").forEach((form) => {
