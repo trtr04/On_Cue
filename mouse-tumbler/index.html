@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#fbeaf6">
+<title>鼠鼠不倒翁｜解压小游戏</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #111;
+    --muted: #817a7e;
+    --cream: #fbeaf6;
+    --accent: #dd7dbf;
+    --accent-deep: #c45aa8;
+    --violet: #dd7dbf;
+    --panel: #fff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  button { font: inherit; }
+  .widget-root {
+    width: min(100%, 480px);
+    height: 100dvh;
+    min-height: 620px;
+    margin: 0 auto;
+    padding: max(12px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    position: relative;
+  }
+  .topbar {
+    min-height: 44px;
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+  }
+  .game-title {
+    text-align: center;
+    font-size: clamp(21px, 5.4vw, 27px);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+  .icon-btn, .bottom-btn {
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    background: var(--panel);
+    box-shadow: none;
+    cursor: pointer;
+  }
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+  }
+  .icon-btn:active, .bottom-btn:active { transform: scale(0.95); }
+  .topbar-spacer { width: 42px; height: 42px; }
+  .durability-card {
+    padding: 12px 14px;
+    border-radius: 20px;
+    background: var(--panel);
+    border: 2px solid var(--ink);
+    box-shadow: none;
+  }
+  .durability-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .durability-value { font-variant-numeric: tabular-nums; color: var(--accent-deep); }
+  .bar-track {
+    height: 13px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #eadfe6;
+    box-shadow: inset 0 2px 4px rgba(55, 31, 24, 0.09);
+  }
+  .bar-fill {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #f3b6de, var(--accent), var(--accent-deep));
+    transition: width 180ms ease, filter 180ms ease;
+    position: relative;
+  }
+  .bar-fill::after {
+    content: "";
+    position: absolute;
+    inset: 1px 5px auto;
+    height: 3px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.48);
+  }
+  .game-stage {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    padding: 58px 12px 32px;
+    border-radius: 24px;
+    background: var(--panel);
+    border: 2px solid var(--ink);
+  }
+  .game-stage::before {
+    content: "";
+    position: absolute;
+    width: 80%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(221,125,191,0.18), transparent 68%);
+    top: 18%;
+  }
+  .canvas-wrap {
+    position: relative;
+    width: min(78%, 300px);
+    max-height: calc(100% - 8px);
+    aspect-ratio: 420 / 460;
+    cursor: grab;
+    touch-action: none;
+    z-index: 2;
+  }
+  .canvas-wrap:active { cursor: grabbing; }
+  svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .stage-hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 8;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .stage-hud > * { pointer-events: auto; }
+  .face-dock {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+  }
+  .face-pack-toggle {
+    flex: none;
+    height: 32px;
+    padding: 0 10px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .face-pack-toggle.is-open {
+    background: #f7d6ec;
+  }
+  .face-pack {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(12px);
+    pointer-events: none;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    transition: max-width 260ms ease, opacity 180ms ease, transform 260ms ease;
+  }
+  .face-pack::-webkit-scrollbar { display: none; }
+  .face-pack.is-open {
+    max-width: min(220px, calc(100% - 4px));
+    overflow-x: auto;
+    overflow-y: hidden;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+  }
+  .face-pack button {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    padding: 3px;
+    overflow: hidden;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  .face-pack button.is-active {
+    background: #f7d6ec;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .face-pack img, .face-pack svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .status-stack {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .status-cluster {
+    display: flex;
+    align-items: center;
+    min-width: 74px;
+    padding: 6px 10px;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    background: #fff;
+    color: #6f7180;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .status-lead { white-space: nowrap; }
+  .status-le { width: 1em; text-align: center; }
+  .sound-box {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .combo-badge {
+    position: absolute;
+    z-index: 9;
+    top: 78px;
+    right: 20px;
+    padding: 7px 12px;
+    border-radius: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, #ff9d45, #ff5d50);
+    box-shadow: 0 9px 22px rgba(240,79,61,0.25);
+    font-weight: 1000;
+    font-size: 18px;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 150ms cubic-bezier(.2,1.4,.4,1), opacity 120ms ease;
+  }
+  .combo-badge.show { transform: scale(1) rotate(3deg); opacity: 1; }
+  .damage-pop {
+    position: absolute;
+    z-index: 9;
+    left: 50%;
+    top: 40%;
+    color: var(--accent-deep);
+    font-size: 25px;
+    font-weight: 1000;
+    text-shadow: 0 2px 0 #fff;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .damage-pop.play { animation: damage-pop 480ms ease-out both; }
+  @keyframes damage-pop {
+    0% { opacity: 0; transform: translate(-50%, 12px) scale(0.65); }
+    25% { opacity: 1; transform: translate(-50%, 0) scale(1.15); }
+    100% { opacity: 0; transform: translate(-50%, -34px) scale(0.94); }
+  }
+  .impact-burst {
+    position: absolute;
+    z-index: 11;
+    left: 50%;
+    top: 30%;
+    min-width: 88px;
+    padding: 8px 14px;
+    border: 4px solid #fff7de;
+    border-radius: 45% 55% 48% 52% / 52% 44% 56% 48%;
+    color: #fff;
+    background: linear-gradient(145deg, #ffb23f, #ff5b4f);
+    box-shadow: 0 10px 28px rgba(236, 70, 52, 0.28);
+    font-size: 25px;
+    font-weight: 1000;
+    text-align: center;
+    text-shadow: 0 2px 0 rgba(115, 46, 40, 0.24);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .impact-burst.play { animation: impact-burst 620ms cubic-bezier(.2,1.25,.35,1) both; }
+  @keyframes impact-burst {
+    0% { opacity: 0; transform: translate(-50%, 18px) rotate(-12deg) scale(0.25); }
+    24% { opacity: 1; transform: translate(-50%, 0) rotate(8deg) scale(1.25); }
+    64% { opacity: 1; transform: translate(-50%, -12px) rotate(-4deg) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -42px) rotate(5deg) scale(0.82); }
+  }
+  .game-stage.impact {
+    animation: impact-shake 260ms ease-out;
+  }
+  @keyframes impact-shake {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    22% { transform: translate(var(--impact-x, 6px), var(--impact-y, 0)) scale(1.012); }
+    45% { transform: translate(var(--impact-back-x, -3px), var(--impact-back-y, 0)) scale(0.994); }
+    68% { transform: translate(var(--impact-small-x, 2px), var(--impact-small-y, 0)) scale(1.004); }
+  }
+  .hint {
+    min-height: 34px;
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: center;
+  }
+  html.is-embedded, html.is-embedded body { background: transparent; }
+  html.is-embedded .widget-root {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 4px 0 0;
+    gap: 8px;
+  }
+  html.is-embedded .topbar { display: none; }
+  html.is-embedded .hint {
+    display: grid;
+    min-height: 30px;
+    padding: 0 4px 2px;
+  }
+  .bottom-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .bottom-btn {
+    min-height: 48px;
+    border-radius: 16px;
+    font-weight: 800;
+    transition: transform 100ms ease;
+  }
+  .swipe-trail {
+    position: absolute;
+    z-index: 7;
+    height: 7px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+    filter: drop-shadow(0 0 5px rgba(255,118,81,0.45));
+    transform-origin: left center;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .swipe-trail.play { animation: swipe-trail 240ms ease-out both; }
+  @keyframes swipe-trail {
+    0% { opacity: 0; transform: scaleX(0.2); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: scaleX(1); }
+  }
+  .knockout .game-stage { animation: stage-pulse 460ms ease-out; }
+  .knockout .bar-fill { filter: grayscale(1); }
+  @keyframes stage-pulse {
+    0%, 100% { transform: scale(1); }
+    38% { transform: scale(0.985); }
+    62% { transform: scale(1.012); }
+  }
+  @media (max-height: 700px) {
+    .widget-root { gap: 7px; }
+    .game-title { font-size: 21px; }
+    .durability-card { padding: 9px 12px; }
+    .hint { min-height: 28px; }
+    .bottom-btn { min-height: 42px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .damage-pop.play, .impact-burst.play, .swipe-trail.play, .game-stage.impact, .knockout .game-stage { animation-duration: 1ms; }
+  }
+</style>
+</head>
+<body>
+<main class="widget-root" id="gameRoot">
+  <header class="topbar">
+    <button class="icon-btn" id="backButton" aria-label="返回">←</button>
+    <h1 class="game-title">鼠鼠不倒翁</h1>
+    <span class="topbar-spacer" aria-hidden="true"></span>
+  </header>
+
+  <section class="durability-card" aria-label="耐久值">
+    <div class="durability-row">
+      <span>耐久值</span>
+      <span class="durability-value" id="durabilityValue">100/100</span>
+    </div>
+    <div class="bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="durabilityTrack">
+      <div class="bar-fill" id="durabilityFill"></div>
+    </div>
+  </section>
+
+  <section class="game-stage" id="gameStage" aria-label="小老鼠不倒翁互动区域">
+    <div class="stage-hud">
+      <div class="face-dock">
+        <button type="button" class="face-pack-toggle" id="facePackToggle" aria-expanded="false" aria-controls="facePack">表情</button>
+        <div class="face-pack" id="facePack" aria-label="替换表情">
+          <button type="button" class="is-active" data-sticker="default" aria-label="原版" title="原版">
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+              <circle cx="20" cy="20" r="16" fill="#cfcfcf" stroke="#111" stroke-width="2"/>
+              <circle cx="20" cy="23" r="12" fill="#161616"/>
+              <ellipse cx="14" cy="18" rx="4.6" ry="5.6" fill="#fff"/>
+              <ellipse cx="26" cy="18" rx="4.6" ry="5.6" fill="#fff"/>
+              <ellipse cx="14.6" cy="19" rx="2.2" ry="3.1" fill="#111"/>
+              <ellipse cx="26.6" cy="19" rx="2.2" ry="3.1" fill="#111"/>
+            </svg>
+          </button>
+          <button type="button" data-sticker="sad" aria-label="委屈" title="委屈"><img src="assets/tumbler-faces/pack/sad.png" alt=""></button>
+          <button type="button" data-sticker="cry" aria-label="慌张" title="慌张"><img src="assets/tumbler-faces/pack/cry.png" alt=""></button>
+          <button type="button" data-sticker="angry" aria-label="生气" title="生气"><img src="assets/tumbler-faces/pack/angry.png" alt=""></button>
+          <button type="button" data-sticker="confused" aria-label="疑惑" title="疑惑"><img src="assets/tumbler-faces/pack/confused.png" alt=""></button>
+          <button type="button" data-sticker="happy" aria-label="开心" title="开心"><img src="assets/tumbler-faces/pack/happy.png" alt=""></button>
+        </div>
+      </div>
+      <div class="status-stack">
+        <div class="status-cluster" id="statusText">
+          <span class="status-lead" id="statusLead">准备好</span>
+          <span class="status-le" id="statusLe">了</span>
+        </div>
+        <button type="button" class="sound-box" id="soundButton" aria-label="关闭音效" aria-pressed="true">🔊</button>
+      </div>
+    </div>
+    <div class="combo-badge" id="comboBadge">连击 ×2</div>
+    <div class="damage-pop" id="damagePop">-5</div>
+    <div class="impact-burst" id="impactBurst">啪！</div>
+    <div class="swipe-trail" id="swipeTrail"></div>
+    <div class="canvas-wrap" id="canvasWrap">
+    <svg id="mainSvg" viewBox="0 0 420 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="shadowGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,0,0,0.28)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+        </radialGradient>
+        <radialGradient id="blackBase" cx="45%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="#3d3d3d"/>
+          <stop offset="35%" stop-color="#222222"/>
+          <stop offset="75%" stop-color="#121212"/>
+          <stop offset="100%" stop-color="#050505"/>
+        </radialGradient>
+        <radialGradient id="silverBack" cx="30%" cy="20%" r="80%">
+          <stop offset="0%" stop-color="#dcdcdc"/>
+          <stop offset="25%" stop-color="#b8b8b8"/>
+          <stop offset="55%" stop-color="#8a8a8a"/>
+          <stop offset="85%" stop-color="#606060"/>
+          <stop offset="100%" stop-color="#484848"/>
+        </radialGradient>
+        <radialGradient id="earInner" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffc4ce"/>
+          <stop offset="100%" stop-color="#e8a0aa"/>
+        </radialGradient>
+        <radialGradient id="eyeBall" cx="40%" cy="40%" r="55%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="100%" stop-color="#e8e8e8"/>
+        </radialGradient>
+        <radialGradient id="noseGrad" cx="35%" cy="30%" r="60%">
+          <stop offset="0%" stop-color="#333333"/>
+          <stop offset="100%" stop-color="#0a0a0a"/>
+        </radialGradient>
+        <clipPath id="importedFaceClip">
+          <ellipse cx="0" cy="0" rx="50" ry="56"/>
+        </clipPath>
+      </defs>
+      <ellipse cx="210" cy="350" rx="105" ry="22" fill="url(#shadowGrad)" id="groundShadow"/>
+      <g id="tumblerGroup" transform="translate(210, 338)">
+        <g id="rubberBody">
+          <g transform="translate(0, -12)">
+            <ellipse cx="0" cy="0" rx="18" ry="14" fill="#121212"/>
+            <ellipse cx="-6" cy="-5" rx="7" ry="5" fill="#1a1a1a"/>
+            <ellipse cx="5" cy="-3" rx="5" ry="4" fill="#222"/>
+          </g>
+          <g transform="translate(-52, 3)">
+            <ellipse cx="0" cy="0" rx="26" ry="17" fill="#0f0f0f"/>
+            <ellipse cx="-10" cy="-2" rx="4.5" ry="3.5" fill="#d0d0d0"/>
+            <ellipse cx="0" cy="-3" rx="4.5" ry="3.5" fill="#d0d0d0"/>
+            <ellipse cx="10" cy="-2" rx="4.5" ry="3.5" fill="#d0d0d0"/>
+          </g>
+          <g transform="translate(52, 3)">
+            <ellipse cx="0" cy="0" rx="26" ry="17" fill="#0f0f0f"/>
+            <ellipse cx="-10" cy="-2" rx="4.5" ry="3.5" fill="#d0d0d0"/>
+            <ellipse cx="0" cy="-3" rx="4.5" ry="3.5" fill="#d0d0d0"/>
+            <ellipse cx="10" cy="-2" rx="4.5" ry="3.5" fill="#d0d0d0"/>
+          </g>
+          <path id="bodyBase"
+            d="M -78 6 C -95 -22, -102 -70, -96 -108 C -92 -145, -80 -178, -70 -205 C -58 -238, -34 -258, 0 -258 C 34 -258, 58 -238, 70 -205 C 80 -178, 92 -145, 96 -108 C 102 -70, 95 -22, 78 6 C 60 14, 32 18, 0 18 C -32 18, -60 14, -78 6 Z"
+            fill="url(#blackBase)"/>
+          <path id="backSilver"
+            d="M -96 -108 C -92 -145, -80 -178, -70 -205 C -58 -238, -34 -258, 0 -258 C 34 -258, 58 -238, 70 -205 C 80 -178, 92 -145, 96 -108 C 93 -82, 80 -58, 58 -48 C 38 -40, 0 -40, -38 -40 C -58 -48, -80 -58, -93 -82 C -95 -95, -96 -102, -96 -108 Z"
+            fill="url(#silverBack)"/>
+          <ellipse cx="-28" cy="-215" rx="32" ry="16" fill="white" opacity="0.16" transform="rotate(-20)"/>
+          <ellipse cx="35" cy="-135" rx="24" ry="12" fill="white" opacity="0.11" transform="rotate(15)"/>
+          <ellipse cx="-40" cy="-90" rx="18" ry="9" fill="white" opacity="0.08" transform="rotate(-10)"/>
+          <path d="M -93 -82 C -58 -48, -38 -40, 0 -40 C 38 -40, 58 -48, 93 -82" stroke="rgba(140,140,140,0.25)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M -88 -75 C -55 -45, -35 -38, 0 -38 C 35 -38, 55 -45, 88 -75" stroke="rgba(100,100,100,0.15)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <g transform="translate(-74, -195)">
+            <ellipse cx="0" cy="0" rx="20" ry="22" fill="url(#silverBack)"/>
+            <ellipse cx="2" cy="2" rx="12" ry="14" fill="url(#earInner)"/>
+            <ellipse cx="-5" cy="-8" rx="6" ry="4" fill="white" opacity="0.2" transform="rotate(-20)"/>
+          </g>
+          <g transform="translate(74, -195)">
+            <ellipse cx="0" cy="0" rx="20" ry="22" fill="url(#silverBack)"/>
+            <ellipse cx="-2" cy="2" rx="12" ry="14" fill="url(#earInner)"/>
+            <ellipse cx="5" cy="-8" rx="6" ry="4" fill="white" opacity="0.2" transform="rotate(20)"/>
+          </g>
+          <g transform="translate(-68, -100)">
+            <ellipse cx="0" cy="0" rx="16" ry="26" fill="#161616" transform="rotate(20)"/>
+            <ellipse cx="-3" cy="14" rx="4" ry="5" fill="#c0c0c0" transform="rotate(20)"/>
+            <ellipse cx="4" cy="15" rx="4" ry="5" fill="#c0c0c0" transform="rotate(20)"/>
+            <ellipse cx="10" cy="13" rx="4" ry="5" fill="#c0c0c0" transform="rotate(20)"/>
+          </g>
+          <g transform="translate(68, -100)">
+            <ellipse cx="0" cy="0" rx="16" ry="26" fill="#161616" transform="rotate(-20)"/>
+            <ellipse cx="3" cy="14" rx="4" ry="5" fill="#c0c0c0" transform="rotate(-20)"/>
+            <ellipse cx="-4" cy="15" rx="4" ry="5" fill="#c0c0c0" transform="rotate(-20)"/>
+            <ellipse cx="-10" cy="13" rx="4" ry="5" fill="#c0c0c0" transform="rotate(-20)"/>
+          </g>
+          <g id="faceGroup">
+            <g id="defaultFace">
+            <g id="leftEye" transform="translate(-32, -185)">
+              <ellipse cx="0" cy="0" rx="22" ry="27" fill="url(#eyeBall)"/>
+              <ellipse cx="0" cy="0" rx="22" ry="27" fill="none" stroke="#0a0a0a" stroke-width="1.5"/>
+              <ellipse cx="1" cy="1" rx="14" ry="18" fill="#0a0a0a"/>
+              <ellipse cx="6" cy="-7" rx="6" ry="7" fill="#fff"/>
+              <ellipse cx="-3" cy="9" rx="3.5" ry="3.5" fill="rgba(255,255,255,0.4)"/>
+              <path d="M -17 12 Q 0 22 17 12" stroke="#ffb6c1" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+            </g>
+            <g id="rightEye" transform="translate(32, -185)">
+              <ellipse cx="0" cy="0" rx="22" ry="27" fill="url(#eyeBall)"/>
+              <ellipse cx="0" cy="0" rx="22" ry="27" fill="none" stroke="#0a0a0a" stroke-width="1.5"/>
+              <ellipse cx="-1" cy="1" rx="14" ry="18" fill="#0a0a0a"/>
+              <ellipse cx="4" cy="-7" rx="6" ry="7" fill="#fff"/>
+              <ellipse cx="-5" cy="9" rx="3.5" ry="3.5" fill="rgba(255,255,255,0.4)"/>
+              <path d="M -17 12 Q 0 22 17 12" stroke="#ffb6c1" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+            </g>
+            <g transform="translate(0, -155)">
+              <ellipse cx="0" cy="0" rx="12" ry="9" fill="url(#noseGrad)"/>
+              <ellipse cx="0" cy="-2" rx="7" ry="3" fill="#444"/>
+              <ellipse cx="-3" cy="1" rx="3" ry="2" fill="#666"/>
+              <ellipse cx="3" cy="-4" rx="3" ry="2" fill="white" opacity="0.25" transform="rotate(-15)"/>
+            </g>
+            <path id="mouthPath" d="M -14 -140 Q 0 -132 14 -140" stroke="#0a0a0a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M -9 -138 Q 0 -135 9 -138" stroke="#444" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+            <ellipse cx="-50" cy="-172" rx="10" ry="6" fill="white" opacity="0.12" transform="rotate(-30)"/>
+            <ellipse cx="50" cy="-172" rx="10" ry="6" fill="white" opacity="0.12" transform="rotate(30)"/>
+            <ellipse cx="0" cy="-210" rx="15" ry="6" fill="white" opacity="0.08"/>
+            </g>
+            <g id="importedFaceLayer" opacity="0" pointer-events="none">
+              <ellipse id="importedFaceBackdrop" cx="0" cy="-176" rx="52" ry="58" fill="#fff" stroke="#111" stroke-width="3"/>
+              <g id="importedFaceOrient" transform="translate(0, -176)">
+                <g id="importedFaceClipGroup" clip-path="url(#importedFaceClip)">
+                  <image id="importedFaceImage" x="-50" y="-56" width="100" height="112" preserveAspectRatio="xMidYMid meet" transform="rotate(0)" />
+                </g>
+              </g>
+            </g>
+            <g id="stickerFace" opacity="0" pointer-events="none" transform="translate(0, -168)">
+              <image id="stickerFaceImage" x="-56" y="-50" width="112" height="96" preserveAspectRatio="xMidYMid meet" />
+            </g>
+          </g>
+          <g opacity="0.12" stroke="#aaa" stroke-width="1" fill="none" stroke-linecap="round">
+            <path d="M -75 -60 l -4 5 M -65 -55 l -3 6 M -55 -50 l -4 4"/>
+            <path d="M 75 -60 l 4 5 M 65 -55 l 3 6 M 55 -50 l 4 4"/>
+            <path d="M -80 -120 l -5 3 M -78 -140 l -4 4"/>
+            <path d="M 80 -120 l 5 3 M 78 -140 l 4 4"/>
+          </g>
+        </g>
+        <g id="namePlate" opacity="0" pointer-events="none" transform="translate(0, -278)">
+          <rect x="-70" y="-14" width="140" height="28" rx="14" fill="#fff" stroke="#111" stroke-width="2"/>
+          <text id="importedNameText" x="0" y="5" text-anchor="middle" font-size="13" font-weight="800" fill="#111" font-family="Noto Sans SC, PingFang SC, sans-serif"></text>
+        </g>
+        <g id="hitEffects" opacity="0" transform="translate(0, -145)">
+          <path d="M -115 -75 L -95 -100 M -110 -100 L -90 -75" stroke="#e74c3c" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 115 -75 L 95 -100 M 110 -100 L 90 -75" stroke="#e74c3c" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="-100" cy="-60" r="7" fill="#e74c3c" opacity="0.7"/>
+          <circle cx="100" cy="-60" r="7" fill="#e74c3c" opacity="0.7"/>
+          <path d="M -70 -110 L -65 -125 L -60 -110" fill="#f1c40f" opacity="0.8"/>
+          <path d="M 60 -110 L 65 -125 L 70 -110" fill="#f1c40f" opacity="0.8"/>
+        </g>
+        <g id="speedLines" opacity="0">
+          <line x1="-135" y1="-220" x2="-160" y2="-220" stroke="rgba(0,0,0,0.22)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-130" y1="-195" x2="-150" y2="-195" stroke="rgba(0,0,0,0.16)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="135" y1="-220" x2="160" y2="-220" stroke="rgba(0,0,0,0.22)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="130" y1="-195" x2="150" y2="-195" stroke="rgba(0,0,0,0.16)" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </g>
+      </svg>
+    </div>
+  </section>
+
+  <p class="hint" id="hintText">拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏</p>
+</main>
+
+<script>
+const GAME_DEFAULTS = Object.freeze({
+  maxDurability: 100,
+  minHitDistance: 48,
+  maxHitDurationMs: 350,
+  minHitSpeed: 600,
+  axisRatio: 1.35,
+  minStretchDistance: 80,
+  minStretchDurationMs: 180,
+  tapDistance: 12,
+  maxTapDurationMs: 250,
+  comboWindowMs: 800,
+  spring: 42,
+  damping: 7.5,
+  maxAngle: 44,
+});
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function classifyGesture(input, config = GAME_DEFAULTS) {
+  const {
+    startX,
+    startY,
+    endX,
+    endY,
+    durationMs,
+    intersectsTarget,
+    targetCenterX,
+  } = input;
+
+  if (!intersectsTarget) return { type: 'NONE' };
+
+  const dx = endX - startX;
+  const dy = endY - startY;
+  const distance = Math.hypot(dx, dy);
+  const safeDuration = Math.max(durationMs, 1);
+  const speed = (distance / safeDuration) * 1000;
+  const isHorizontal = Math.abs(dx) >= Math.abs(dy) * config.axisRatio;
+  const isVertical = Math.abs(dy) >= Math.abs(dx) * config.axisRatio;
+
+  if (
+    distance >= config.minHitDistance
+    && durationMs <= config.maxHitDurationMs
+    && speed >= config.minHitSpeed
+    && (isHorizontal || isVertical)
+  ) {
+    return {
+      type: 'HIT',
+      direction: isHorizontal
+        ? (dx >= 0 ? 'RIGHT' : 'LEFT')
+        : (dy >= 0 ? 'DOWN' : 'UP'),
+      intensity: clamp((speed - config.minHitSpeed) / 1400, 0, 1),
+    };
+  }
+
+  if (distance <= config.tapDistance && durationMs <= config.maxTapDurationMs) {
+    const directionBasis = Number.isFinite(targetCenterX)
+      ? startX - targetCenterX
+      : dx;
+    return {
+      type: 'TAP',
+      direction: directionBasis >= 0 ? 'RIGHT' : 'LEFT',
+      intensity: 0,
+    };
+  }
+
+  if (distance >= config.minStretchDistance && durationMs >= config.minStretchDurationMs) {
+    return {
+      type: 'STRETCH',
+      direction: Math.abs(dx) >= Math.abs(dy)
+        ? (dx >= 0 ? 'RIGHT' : 'LEFT')
+        : (dy >= 0 ? 'DOWN' : 'UP'),
+      distance,
+    };
+  }
+
+  return { type: 'DRAG' };
+}
+
+function calculateDamage(intensity, combo) {
+  const safeIntensity = clamp(Number(intensity) || 0, 0, 1);
+  const safeCombo = Math.max(0, Number(combo) || 0);
+  const comboBonus = Math.min(safeCombo * 0.5, 3);
+  return Math.round(5 + 7 * safeIntensity + comboBonus);
+}
+
+function applyHit(state, intensity) {
+  const durability = clamp(Number(state.durability) || 0, 0, GAME_DEFAULTS.maxDurability);
+  const combo = Math.max(0, Number(state.combo) || 0);
+  const damage = calculateDamage(intensity, combo);
+  const nextDurability = clamp(durability - damage, 0, GAME_DEFAULTS.maxDurability);
+
+  return {
+    durability: nextDurability,
+    combo: combo + 1,
+    damage,
+    isKnockout: durability > 0 && nextDurability === 0,
+  };
+}
+
+function toViewBoxPoint({ clientX, clientY, rect, viewBox }) {
+  if (!rect.width || !rect.height) return { x: 0, y: 0 };
+  return {
+    x: ((clientX - rect.left) / rect.width) * viewBox.width,
+    y: ((clientY - rect.top) / rect.height) * viewBox.height,
+  };
+}
+
+function calculatePinch({
+  initialDistance,
+  currentDistance,
+  initialStretchX = 1,
+  initialStretchY = 1,
+}) {
+  const safeInitialDistance = Math.max(Number(initialDistance) || 0, 1);
+  const ratio = clamp((Number(currentDistance) || 0) / safeInitialDistance, 0.48, 1.72);
+  return {
+    ratio,
+    stretchX: clamp(initialStretchX * ratio, 0.48, 1.72),
+    stretchY: clamp(initialStretchY / Math.sqrt(ratio), 0.55, 1.72),
+  };
+}
+
+function getHitDeformation(direction, intensity = 0, source = 'MANUAL_HIT') {
+  const power = clamp(Number(intensity) || 0, 0, 1);
+  const deformation = {
+    angularVelocity: 0,
+    skewVelocity: 0,
+    stretchVelocityX: 0,
+    stretchVelocityY: 0,
+    faceVelocityX: 0,
+    faceVelocityY: 0,
+  };
+
+  if (source === 'PINCH') {
+    deformation.stretchVelocityX = 5 + power * 4;
+    deformation.stretchVelocityY = -6 - power * 3;
+    deformation.faceVelocityY = 190 + power * 150;
+    return deformation;
+  }
+
+  if (source === 'SQUEEZE') {
+    deformation.stretchVelocityX = 5.5 + power * 3;
+    deformation.stretchVelocityY = -8.5 - power * 4;
+    deformation.faceVelocityY = 230 + power * 160;
+    return deformation;
+  }
+
+  if (direction === 'UP') {
+    deformation.angularVelocity = -135;
+    deformation.stretchVelocityX = -4.8 - power * 2.2;
+    deformation.stretchVelocityY = 9.5 + power * 5;
+    deformation.faceVelocityY = -320 - power * 230;
+    return deformation;
+  }
+
+  if (direction === 'DOWN') {
+    deformation.angularVelocity = 110;
+    deformation.stretchVelocityX = 4.8 + power * 2.2;
+    deformation.stretchVelocityY = -9.2 - power * 5;
+    deformation.faceVelocityY = 310 + power * 220;
+    return deformation;
+  }
+
+  const sign = direction === 'RIGHT' ? 1 : -1;
+  const stretchMultiplier = source === 'STRETCH' ? 1.22 : 1;
+  deformation.angularVelocity = sign * (350 + power * 250) * stretchMultiplier;
+  deformation.skewVelocity = sign * (48 + power * 52) * stretchMultiplier;
+  deformation.stretchVelocityX = (3.2 + power * 2.4) * stretchMultiplier;
+  deformation.stretchVelocityY = (-2.8 - power * 2.2) * stretchMultiplier;
+  deformation.faceVelocityX = sign * (270 + power * 170) * stretchMultiplier;
+  return deformation;
+}
+
+function getDragDisplacement(dx, dy, config = {}) {
+  const follow = Number(config.follow) || 0.9;
+  const maxX = Number(config.maxX) || 165;
+  const maxY = Number(config.maxY) || 185;
+  return {
+    x: clamp((Number(dx) || 0) * follow, -maxX, maxX),
+    y: clamp((Number(dy) || 0) * follow, -maxY, maxY),
+  };
+}
+
+function getDragReleaseVelocity({ dx, dy, durationMs, isStretch = false }) {
+  const safeDuration = Math.max(Number(durationMs) || 0, 40);
+  const multiplier = isStretch ? 1.45 : 0.9;
+  return {
+    velocityX: clamp(((Number(dx) || 0) / safeDuration) * 1000 * multiplier, -1350, 1350),
+    velocityY: clamp(((Number(dy) || 0) / safeDuration) * 1000 * multiplier, -1450, 1450),
+  };
+}
+
+function stepSpringTranslation(state, dt, config = {}) {
+  const safeDt = clamp(Number(dt) || 0, 0, 1 / 30);
+  const spring = Number(config.spring) || 45;
+  const damping = Number(config.damping) || 8;
+  const maxX = Number(config.maxX) || 190;
+  const maxY = Number(config.maxY) || 220;
+  let offsetX = Number(state.offsetX) || 0;
+  let offsetY = Number(state.offsetY) || 0;
+  let velocityX = Number(state.velocityX) || 0;
+  let velocityY = Number(state.velocityY) || 0;
+
+  velocityX += (-spring * offsetX - damping * velocityX) * safeDt;
+  velocityY += (-spring * offsetY - damping * velocityY) * safeDt;
+  offsetX += velocityX * safeDt;
+  offsetY += velocityY * safeDt;
+
+  if (Math.abs(offsetX) > maxX) {
+    offsetX = Math.sign(offsetX) * maxX;
+    velocityX *= -0.38;
+  }
+  if (Math.abs(offsetY) > maxY) {
+    offsetY = Math.sign(offsetY) * maxY;
+    velocityY *= -0.38;
+  }
+
+  if (Math.hypot(offsetX, offsetY) < 0.08 && Math.hypot(velocityX, velocityY) < 0.2) {
+    offsetX = 0;
+    offsetY = 0;
+    velocityX = 0;
+    velocityY = 0;
+  }
+
+  return { offsetX, offsetY, velocityX, velocityY };
+}
+
+function stepWobble(state, dt, config = GAME_DEFAULTS) {
+  const safeDt = clamp(Number(dt) || 0, 0, 1 / 30);
+  let angle = Number(state.angle) || 0;
+  let angularVelocity = Number(state.angularVelocity) || 0;
+
+  const angularAcceleration = -config.spring * angle - config.damping * angularVelocity;
+  angularVelocity += angularAcceleration * safeDt;
+  angle += angularVelocity * safeDt;
+
+  if (Math.abs(angle) > config.maxAngle) {
+    angle = Math.sign(angle) * config.maxAngle;
+    angularVelocity *= -0.22;
+  }
+
+  if (Math.abs(angle) < 0.03 && Math.abs(angularVelocity) < 0.03) {
+    angle = 0;
+    angularVelocity = 0;
+  }
+
+  return { angle, angularVelocity };
+}
+
+
+(function createMouseTumblerGame() {
+  'use strict';
+
+  const root = document.getElementById('gameRoot');
+  const wrap = document.getElementById('canvasWrap');
+  const stage = document.getElementById('gameStage');
+  const elements = {
+    tumbler: document.getElementById('tumblerGroup'),
+    rubberBody: document.getElementById('rubberBody'),
+    faceGroup: document.getElementById('faceGroup'),
+    hitEffects: document.getElementById('hitEffects'),
+    speedLines: document.getElementById('speedLines'),
+    groundShadow: document.getElementById('groundShadow'),
+    status: document.getElementById('statusText'),
+    durabilityFill: document.getElementById('durabilityFill'),
+    durabilityValue: document.getElementById('durabilityValue'),
+    durabilityTrack: document.getElementById('durabilityTrack'),
+    combo: document.getElementById('comboBadge'),
+    damage: document.getElementById('damagePop'),
+    impactBurst: document.getElementById('impactBurst'),
+    trail: document.getElementById('swipeTrail'),
+    leftEye: document.getElementById('leftEye'),
+    rightEye: document.getElementById('rightEye'),
+    mouth: document.getElementById('mouthPath'),
+    soundButton: document.getElementById('soundButton'),
+    backButton: document.getElementById('backButton'),
+    defaultFace: document.getElementById('defaultFace'),
+    importedFaceLayer: document.getElementById('importedFaceLayer'),
+    importedFaceImage: document.getElementById('importedFaceImage'),
+    importedFaceBackdrop: document.getElementById('importedFaceBackdrop'),
+    importedFaceClipGroup: document.getElementById('importedFaceClipGroup'),
+    importedFaceOrient: document.getElementById('importedFaceOrient'),
+    stickerFace: document.getElementById('stickerFace'),
+    stickerFaceImage: document.getElementById('stickerFaceImage'),
+    namePlate: document.getElementById('namePlate'),
+    importedNameText: document.getElementById('importedNameText'),
+    facePack: document.getElementById('facePack'),
+    facePackToggle: document.getElementById('facePackToggle'),
+    statusLead: document.getElementById('statusLead'),
+    statusLe: document.getElementById('statusLe'),
+  };
+
+  const TUMBLER_ORIGIN_X = 210;
+  const TUMBLER_ORIGIN_Y = 338;
+
+  const STICKER_FACES = Object.freeze({
+    default: { src: '', mode: '' },
+    sad: { src: 'assets/tumbler-faces/sad.png?v=origface-20260830', mode: 'sticker' },
+    cry: { src: 'assets/tumbler-faces/cry.png?v=origface-20260830', mode: 'sticker' },
+    angry: { src: 'assets/tumbler-faces/angry.png?v=origface-20260830', mode: 'sticker' },
+    confused: { src: 'assets/tumbler-faces/confused.png?v=origface-20260830', mode: 'sticker' },
+    happy: { src: 'assets/tumbler-faces/happy.png?v=origface-20260830', mode: 'sticker' },
+  });
+  let identity = { name: '', faceDataUrl: '', faceMode: '', stickerId: 'default' };
+
+  const game = {
+    durability: 100,
+    combo: 0,
+    comboExpiresAt: 0,
+    isKnockout: false,
+    isPaused: false,
+    soundEnabled: true,
+    angle: 0,
+    angularVelocity: 0,
+    offsetX: 0,
+    offsetY: 0,
+    offsetVelocityX: 0,
+    offsetVelocityY: 0,
+    stretchX: 1,
+    stretchY: 1,
+    stretchVelocityX: 0,
+    stretchVelocityY: 0,
+    skewX: 0,
+    skewVelocity: 0,
+    faceX: 0,
+    faceY: 0,
+    faceVelocityX: 0,
+    faceVelocityY: 0,
+    hitFlash: 0,
+    reaction: 0,
+    reactionDirection: 'RIGHT',
+    statusLockUntil: 0,
+    pointer: null,
+    pinch: null,
+    animationFrame: 0,
+    lastTime: performance.now(),
+    audioContext: null,
+  };
+
+  function emit(type, detail = {}) {
+    window.dispatchEvent(new CustomEvent('tumbler:event', {
+      detail: { type, ...detail },
+    }));
+  }
+
+  function setStatus(text) {
+    const value = String(text || '');
+    const endsWithLe = value.endsWith('了');
+    const lead = endsWithLe ? value.slice(0, -1) : value;
+    const le = endsWithLe ? '了' : '';
+    if (elements.statusLead && elements.statusLead.textContent !== lead) {
+      elements.statusLead.textContent = lead;
+    }
+    if (elements.statusLe && elements.statusLe.textContent !== le) {
+      elements.statusLe.textContent = le;
+    }
+    elements.status?.setAttribute('data-status', value);
+  }
+
+  function updateDurability() {
+    const value = clamp(game.durability, 0, 100);
+    elements.durabilityFill.style.width = `${value}%`;
+    elements.durabilityValue.textContent = `${value}/100`;
+    elements.durabilityTrack.setAttribute('aria-valuenow', String(value));
+  }
+
+  function updateCombo() {
+    if (game.combo >= 2 && !game.isKnockout) {
+      elements.combo.textContent = `连击 ×${game.combo}`;
+      elements.combo.classList.add('show');
+    } else if (!game.isKnockout) {
+      elements.combo.classList.remove('show');
+    }
+  }
+
+  function showDamage(damage) {
+    elements.damage.textContent = `-${damage}`;
+    elements.damage.classList.remove('play');
+    void elements.damage.offsetWidth;
+    elements.damage.classList.add('play');
+  }
+
+  function showFunnyImpact(direction, source, intensity) {
+    const copyByAction = {
+      TAP: ['啵！', '戳中啦！'],
+      SQUEEZE: ['噗叽！', '鼠饼出炉！'],
+      PINCH: ['捏捏！', '软乎乎！'],
+      STRETCH: ['拉成鼠条！', '弹性拉满！'],
+      UP: ['鼠鼠起飞！', '咻——！'],
+      DOWN: ['压成鼠饼！', '咚！'],
+      SIDE: ['啪！', '脸飞啦！', '脑袋嗡嗡！'],
+    };
+    const key = source === 'TAP' || source === 'SQUEEZE' || source === 'PINCH' || source === 'STRETCH'
+      ? source
+      : direction === 'UP' || direction === 'DOWN' ? direction : 'SIDE';
+    const choices = copyByAction[key];
+    elements.impactBurst.textContent = choices[(Math.max(game.combo, 1) - 1) % choices.length];
+    elements.impactBurst.style.fontSize = intensity > 0.72 ? '28px' : '23px';
+    elements.impactBurst.classList.remove('play');
+    void elements.impactBurst.offsetWidth;
+    elements.impactBurst.classList.add('play');
+
+    const vector = {
+      LEFT: [-12, 0],
+      RIGHT: [12, 0],
+      UP: [0, -10],
+      DOWN: [0, 10],
+    }[direction] || [7, 0];
+    stage.style.setProperty('--impact-x', `${vector[0]}px`);
+    stage.style.setProperty('--impact-y', `${vector[1]}px`);
+    stage.style.setProperty('--impact-back-x', `${vector[0] * -0.55}px`);
+    stage.style.setProperty('--impact-back-y', `${vector[1] * -0.55}px`);
+    stage.style.setProperty('--impact-small-x', `${vector[0] * 0.25}px`);
+    stage.style.setProperty('--impact-small-y', `${vector[1] * 0.25}px`);
+    stage.classList.remove('impact');
+    void stage.offsetWidth;
+    stage.classList.add('impact');
+  }
+
+  function showSwipeTrail(start, end) {
+    const stageRect = stage.getBoundingClientRect();
+    const dx = end.clientX - start.clientX;
+    const dy = end.clientY - start.clientY;
+    const distance = Math.hypot(dx, dy);
+    elements.trail.style.left = `${start.clientX - stageRect.left}px`;
+    elements.trail.style.top = `${start.clientY - stageRect.top}px`;
+    elements.trail.style.width = `${distance}px`;
+    elements.trail.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+    elements.trail.classList.remove('play');
+    void elements.trail.offsetWidth;
+    elements.trail.classList.add('play');
+  }
+
+  function playHitSound(intensity) {
+    if (!game.soundEnabled) return;
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      game.audioContext ||= new AudioContextClass();
+      const context = game.audioContext;
+      const now = context.currentTime;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(150 + intensity * 55, now);
+      oscillator.frequency.exponentialRampToValueAtTime(72, now + 0.09);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.14 + intensity * 0.08, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+      oscillator.connect(gain).connect(context.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.12);
+    } catch (_) {
+      // 音效不可用时不影响核心交互。
+    }
+  }
+
+  function vibrate(intensity) {
+    if (!game.soundEnabled || !navigator.vibrate) return;
+    navigator.vibrate(intensity > 0.72 ? 34 : 20);
+  }
+
+  function triggerHit(direction, intensity = 0, source = 'GESTURE') {
+    if (game.isKnockout || game.isPaused) return;
+
+    const now = performance.now();
+    if (now > game.comboExpiresAt) game.combo = 0;
+    const result = applyHit(game, intensity);
+    game.durability = result.durability;
+    game.combo = result.combo;
+    game.comboExpiresAt = now + GAME_DEFAULTS.comboWindowMs;
+
+    const deformation = getHitDeformation(direction, intensity, source);
+    game.angularVelocity += deformation.angularVelocity;
+    game.skewVelocity += deformation.skewVelocity;
+    game.stretchVelocityX += deformation.stretchVelocityX;
+    game.stretchVelocityY += deformation.stretchVelocityY;
+    game.faceVelocityX += deformation.faceVelocityX;
+    game.faceVelocityY += deformation.faceVelocityY;
+    game.hitFlash = 1;
+    game.reaction = 1;
+    game.reactionDirection = direction;
+
+    updateDurability();
+    updateCombo();
+    showDamage(result.damage);
+    showFunnyImpact(direction, source, intensity);
+    playHitSound(intensity);
+    vibrate(intensity);
+    const statusBySource = {
+      PINCH: '捏捏回弹',
+      SQUEEZE: '软乎乎的',
+      STRETCH: '极限拉伸',
+    };
+    setStatus(statusBySource[source] || (intensity > 0.72 ? '重重一击' : '摇起来了'));
+    game.statusLockUntil = performance.now() + 680;
+    emit('HIT', {
+      direction,
+      intensity: Number(intensity.toFixed(3)),
+      damage: result.damage,
+      durability: game.durability,
+      combo: game.combo,
+      source,
+    });
+
+    if (result.isKnockout) triggerKnockout();
+  }
+
+  function triggerKnockout() {
+    game.isKnockout = true;
+    root.classList.add('knockout');
+    elements.combo.textContent = `最高连击 ×${game.combo}`;
+    elements.combo.classList.add('show');
+    setStatus('鼠鼠被晃晕啦');
+    elements.impactBurst.textContent = '脑袋嗡嗡！';
+    elements.impactBurst.classList.remove('play');
+    void elements.impactBurst.offsetWidth;
+    elements.impactBurst.classList.add('play');
+    game.angularVelocity += game.angle >= 0 ? 520 : -520;
+    game.stretchVelocityX += 6;
+    game.stretchVelocityY -= 11;
+    game.reaction = 1;
+    emit('KNOCKOUT', { maxCombo: game.combo });
+
+    window.setTimeout(() => {
+      if (!game.isKnockout) return;
+      game.durability = 100;
+      game.combo = 0;
+      game.comboExpiresAt = 0;
+      game.isKnockout = false;
+      root.classList.remove('knockout');
+      elements.combo.classList.remove('show');
+      updateDurability();
+      setStatus('满血复活');
+      emit('REFILLED');
+    }, 1500);
+  }
+
+  function resetGame() {
+    game.durability = 100;
+    game.combo = 0;
+    game.comboExpiresAt = 0;
+    game.isKnockout = false;
+    game.angle = 0;
+    game.angularVelocity = 0;
+    game.offsetX = 0;
+    game.offsetY = 0;
+    game.offsetVelocityX = 0;
+    game.offsetVelocityY = 0;
+    game.stretchX = 1;
+    game.stretchY = 1;
+    game.stretchVelocityX = 0;
+    game.stretchVelocityY = 0;
+    game.skewX = 0;
+    game.skewVelocity = 0;
+    game.reaction = 0;
+    root.classList.remove('knockout');
+    elements.combo.classList.remove('show');
+    updateDurability();
+    setStatus('准备好了');
+    emit('RESET');
+  }
+
+  function isTargetPoint(point) {
+    const dx = (point.x - (210 + game.offsetX)) / 118;
+    const dy = (point.y - (315 + game.offsetY)) / 170;
+    return dx * dx + dy * dy <= 1;
+  }
+
+  function eventPoint(event) {
+    const rect = wrap.getBoundingClientRect();
+    return toViewBoxPoint({
+      clientX: event.clientX,
+      clientY: event.clientY,
+      rect,
+      viewBox: { width: 420, height: 500 },
+    });
+  }
+
+  function onPointerDown(event) {
+    if (game.isKnockout || game.isPaused || event.button > 0) return;
+    const point = eventPoint(event);
+    if (!isTargetPoint(point)) return;
+    wrap.setPointerCapture?.(event.pointerId);
+
+    if (game.pointer && game.pointer.id !== event.pointerId && !game.pinch) {
+      const distance = Math.hypot(point.x - game.pointer.lastX, point.y - game.pointer.lastY);
+      game.pinch = {
+        secondId: event.pointerId,
+        secondX: point.x,
+        secondY: point.y,
+        initialDistance: Math.max(distance, 1),
+        initialStretchX: game.stretchX,
+        initialStretchY: game.stretchY,
+        ratio: 1,
+      };
+      game.pointer.isPinching = true;
+      setStatus('双指捏捏');
+      return;
+    }
+
+    if (game.pointer) return;
+    game.pointer = {
+      id: event.pointerId,
+      startX: point.x,
+      startY: point.y,
+      lastX: point.x,
+      lastY: point.y,
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      lastClientX: event.clientX,
+      lastClientY: event.clientY,
+      startedAt: performance.now(),
+      intersectsTarget: true,
+      originOffsetX: game.offsetX,
+      originOffsetY: game.offsetY,
+      isSqueezing: false,
+      isPinching: false,
+    };
+    setStatus('按住试试');
+  }
+
+  function onPointerMove(event) {
+    const pointer = game.pointer;
+    if (!pointer) return;
+    const point = eventPoint(event);
+
+    if (game.pinch && (pointer.id === event.pointerId || game.pinch.secondId === event.pointerId)) {
+      if (pointer.id === event.pointerId) {
+        pointer.lastX = point.x;
+        pointer.lastY = point.y;
+      } else {
+        game.pinch.secondX = point.x;
+        game.pinch.secondY = point.y;
+      }
+      const distance = Math.hypot(
+        game.pinch.secondX - pointer.lastX,
+        game.pinch.secondY - pointer.lastY,
+      );
+      const pinchShape = calculatePinch({
+        initialDistance: game.pinch.initialDistance,
+        currentDistance: distance,
+        initialStretchX: game.pinch.initialStretchX,
+        initialStretchY: game.pinch.initialStretchY,
+      });
+      const { ratio } = pinchShape;
+      game.pinch.ratio = ratio;
+      game.stretchX = pinchShape.stretchX;
+      game.stretchY = pinchShape.stretchY;
+      game.skewX *= 0.82;
+      setStatus(ratio < 0.92 ? '捏紧一点' : ratio > 1.08 ? '慢慢撑开' : '双指捏捏');
+      event.preventDefault();
+      return;
+    }
+
+    if (pointer.id !== event.pointerId) return;
+    pointer.lastX = point.x;
+    pointer.lastY = point.y;
+    pointer.lastClientX = event.clientX;
+    pointer.lastClientY = event.clientY;
+    pointer.intersectsTarget ||= isTargetPoint(point);
+
+    const dx = point.x - pointer.startX;
+    const dy = point.y - pointer.startY;
+    if (Math.hypot(dx, dy) > 12) {
+      const displacement = getDragDisplacement(dx, dy);
+      game.offsetX = clamp(pointer.originOffsetX + displacement.x, -185, 185);
+      game.offsetY = clamp(pointer.originOffsetY + displacement.y, -205, 205);
+      game.offsetVelocityX = 0;
+      game.offsetVelocityY = 0;
+      game.skewX += (clamp(dx * 0.11, -28, 28) - game.skewX) * 0.25;
+      game.stretchY += (clamp(1 + dy * 0.0046, 0.5, 1.72) - game.stretchY) * 0.22;
+      const volumeWidth = clamp(1 - (game.stretchY - 1) * 0.78, 0.48, 1.72);
+      game.stretchX += (volumeWidth - game.stretchX) * 0.18;
+      setStatus(Math.hypot(dx, dy) >= 80 ? '极限拉伸' : '松手回弹');
+    }
+    event.preventDefault();
+  }
+
+  function onPointerUp(event) {
+    const pointer = game.pointer;
+    if (!pointer) return;
+
+    if (game.pinch && (pointer.id === event.pointerId || game.pinch.secondId === event.pointerId)) {
+      const ratio = game.pinch.ratio;
+      const intensity = clamp(Math.abs(ratio - 1) * 2.4, 0.18, 1);
+      const direction = ratio >= 1 ? 'UP' : 'DOWN';
+      game.stretchVelocityX += (1 - game.stretchX) * 7;
+      game.stretchVelocityY += (1 - game.stretchY) * 7;
+      game.pinch = null;
+      game.pointer = null;
+      triggerHit(direction, intensity, 'PINCH');
+      emit('PINCH_RELEASE', { ratio: Number(ratio.toFixed(3)) });
+      return;
+    }
+
+    if (pointer.id !== event.pointerId) return;
+    const point = eventPoint(event);
+    const durationMs = performance.now() - pointer.startedAt;
+    const gesture = classifyGesture({
+      startX: pointer.startX,
+      startY: pointer.startY,
+      endX: point.x,
+      endY: point.y,
+      durationMs,
+      intersectsTarget: pointer.intersectsTarget,
+      targetCenterX: 210 + pointer.originOffsetX,
+    });
+
+    const releaseDx = point.x - pointer.startX;
+    const releaseDy = point.y - pointer.startY;
+    if (gesture.type !== 'TAP' && gesture.type !== 'NONE') {
+      const release = getDragReleaseVelocity({
+        dx: releaseDx,
+        dy: releaseDy,
+        durationMs,
+        isStretch: gesture.type === 'STRETCH',
+      });
+      game.offsetVelocityX += release.velocityX;
+      game.offsetVelocityY += release.velocityY;
+    }
+
+    if (pointer.isSqueezing) {
+      triggerHit(point.x >= 210 ? 'RIGHT' : 'LEFT', 0.22, 'SQUEEZE');
+    } else if (gesture.type === 'HIT') {
+      showSwipeTrail(
+        { clientX: pointer.startClientX, clientY: pointer.startClientY },
+        { clientX: event.clientX, clientY: event.clientY },
+      );
+      triggerHit(gesture.direction, gesture.intensity, 'MANUAL_HIT');
+    } else if (gesture.type === 'TAP') {
+      triggerHit(gesture.direction, 0, 'TAP');
+    } else if (gesture.type === 'STRETCH' || gesture.type === 'DRAG') {
+      const dx = point.x - pointer.startX;
+      const dy = point.y - pointer.startY;
+      const multiplier = gesture.type === 'STRETCH' ? 1.45 : 1;
+      game.angularVelocity += clamp(dx * 1.35 * multiplier, -260, 260);
+      game.skewVelocity += clamp(dx * 0.32 * multiplier, -58, 58);
+      game.stretchVelocityY += clamp(dy * 0.045 * multiplier, -8, 8);
+      if (gesture.type === 'STRETCH') {
+        triggerHit(gesture.direction, clamp((gesture.distance - 80) / 120, 0.2, 0.72), 'STRETCH');
+      } else {
+        setStatus('弹簧回弹');
+      }
+      emit('DRAG_RELEASE', {
+        type: gesture.type,
+        dx: Math.round(dx),
+        dy: Math.round(dy),
+      });
+    } else {
+      setStatus('准备好了');
+    }
+    game.pointer = null;
+  }
+
+  function onPointerCancel() {
+    game.pointer = null;
+    game.pinch = null;
+    setStatus('准备好了');
+  }
+
+  function updateElastic(value, velocity, target, spring, damping, dt) {
+    const acceleration = -spring * (value - target) - damping * velocity;
+    const nextVelocity = velocity + acceleration * dt;
+    return {
+      value: value + nextVelocity * dt,
+      velocity: nextVelocity,
+    };
+  }
+
+  function update(dt, now) {
+    if (game.isPaused) return;
+
+    if (game.pointer && !game.pinch) {
+      const heldDistance = Math.hypot(
+        game.pointer.lastX - game.pointer.startX,
+        game.pointer.lastY - game.pointer.startY,
+      );
+      if (heldDistance < 12 && now - game.pointer.startedAt >= 180) {
+        game.pointer.isSqueezing = true;
+        game.stretchX += (1.62 - game.stretchX) * 0.14;
+        game.stretchY += (0.48 - game.stretchY) * 0.14;
+        game.faceY += (15 - game.faceY) * 0.12;
+        setStatus('捏住软鼠鼠');
+      }
+    }
+
+    const wobble = stepWobble(game, dt, {
+      spring: GAME_DEFAULTS.spring,
+      damping: GAME_DEFAULTS.damping,
+      maxAngle: GAME_DEFAULTS.maxAngle,
+    });
+    game.angle = wobble.angle;
+    game.angularVelocity = wobble.angularVelocity;
+
+    if (!game.pointer) {
+      const flight = stepSpringTranslation({
+        offsetX: game.offsetX,
+        offsetY: game.offsetY,
+        velocityX: game.offsetVelocityX,
+        velocityY: game.offsetVelocityY,
+      }, dt);
+      game.offsetX = flight.offsetX;
+      game.offsetY = flight.offsetY;
+      game.offsetVelocityX = flight.velocityX;
+      game.offsetVelocityY = flight.velocityY;
+
+      const sx = updateElastic(game.stretchX, game.stretchVelocityX, 1, 34, 9.5, dt);
+      game.stretchX = clamp(sx.value, 0.45, 1.8);
+      game.stretchVelocityX = sx.velocity;
+      const sy = updateElastic(game.stretchY, game.stretchVelocityY, 1, 34, 9.5, dt);
+      game.stretchY = clamp(sy.value, 0.42, 1.9);
+      game.stretchVelocityY = sy.velocity;
+      const skew = updateElastic(game.skewX, game.skewVelocity, 0, 31, 9, dt);
+      game.skewX = clamp(skew.value, -35, 35);
+      game.skewVelocity = skew.velocity;
+    }
+
+    const faceTargetX = game.angle * -1.05 + game.skewX * 0.72;
+    const faceTargetY = (game.stretchY - 1) * -34;
+    const faceX = updateElastic(game.faceX, game.faceVelocityX, faceTargetX, 26, 8.5, dt);
+    game.faceX = clamp(faceX.value, -34, 34);
+    game.faceVelocityX = faceX.velocity;
+    const faceY = updateElastic(game.faceY, game.faceVelocityY, faceTargetY, 26, 8.5, dt);
+    game.faceY = clamp(faceY.value, -36, 36);
+    game.faceVelocityY = faceY.velocity;
+
+    game.hitFlash = Math.max(0, game.hitFlash - dt * 4.8);
+    game.reaction = Math.max(0, game.reaction - dt * 2.25);
+    if (game.combo && now > game.comboExpiresAt && !game.isKnockout) {
+      game.combo = 0;
+      updateCombo();
+    }
+  }
+
+  function render() {
+    const originY = -35;
+    const reaction = game.reaction;
+    const mix = (from, to) => from + (to - from) * reaction;
+    elements.rubberBody.setAttribute(
+      'transform',
+      `translate(0, ${originY}) scale(${game.stretchX.toFixed(4)}, ${game.stretchY.toFixed(4)}) skewX(${game.skewX.toFixed(2)}) translate(0, ${-originY})`,
+    );
+    elements.tumbler.setAttribute(
+      'transform',
+      `translate(${(TUMBLER_ORIGIN_X + game.offsetX).toFixed(2)}, ${(TUMBLER_ORIGIN_Y + game.offsetY).toFixed(2)}) rotate(${game.angle.toFixed(2)})`,
+    );
+    elements.faceGroup.setAttribute('transform', `translate(${game.faceX.toFixed(2)}, ${game.faceY.toFixed(2)})`);
+    elements.hitEffects.setAttribute('opacity', game.hitFlash.toFixed(2));
+
+    let leftScaleX = 1;
+    let leftScaleY = 1;
+    let rightScaleX = 1;
+    let rightScaleY = 1;
+    let leftRotation = 0;
+    let rightRotation = 0;
+    let mouth = 'M -14 -140 Q 0 -132 14 -140';
+    if (game.reactionDirection === 'UP') {
+      leftScaleX = rightScaleX = mix(1, 0.66);
+      leftScaleY = rightScaleY = mix(1, 1.48);
+      leftRotation = mix(0, -8);
+      rightRotation = mix(0, 8);
+      if (reaction > 0.1) mouth = 'M -9 -143 Q 0 -120 9 -143 Q 0 -153 -9 -143';
+    } else if (game.reactionDirection === 'DOWN') {
+      leftScaleX = rightScaleX = mix(1, 1.48);
+      leftScaleY = rightScaleY = mix(1, 0.52);
+      leftRotation = mix(0, 7);
+      rightRotation = mix(0, -7);
+      if (reaction > 0.1) mouth = 'M -19 -137 Q 0 -147 19 -137';
+    } else {
+      const isRight = game.reactionDirection === 'RIGHT';
+      leftScaleX = mix(1, isRight ? 1.52 : 0.58);
+      leftScaleY = mix(1, isRight ? 0.62 : 1.42);
+      rightScaleX = mix(1, isRight ? 0.58 : 1.52);
+      rightScaleY = mix(1, isRight ? 1.42 : 0.62);
+      leftRotation = mix(0, isRight ? -15 : 12);
+      rightRotation = mix(0, isRight ? -12 : 15);
+      if (reaction > 0.1) mouth = 'M -17 -140 Q -9 -126 0 -140 Q 9 -153 17 -140';
+    }
+    const leftEyeTransform = `translate(-32, -185) rotate(${leftRotation.toFixed(1)}) scale(${leftScaleX.toFixed(3)}, ${leftScaleY.toFixed(3)})`;
+    const rightEyeTransform = `translate(32, -185) rotate(${rightRotation.toFixed(1)}) scale(${rightScaleX.toFixed(3)}, ${rightScaleY.toFixed(3)})`;
+    elements.leftEye.setAttribute('transform', leftEyeTransform);
+    elements.rightEye.setAttribute('transform', rightEyeTransform);
+    elements.mouth.setAttribute('d', mouth);
+
+    const linearSpeed = Math.hypot(game.offsetVelocityX, game.offsetVelocityY);
+    const speedOpacity = clamp((Math.abs(game.angularVelocity) + linearSpeed * 0.34 - 18) / 250, 0, 0.86);
+    elements.speedLines.setAttribute('opacity', speedOpacity.toFixed(2));
+    const travelSign = Math.sign(game.offsetVelocityX || game.angularVelocity);
+    elements.speedLines.setAttribute('transform', `translate(${travelSign * 7}, 0)`);
+
+    const flightHeight = clamp(-game.offsetY, 0, 205);
+    const shadowScale = clamp(
+      1 - Math.abs(game.angle) * 0.005 - (game.stretchY - 1) * 0.12 - flightHeight * 0.0027,
+      0.42,
+      1.16,
+    );
+    elements.groundShadow.setAttribute(
+      'transform',
+      `translate(${(game.angle * 0.7 + game.offsetX * 0.32).toFixed(2)}, 0) scale(${shadowScale.toFixed(3)})`,
+    );
+    elements.groundShadow.setAttribute(
+      'opacity',
+      String(clamp(1 - Math.abs(game.stretchY - 1) * 0.7 - flightHeight * 0.0032, 0.2, 1)),
+    );
+
+    if (!game.isKnockout && !game.pointer && performance.now() > game.statusLockUntil) {
+      if (linearSpeed > 85 || Math.hypot(game.offsetX, game.offsetY) > 18) setStatus('弹飞回弹中');
+      else if (Math.abs(game.angularVelocity) > 26 || Math.abs(game.angle) > 3) setStatus('摇摆中');
+      else if (Math.abs(game.stretchY - 1) > 0.06) setStatus('恢复中');
+      else if (game.combo === 0) setStatus('准备好了');
+    }
+  }
+
+  function loop(now) {
+    const dt = clamp((now - game.lastTime) / 1000, 0, 1 / 30);
+    game.lastTime = now;
+    update(dt, now);
+    render();
+    game.animationFrame = requestAnimationFrame(loop);
+  }
+
+  function isPackSticker(stickerId) {
+    return Boolean(stickerId && stickerId !== 'default' && STICKER_FACES[stickerId]?.src);
+  }
+
+  function showOriginalFace() {
+    elements.stickerFace?.setAttribute('opacity', '0');
+    elements.stickerFaceImage?.removeAttribute('href');
+    elements.stickerFaceImage?.removeAttributeNS('http://www.w3.org/1999/xlink', 'href');
+    elements.importedFaceImage?.removeAttribute('href');
+    elements.importedFaceImage?.removeAttributeNS('http://www.w3.org/1999/xlink', 'href');
+    elements.importedFaceLayer?.setAttribute('opacity', '0');
+    elements.importedFaceBackdrop?.setAttribute('opacity', '0');
+    elements.defaultFace?.setAttribute('opacity', '1');
+  }
+
+  function renderStickerFeatures(stickerId) {
+    const sticker = isPackSticker(stickerId) ? STICKER_FACES[stickerId] : null;
+    if (!sticker?.src || !elements.stickerFaceImage) {
+      showOriginalFace();
+      return false;
+    }
+    elements.stickerFaceImage.setAttribute('href', sticker.src);
+    elements.stickerFaceImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', sticker.src);
+    elements.stickerFace?.setAttribute('opacity', '1');
+    elements.importedFaceLayer?.setAttribute('opacity', '0');
+    elements.importedFaceBackdrop?.setAttribute('opacity', '0');
+    elements.defaultFace?.setAttribute('opacity', '0');
+    return true;
+  }
+
+  function applyIdentity({ name = '', faceDataUrl = '', faceMode = '', stickerId = '' } = {}) {
+    const label = String(name || '').trim();
+    const displayName = label.length > 8 ? `${label.slice(0, 8)}…` : label;
+    const packId = isPackSticker(stickerId) ? stickerId : 'default';
+    identity = {
+      name: label,
+      faceDataUrl: packId === 'default' ? '' : (STICKER_FACES[packId]?.src || ''),
+      faceMode: packId === 'default' ? '' : 'sticker',
+      stickerId: packId,
+    };
+
+    if (elements.defaultFace) {
+      if (!renderStickerFeatures(identity.stickerId)) {
+        showOriginalFace();
+      }
+    }
+
+    if (elements.namePlate && elements.importedNameText) {
+      elements.importedNameText.textContent = displayName;
+      elements.namePlate.setAttribute('opacity', displayName ? '1' : '0');
+    }
+    syncStickerButtons();
+  }
+
+  function syncStickerButtons() {
+    elements.facePack?.querySelectorAll('[data-sticker]').forEach((button) => {
+      const active = button.dataset.sticker === identity.stickerId;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  function toggleFacePack() {
+    const open = !elements.facePack?.classList.contains('is-open');
+    elements.facePack?.classList.toggle('is-open', open);
+    elements.facePackToggle?.classList.toggle('is-open', open);
+    elements.facePackToggle?.setAttribute('aria-expanded', String(open));
+  }
+
+  function pickSticker(stickerId) {
+    const sticker = STICKER_FACES[stickerId];
+    if (!sticker) return;
+    applyIdentity({
+      name: identity.name,
+      faceDataUrl: sticker.src,
+      faceMode: sticker.mode,
+      stickerId,
+    });
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'tumbler:sticker-picked', stickerId }, '*');
+    }
+  }
+
+  function toggleSound() {
+    game.soundEnabled = !game.soundEnabled;
+    elements.soundButton.textContent = game.soundEnabled ? '🔊' : '🔇';
+    elements.soundButton.setAttribute('aria-pressed', String(game.soundEnabled));
+    elements.soundButton.setAttribute('aria-label', game.soundEnabled ? '关闭音效' : '打开音效');
+    emit('SETTINGS_CHANGED', { soundEnabled: game.soundEnabled });
+  }
+
+  function pause() {
+    game.isPaused = true;
+    game.pointer = null;
+    game.pinch = null;
+    setStatus('已暂停');
+  }
+
+  function resume() {
+    game.isPaused = false;
+    game.lastTime = performance.now();
+    setStatus('准备好了');
+  }
+
+  wrap.addEventListener('pointerdown', onPointerDown);
+  wrap.addEventListener('pointermove', onPointerMove, { passive: false });
+  wrap.addEventListener('pointerup', onPointerUp);
+  wrap.addEventListener('pointercancel', onPointerCancel);
+  elements.soundButton.addEventListener('click', toggleSound);
+  elements.backButton.addEventListener('click', () => {
+    emit('CLOSE_REQUESTED');
+    if (history.length > 1) history.back();
+  });
+  elements.facePackToggle?.addEventListener('click', toggleFacePack);
+  if (elements.facePack) {
+    let packDrag = null;
+    let packSwiped = false;
+    elements.facePack.querySelectorAll('[data-sticker]').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        if (packSwiped) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+        pickSticker(button.dataset.sticker);
+      });
+    });
+    elements.facePack.addEventListener('pointerdown', (event) => {
+      if (!elements.facePack.classList.contains('is-open')) return;
+      packSwiped = false;
+      packDrag = {
+        id: event.pointerId,
+        x: event.clientX,
+        scroll: elements.facePack.scrollLeft,
+      };
+    });
+    elements.facePack.addEventListener('pointermove', (event) => {
+      if (!packDrag || event.pointerId !== packDrag.id) return;
+      const dx = packDrag.x - event.clientX;
+      if (!packSwiped && Math.abs(dx) < 12) return;
+      if (!packSwiped) {
+        packSwiped = true;
+        elements.facePack.setPointerCapture?.(event.pointerId);
+      }
+      elements.facePack.scrollLeft = packDrag.scroll + dx;
+    });
+    const endPackDrag = () => { packDrag = null; };
+    elements.facePack.addEventListener('pointerup', endPackDrag);
+    elements.facePack.addEventListener('pointercancel', endPackDrag);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pause();
+    else resume();
+  });
+
+  window.MouseTumbler = Object.freeze({
+    reset: resetGame,
+    hit: triggerHit,
+    pause,
+    resume,
+    setIdentity: applyIdentity,
+    getState: () => ({
+      durability: game.durability,
+      combo: game.combo,
+      isKnockout: game.isKnockout,
+      soundEnabled: game.soundEnabled,
+    }),
+  });
+
+  if (window.parent !== window) {
+    document.documentElement.classList.add('is-embedded');
+  }
+
+  window.addEventListener('message', (event) => {
+    if (event.source !== window.parent) return;
+    if (event.data?.type !== 'tumbler:identity') return;
+    applyIdentity(event.data);
+  });
+
+  updateDurability();
+  showOriginalFace();
+  emit('READY');
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'tumbler:ready' }, '*');
+  }
+  game.animationFrame = requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

@@ -50,7 +50,7 @@ test("the emotion game is a first-level tab with face and name import around the
   const script = await readFile(new URL("app.js", projectRoot), "utf8");
   const css = await readFile(new URL("styles.css", projectRoot), "utf8");
 
-  assert.match(html, /<iframe[^>]+id="mouse-game-frame"[^>]+src="\/mouse-game\.html"/);
+  assert.match(html, /<iframe[^>]+id="mouse-game-frame"[^>]+src="\/mouse-tumbler\/index\.html"/);
   assert.match(html, /id="vent-face-input"/);
   assert.match(html, /id="vent-name-input"/);
   assert.match(html, /data-screen="vent"[\s\S]*data-action="tab-vent"/);
@@ -60,8 +60,8 @@ test("the emotion game is a first-level tab with face and name import around the
   assert.doesNotMatch(script, /registerVentHit|createVentState|VENT_GOAL/);
 });
 
-test("the hosted mouse game keeps the supplied play mode and accepts an identity overlay", async () => {
-  const game = await readFile(new URL("public/mouse-game.html", projectRoot));
+test("the hosted mouse game keeps the team's latest play mode, face pack, and identity overlay", async () => {
+  const game = await readFile(new URL("public/mouse-tumbler/index.html", projectRoot));
   const text = game.toString("utf8");
 
   assert.match(text, /拖离原位再松手弹飞｜上下弹打｜长按挤压｜双指捏捏/);
@@ -71,6 +71,11 @@ test("the hosted mouse game keeps the supplied play mode and accepts an identity
   assert.match(text, /function stepWobble/);
   assert.match(text, /tumbler:identity/);
   assert.match(text, /importedFaceImage/);
+  assert.match(text, /id="facePack"/);
+  assert.match(text, /tumbler:sticker-picked/);
+  for (const face of ["angry", "confused", "cry", "happy", "sad"]) {
+    await readFile(new URL(`public/mouse-tumbler/assets/tumbler-faces/pack/${face}.png`, projectRoot));
+  }
   assert.doesNotMatch(text, /registerVentHit|createVentState|VENT_GOAL/);
 });
 
