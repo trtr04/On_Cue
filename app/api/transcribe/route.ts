@@ -1,3 +1,5 @@
+import { runtimeEnv } from "../../../lib/runtime-env";
+
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const OPENAI_URL = "https://api.openai.com/v1/audio/transcriptions";
 const MAX_AUDIO_BYTES = 24 * 1024 * 1024;
@@ -12,16 +14,16 @@ type Provider = {
 };
 
 function providers(): Provider[] {
-  const oncueKey = process.env.ONCUE_API_KEY?.trim();
-  const groqKey = process.env.GROQ_API_KEY?.trim();
-  const openaiKey = process.env.OPENAI_API_KEY?.trim();
+  const oncueKey = runtimeEnv("ONCUE_API_KEY");
+  const groqKey = runtimeEnv("GROQ_API_KEY");
+  const openaiKey = runtimeEnv("OPENAI_API_KEY");
   const list: Provider[] = [];
   if (oncueKey) {
-    const base = new URL((process.env.ONCUE_API_BASE_URL || "https://api.openai.com/v1").trim());
+    const base = new URL(runtimeEnv("ONCUE_API_BASE_URL") || "https://api.openai.com/v1");
     if (base.protocol !== "https:") throw new Error("ONCUE_API_BASE_URL must use https");
     base.pathname = `${base.pathname.replace(/\/$/, "")}/audio/transcriptions`;
-    const diarizationModel = process.env.ONCUE_DIARIZATION_MODEL?.trim() || "gpt-4o-transcribe-diarize";
-    const fallbackModel = process.env.ONCUE_STT_MODEL?.trim() || "gpt-4o-transcribe";
+    const diarizationModel = runtimeEnv("ONCUE_DIARIZATION_MODEL") || "gpt-4o-transcribe-diarize";
+    const fallbackModel = runtimeEnv("ONCUE_STT_MODEL") || "gpt-4o-transcribe";
     list.push(
       {
         source: "oncue-diarized",

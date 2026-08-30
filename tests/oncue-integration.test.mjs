@@ -59,7 +59,53 @@ test("recording completion can return safely and saved recordings can be confirm
   assert.match(script, /window\.confirm\("确定删除这条录音记录吗？"\)/);
   assert.match(script, /data-action="delete-recording"/);
   assert.match(script, /case "close-recording-review":/);
+  assert.doesNotMatch(
+    script,
+    /case "close-recording-review":[\s\S]{0,140}showScreen\("home"\)/,
+    "the recording sheet already overlays home; navigating home immediately reopens it",
+  );
   assert.match(script, /case "delete-recording":/);
+});
+
+test("server APIs read Sites runtime bindings instead of relying only on process.env", async () => {
+  const runtimeEnv = await readFile(new URL("lib/runtime-env.ts", projectRoot), "utf8");
+  const service = await readFile(new URL("lib/classic-service.ts", projectRoot), "utf8");
+  const analysis = await readFile(new URL("app/api/analyze/route.ts", projectRoot), "utf8");
+  const transcribe = await readFile(new URL("app/api/transcribe/route.ts", projectRoot), "utf8");
+
+  assert.match(runtimeEnv, /from "cloudflare:workers"/);
+  for (const source of [service, analysis, transcribe]) {
+    assert.match(source, /runtimeEnv\(/);
+  }
+});
+
+test("classic dialogue must directly answer the latest user turn and reject generic evasions", async () => {
+  const {
+    buildTrainingRoleMessages,
+    isWeakTrainingReply,
+  } = await import("../lib/training-dialogue.js");
+
+  const messages = buildTrainingRoleMessages({
+    module: {
+      title: "被拿来和别人比较",
+      role: "用比较施压的长辈",
+      summary: "用别人家的孩子制造压力。",
+    },
+    pressure: "中度",
+    evidenceText: '[{"text":"我都是为你好"}]',
+    messages: [
+      { role: "assistant", content: "我还不是为你好。" },
+      { role: "user", content: "为我好什么？" },
+    ],
+    close: false,
+  });
+
+  const prompt = messages.map((item) => item.content).join("\n");
+  assert.match(prompt, /当前用户最新一句/);
+  assert.match(prompt, /为我好什么/);
+  assert.match(prompt, /先正面回答/);
+  assert.equal(isWeakTrainingReply("那你自己看着办吧。", "为我好什么？", false), true);
+  assert.equal(isWeakTrainingReply("我是怕你以后吃亏，才一直拿别人和你比。", "为我好什么？", false), false);
 });
 
 test("the transcription provider has a working OpenAI Next fallback before overloaded mini models", async () => {

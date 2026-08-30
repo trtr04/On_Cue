@@ -1,6 +1,6 @@
 import { handleInternalClassicRequest } from "@/lib/classic-service";
+import { runtimeEnv } from "@/lib/runtime-env";
 
-const LOCAL_CLASSIC_ORIGIN = "http://127.0.0.1:8000";
 const SESSION_ID = "[A-Za-z0-9_-]{1,80}";
 const ALLOWED_PATHS = [
   /^scenarios$/,
@@ -15,13 +15,13 @@ const ALLOWED_PATHS = [
 ];
 
 function backendOrigin(): string | null {
-  const configured = process.env.CLASSIC_API_ORIGIN?.trim();
+  const configured = runtimeEnv("CLASSIC_API_ORIGIN");
   if (configured) {
     const url = new URL(configured);
     if (!/^https?:$/.test(url.protocol)) throw new Error("CLASSIC_API_ORIGIN must use http or https");
     return url.origin;
   }
-  return process.env.NODE_ENV === "development" ? LOCAL_CLASSIC_ORIGIN : null;
+  return null;
 }
 
 async function proxy(request: Request, context: { params: Promise<{ path?: string[] }> }) {

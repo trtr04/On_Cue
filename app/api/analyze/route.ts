@@ -9,6 +9,7 @@ import {
   retrieveKnowledgeEvidence,
   validateGroundedAnalysis,
 } from "../../../lib/knowledge-grounding.js";
+import { runtimeEnv } from "../../../lib/runtime-env";
 
 const MAX_TRANSCRIPT_LENGTH = 8_000;
 const MAX_CONTEXT_LENGTH = 1_200;
@@ -28,7 +29,7 @@ type InputSegment = {
 };
 
 function modelEndpoint() {
-  const base = (process.env.ONCUE_API_BASE_URL || DEFAULT_API_BASE).trim();
+  const base = runtimeEnv("ONCUE_API_BASE_URL") || DEFAULT_API_BASE;
   const url = new URL(base);
   if (url.protocol !== "https:") throw new Error("invalid_api_base");
   url.pathname = `${url.pathname.replace(/\/$/, "")}/chat/completions`;
@@ -36,7 +37,7 @@ function modelEndpoint() {
 }
 
 function modelKey() {
-  return process.env.ONCUE_API_KEY?.trim() || process.env.OPENAI_API_KEY?.trim() || "";
+  return runtimeEnv("ONCUE_API_KEY") || runtimeEnv("OPENAI_API_KEY");
 }
 
 function readModelJson(content: unknown) {
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: process.env.ONCUE_ANALYSIS_MODEL?.trim() || DEFAULT_MODEL,
+        model: runtimeEnv("ONCUE_ANALYSIS_MODEL") || DEFAULT_MODEL,
         temperature: 0.25,
         max_tokens: 3_500,
         response_format: { type: "json_object" },

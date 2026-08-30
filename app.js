@@ -1925,7 +1925,6 @@ document.addEventListener("click", async (event) => {
       break;
     case "close-recording-review":
       recordingReviewSheet.hidden = true;
-      showScreen("home");
       break;
     case "review-recording":
       loadRecordingForReview(control.dataset.recordingId);
