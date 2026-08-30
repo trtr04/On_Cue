@@ -1,12 +1,9 @@
 import { DEFAULT_SETTINGS, mergeSettings, type UserSettings } from "@/lib/settings";
 
-let settingsStore: UserSettings = DEFAULT_SETTINGS;
-let updatedAt = new Date().toISOString();
-
-function settingsResponse(source: "default" | "memory" = "memory") {
+function settingsResponse(settings: UserSettings, source: "default" | "request") {
   return Response.json({
-    settings: settingsStore,
-    updatedAt,
+    settings,
+    updatedAt: new Date().toISOString(),
     source,
   });
 }
@@ -20,7 +17,7 @@ async function readSettingsPatch(request: Request) {
 }
 
 export async function GET() {
-  return settingsResponse(settingsStore === DEFAULT_SETTINGS ? "default" : "memory");
+  return settingsResponse(DEFAULT_SETTINGS, "default");
 }
 
 export async function PUT(request: Request) {
@@ -29,9 +26,7 @@ export async function PUT(request: Request) {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  settingsStore = mergeSettings(settingsStore, patch);
-  updatedAt = new Date().toISOString();
-  return settingsResponse();
+  return settingsResponse(mergeSettings(DEFAULT_SETTINGS, patch), "request");
 }
 
 export async function PATCH(request: Request) {
@@ -39,7 +34,5 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE() {
-  settingsStore = DEFAULT_SETTINGS;
-  updatedAt = new Date().toISOString();
-  return settingsResponse("default");
+  return settingsResponse(DEFAULT_SETTINGS, "default");
 }

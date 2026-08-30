@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Strategies v0.2",
+  "type": "array",
+  "minItems": 20,
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "version",
+      "name",
+      "goal",
+      "when_to_use",
+      "when_not_to_use",
+      "response_structure",
+      "examples",
+      "common_mistakes",
+      "tone",
+      "perspective",
+      "risk_levels",
+      "supports_humor",
+      "tradeoffs",
+      "source_note",
+      "review_status"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^strategy-[a-z0-9-]+$"
+      },
+      "version": {
+        "const": "0.2"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "goal": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "when_to_use": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "when_not_to_use": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "response_structure": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "examples": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "common_mistakes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "tone": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "perspective": {
+        "enum": [
+          "balanced",
+          "relationship-savvy",
+          "value-exchange",
+          "position-operator",
+          "safety"
+        ]
+      },
+      "risk_levels": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "none",
+            "attention",
+            "urgent"
+          ]
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "supports_humor": {
+        "type": "boolean"
+      },
+      "tradeoffs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "source_note": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      },
+      "review_status": {
+        "const": "pending_human_review"
+      }
+    }
+  }
+}

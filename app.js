@@ -1,13 +1,14 @@
 import { installPhoneViewportFitting } from "./responsive.js";
-import { analyzeConfirmedTranscript, loadKnowledgeBase } from "./knowledge-analysis.js";
 import {
   TRAINING_MODULES,
-  buildTrainingReview,
-  createTrainingSession,
-  getTrainingHints,
   getTrainingModule,
-  submitTrainingTurn,
 } from "./training-game.js";
+import {
+  createClassicTrainingSession,
+  finishClassicTrainingSession,
+  getClassicTrainingHint,
+  sendClassicTrainingTurn,
+} from "./classic-training-api.js";
 import {
   blobFromDataUrl,
   formatTranscriptText,
@@ -26,7 +27,7 @@ const I18N = {
   "guide-practice": "\u7ecf\u5178\u5bf9\u7ec3\u4e0e\u573a\u666f\u5730\u56fe",
   "guide-vent": "\u60c5\u7eea\u66b4\u51fb",
   "guide-settings": "\u8bbe\u7f6e",
-  "guide-note": "录音页会请求麦克风权限；原音频与逐字稿只保存在本机演示记录里。",
+  "guide-note": "录音页会请求麦克风权限；原音频与转写默认仅保存在本机。",
   "phone-label": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86 \u79fb\u52a8\u7aef\u6a21\u62df\u5668",
   "app-name": "\u9519\u4e0d\u8d77\u6211\u5bf9\u4e86",
   "app-tagline": "\u8868\u8fbe\u4e0e\u60c5\u7eea\u8bad\u7ec3\u52a9\u624b",
@@ -39,7 +40,7 @@ const I18N = {
   "saved-note": "\u5df2\u5b58\u5165\u540e\u7aef\uff0c\u53ef\u968f\u65f6\u56de\u6765\u7ee7\u7eed\u5206\u6790",
   "back": "\u8fd4\u56de\u9996\u9875",
   "recording": "正在录音",
-  "live-note": "点击开始录音；停录后点「现在分析」，才会进入逐字稿复盘。",
+  "live-note": "点击开始录音；停录后先核对转写，再生成对话分析。",
   "marked-initial": "＋ 标记紧张点",
   "transcript": "\u5b9e\u65f6\u8f6c\u5199",
   "analyzing": "AI \u5b9e\u65f6\u5206\u6790\u4e2d\u2026",
@@ -48,8 +49,8 @@ const I18N = {
   "me-time": "\u6211 \u00b7 02:16",
   "me-line": "\u6211\u6539\u8fc7\u4e86\uff0c\u4f46\u662f\u8fd9\u6b21\u6a21\u677f\u548c\u4e0a\u6b21\u4e0d\u4e00\u6837\u2026\u2026",
   "after-record": "停止录音后",
-  "save-recording": "储存",
-  "direct-analyze": "\u76f4\u63a5\u5206\u6790",
+  "save-recording": "保存",
+  "direct-analyze": "核对转写",
   "privacy": "原音频与文字会出现在首页待分析记录；只有主动点击时才开始知识库分析。",
   "analysis-done": "\u5f55\u97f3\u5206\u6790\u5b8c\u6210",
   "analysis-title": "\u8fd9\u6bb5\u5bf9\u8bdd\uff0c\u5361\u5728\u54ea\u91cc\uff1f",
@@ -103,7 +104,6 @@ const I18N = {
   "end-drill": "\u7ed3\u675f",
   "drill-placeholder": "\u6309\u4f60\u7684\u65b9\u5f0f\u8bf4\u4e0b\u53bb\u2026",
   "vent-title": "\u73b0\u5728\uff0c\u5c3d\u7ba1\u66b4\u51fb",
-  "vent-copy": "\u4e0d\u8bb2\u9053\u7406\u4e5f\u6ca1\u5173\u7cfb\uff0c\u8fd9\u91cc\u4e0d\u4f1a\u4f24\u5bb3\u4efb\u4f55\u4eba",
   "vent-label": "\u66b4\u51fb\u4e0d\u5012\u7fc1",
   "bang": "\u7830\uff01",
   "vent-cue": "\u70b9\u51fb / \u8fde\u6253 / \u957f\u6309\u84c4\u529b",
@@ -127,35 +127,34 @@ const I18N = {
 
 const COPY = {
   "seedTitle": "\u5bb6\u5ead\u805a\u9910 \u00b7 \u88ab\u8ffd\u95ee\u8ba1\u5212",
-  "seedMeta": "\u6628\u5929 19:32 \u00b7 02:08 \u00b7 \u5df2\u5b58\u50a8",
-  "analyzeNow": "\u7acb\u5373\u5206\u6790",
+  "seedMeta": "昨天 19:32 · 02:08 · 已保存",
+  "analyzeNow": "查看分析",
   "savedTitle": "\u5bfc\u5e08\u529e\u516c\u5ba4 \u00b7 \u65b9\u6848\u4fee\u6539",
-  "savedMeta": "\u4eca\u5929 14:20 \u00b7 03:42 \u00b7 \u5df2\u5b58\u50a8",
-  "toastSaved": "\u5f55\u97f3\u5df2\u5b58\u50a8\uff0c\u53ef\u968f\u65f6\u56de\u6765\u5206\u6790",
+  "savedMeta": "今天 14:20 · 03:42 · 已保存",
+  "toastSaved": "录音已保存，可随时回来分析",
   "liveTitle": "刚刚的冲突 · 原音频记录",
   "justNow": "\u521a\u521a",
-  "stored": "\u5df2\u5b58\u50a8",
-  "toastLiveSaved": "已保存原音频和逐字稿",
+  "stored": "已保存",
+  "toastLiveSaved": "原音频与转写已保存",
   "marked": "\u2713 \u5df2\u6807\u8bb0\u7d27\u5f20\u70b9",
   "toastMarked": "\u7d27\u5f20\u65f6\u523b\u5df2\u6807\u8bb0",
   "toastRecordingStarted": "开始录音了，说完后再点一次结束",
   "toastRecordingPaused": "录音已暂停",
   "toastRecordingResumed": "继续录音",
-  "toastRecordingStopped": "录音已停止，可以现在分析或先储存",
+  "toastRecordingStopped": "录音已结束，可以核对转写或先保存",
   "toastRecordingRequired": "请先开始并停止一次录音",
-  "toastTranscriptionFallback": "当前浏览器不能边说边转文字，停止后会根据录音生成逐字稿",
-  "toastTranscribing": "正在把这次录音转成逐字稿…",
-  "toastTranscribeLocal": "正在加载本地识别模型，第一次会稍慢",
-  "toastTranscribed": "逐字稿已生成，复盘时可以再改",
-  "toastTranscribeFailed": "自动转写暂时失败，可手动输入或点重新转文字",
+  "toastTranscriptionFallback": "当前浏览器无法生成录音，请检查麦克风权限",
+  "toastTranscribing": "正在转写录音…",
+  "toastTranscribeApi": "正在调用语音转写 API…",
+  "toastTranscribed": "转写已生成，请逐句核对",
+  "toastTranscribeFailed": "自动转写暂时失败，可手动输入或重新转写",
   "toastTranscribeNoAudio": "没有可转写的音频",
-  "transcriptPlaceholder": "这里会填入这次录音的逐字稿，复盘时可以修改后再分析。",
-  "transcriptLoading": "正在整理这次录音的逐字稿…",
-  "transcriptLocalLoading": "首次转写需要加载识别模型，请稍等…",
+  "transcriptPlaceholder": "转写内容会显示在这里，可逐句修改后再分析。",
+  "transcriptLoading": "正在整理录音转写…",
   "transcriptEmptyAudio": "没有录到音频，请重新录音，或直接在这里输入文字。",
-  "transcriptStatusReady": "停录后点「现在分析」，会进入这段录音的逐字稿",
-  "transcriptStatusLoading": "正在整理这次录音的逐字稿",
-  "transcriptStatusDone": "这是这次录音的逐字稿，复盘时可以修改",
+  "transcriptStatusReady": "停录后先核对转写，再补充当前情况",
+  "transcriptStatusLoading": "正在整理录音转写",
+  "transcriptStatusDone": "请确认每句话及其说话人",
   "transcriptStatusError": "转写失败，请手动输入或重试",
   "toastReplay": "\u5df2\u8fdb\u5165\u5bf9\u5e94\u573a\u666f\u5bf9\u7ec3",
   "toastNoop": "\u672c\u6b21\u6a21\u62df\u5668\u805a\u7126\u5f55\u97f3\u590d\u76d8\u6d41\u7a0b",
@@ -391,6 +390,24 @@ const DRILLS = {
   }
 };
 
+const LEGACY_TRAINING_MODULES = Object.freeze({
+  "progress": "pua-workplace-accountability",
+  "public": "pua-workplace-accountability",
+  "overtime": "pua-workplace-overtime",
+  "marriage": "pua-family-marriage",
+  "compare": "pua-family-emotion-dumping",
+  "group": "pua-workplace-accountability",
+  "delay": "pua-workplace-general",
+});
+
+function resolveTrainingModuleId(id, drill) {
+  if (getTrainingModule(id)) return id;
+  if (LEGACY_TRAINING_MODULES[id]) return LEGACY_TRAINING_MODULES[id];
+  return /亲戚|父母|妈妈|爸爸|家人|长辈|伴侣|家庭/.test(`${drill?.role || ""} ${drill?.title || ""}`)
+    ? "pua-family-emotion-dumping"
+    : "pua-workplace-general";
+}
+
 function applyLocalization() {
   document.title = I18N.title;
   document.querySelectorAll("[data-i18n]").forEach((node) => {
@@ -418,9 +435,9 @@ const toast = document.querySelector("#toast");
 const mapDetail = document.querySelector("#map-detail");
 const levelsList = document.querySelector("#levels-list");
 const drillThread = document.querySelector("#drill-thread");
-const drillSuggestions = document.querySelector("#drill-suggestions");
 const drillProgress = document.querySelector("#drill-progress");
 const drillForm = document.querySelector("#drill-form");
+const drillInput = document.querySelector("#drill-input");
 const mouseGameFrame = document.querySelector("#mouse-game-frame");
 const ventFaceInput = document.querySelector("#vent-face-input");
 const ventFacePicker = document.querySelector(".vent-face-picker");
@@ -437,7 +454,7 @@ const recordingStatus = document.querySelector("#recording-status");
 const recordingStatusLabel = document.querySelector("#recording-status-label");
 const recordingHelper = document.querySelector("#recording-helper");
 const startRecordingButton = document.querySelector("#start-recording");
-const recordingControls = document.querySelector("#recording-controls");
+const recordingControls = document.querySelector("#home-recording-controls");
 const recordingAudioCard = document.querySelector("#recording-audio-card");
 const recordingAudio = document.querySelector("#recording-audio");
 const recordingSheetAudio = document.querySelector("#recording-sheet-audio");
@@ -489,15 +506,13 @@ const DEFAULT_APP_SETTINGS = {
   privacy: {
     storage: "local",
     keepAudio: true,
-    analysisConsent: false,
   },
   export: {
     format: "markdown",
     includeAudio: false,
   },
 };
-const SPEAKER_PRESETS = ["我", "对方", "导师", "领导", "家人"];
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SPEAKER_PRESETS = ["待确认", "我", "对方", "导师", "领导", "家人"];
 
 let recordings = loadRecordings();
 let elapsed = 0;
@@ -510,17 +525,14 @@ let audioStream = null;
 let recordedAudioUrl = "";
 let recordedAudioDataUrl = "";
 let recordedAudioBlob = null;
-let speechRecognition = null;
-let speechFinalText = "";
-let speechInterimText = "";
-let shouldRestartRecognition = false;
 let currentScreen = "home";
 let selectedMap = "work";
 let drillOrigin = "levels";
 let currentDrill = null;
 let currentTrainingSession = null;
 let drillStep = 0;
-let knowledgePromise = null;
+let boundaryWins = 0;
+let selectedClassicDifficulty = 1;
 let currentKnowledgeAnalysis = null;
 let selectedKnowledgeVoice = "A";
 let currentDraftRecordingId = "";
@@ -583,11 +595,35 @@ function setTranscriptText(text, { snapshotOriginal = false } = {}) {
   syncContinueButton();
 }
 
+function setTranscriptSegments(segments, { snapshotOriginal = false } = {}) {
+  const source = Array.isArray(segments) ? segments.filter((segment) => segment?.text) : [];
+  if (!source.length) return false;
+  transcriptMode = "draft";
+  transcriptTurns = source.map((segment) => ({
+    id: `turn-${nextTurnId++}`,
+    speaker: String(segment.speaker || "待确认").trim() || "待确认",
+    speakerId: String(segment.speakerId || "").trim(),
+    text: String(segment.text || "").trim(),
+    startMs: Number.isFinite(Number(segment.startMs)) ? Number(segment.startMs) : 0,
+    endMs: Number.isFinite(Number(segment.endMs)) ? Number(segment.endMs) : 0,
+    confidence: Number.isFinite(Number(segment.confidence)) ? Number(segment.confidence) : null,
+    isUserEdited: Boolean(segment.isUserEdited),
+  }));
+  if (snapshotOriginal || originalTranscriptTurns.length === 0) {
+    originalTranscriptTurns = transcriptTurns.map((turn) => ({ ...turn, id: `orig-${turn.id}` }));
+  }
+  if (confirmedTranscript) confirmedTranscript.value = serializeTranscriptTurns(transcriptTurns);
+  renderTranscriptTurns();
+  syncContinueButton();
+  return true;
+}
+
 function syncTranscriptFromTurns() {
   const text = serializeTranscriptTurns(transcriptTurns);
   if (confirmedTranscript) confirmedTranscript.value = text;
   transcriptEditedByUser = Boolean(text);
   syncContinueButton();
+  persistCurrentDraft();
 }
 
 function renderTranscriptTurns() {
@@ -599,12 +635,12 @@ function renderTranscriptTurns() {
   });
   if (addTurnButton) addTurnButton.hidden = readOnly;
   if (!source.length) {
-    transcriptTurnsList.innerHTML = `<article class="empty-history">还没有可编辑的逐字稿。停录后点「现在分析」，会按说话人拆成一句句。</article>`;
+    transcriptTurnsList.innerHTML = `<article class="empty-history">暂无可编辑的转写。停录后进入“核对转写”，系统会按说话人拆分。</article>`;
     return;
   }
   transcriptTurnsList.innerHTML = source
-    .map((turn) => {
-      const avatar = escapeHtml((turn.speaker || "我").slice(0, 1));
+    .map((turn, index) => {
+      const avatar = escapeHtml((turn.speaker || "待确认").slice(0, 1));
       const speakerChips = SPEAKER_PRESETS.map(
         (name) =>
           `<button type="button" class="chip${turn.speaker === name ? " active" : ""}" data-action="set-turn-speaker" data-turn-id="${turn.id}" data-speaker="${escapeHtml(name)}"${readOnly ? " disabled" : ""}>${escapeHtml(name)}</button>`,
@@ -613,8 +649,10 @@ function renderTranscriptTurns() {
         <article class="transcript-turn">
           <span class="turn-avatar">${avatar}</span>
           <div class="turn-card${readOnly ? " is-readonly" : ""}">
+            <small class="turn-number">第 ${index + 1} 句</small>
             <header>
-              <input data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "我")}" ${readOnly ? "readonly" : ""} aria-label="说话人" />
+              <label class="turn-speaker-label" for="speaker-${turn.id}">这句话是谁说的？</label>
+              <input id="speaker-${turn.id}" data-turn-field="speaker" data-turn-id="${turn.id}" value="${escapeHtml(turn.speaker || "待确认")}" placeholder="输入自定义称呼，如客户、姐姐" maxlength="24" ${readOnly ? "readonly" : ""} aria-label="自定义说话人称呼" />
               <button type="button" class="turn-delete" data-action="delete-turn" data-turn-id="${turn.id}" ${readOnly ? "hidden" : ""} aria-label="删除这句">×</button>
             </header>
             <div class="turn-speakers">${speakerChips}</div>
@@ -626,6 +664,13 @@ function renderTranscriptTurns() {
     .join("");
 }
 
+function normalizeSpeakerName(value) {
+  return String(value || "")
+    .replace(/[\r\n]/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .slice(0, 24);
+}
+
 function findTurn(turnId) {
   return transcriptTurns.find((turn) => turn.id === turnId);
 }
@@ -633,14 +678,19 @@ function findTurn(turnId) {
 function updateTurn(turnId, patch) {
   const turn = findTurn(turnId);
   if (!turn || transcriptMode === "original") return;
-  Object.assign(turn, patch);
+  const nextPatch = { ...patch };
+  if (Object.prototype.hasOwnProperty.call(nextPatch, "speaker")) {
+    nextPatch.speaker = normalizeSpeakerName(nextPatch.speaker) || "待确认";
+    nextPatch.speakerId = nextPatch.speaker;
+  }
+  Object.assign(turn, nextPatch, { isUserEdited: true });
   syncTranscriptFromTurns();
   renderTranscriptTurns();
 }
 
 function addTranscriptTurn() {
   if (transcriptMode === "original") return;
-  transcriptTurns.push({ id: `turn-${nextTurnId++}`, speaker: "我", text: "" });
+  transcriptTurns.push({ id: `turn-${nextTurnId++}`, speaker: "待确认", text: "" });
   syncTranscriptFromTurns();
   renderTranscriptTurns();
   transcriptTurnsList?.querySelector(".transcript-turn:last-child textarea")?.focus();
@@ -658,11 +708,13 @@ function deleteTranscriptTurn(turnId) {
 }
 
 function collectAnalysisContext() {
+  const situation = document.querySelector("#context-situation")?.value.trim() || "";
   const relationship = document.querySelector("#context-relationship")?.value.trim() || "";
   const occasion = document.querySelector("#context-occasion")?.value.trim() || "";
   const feeling = document.querySelector("#context-feeling")?.value.trim() || "";
   const goal = document.querySelector("#context-goal")?.value.trim() || "";
   return [
+    situation ? `当前情况：${situation}` : "",
     relationship ? `关系：${relationship}` : "",
     occasion ? `场合：${occasion}` : "",
     feeling ? `感受：${feeling}` : "",
@@ -684,7 +736,7 @@ function setContextChip(group, value) {
 function openContextScreen() {
   const text = getTranscriptText();
   if (!text || isTranscriptPlaceholder(text)) {
-    showToast("请先确认逐字稿内容");
+    showToast("请先确认转写内容");
     return;
   }
   showScreen("context");
@@ -770,17 +822,9 @@ function collectSettingsForm(form) {
 }
 
 async function loadSettings({ silent = false } = {}) {
-  try {
-    const response = await fetch("/api/settings", { headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`settings ${response.status}`);
-    const payload = await response.json();
-    settingsState = mergeAppSettings(DEFAULT_APP_SETTINGS, payload.settings);
-    persistSettings();
-  } catch {
-    settingsState = loadCachedSettings();
-    if (!silent) showToast(COPY.toastSettingsLoadedLocal);
-  }
+  settingsState = loadCachedSettings();
   renderSettings();
+  if (!silent) showToast(COPY.toastSettingsLoadedLocal);
   return settingsState;
 }
 
@@ -788,33 +832,13 @@ async function saveSettings(patch) {
   settingsState = mergeAppSettings(settingsState, patch);
   persistSettings();
   renderSettings();
-
-  try {
-    const response = await fetch("/api/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ settings: settingsState }),
-    });
-    if (!response.ok) throw new Error(`settings ${response.status}`);
-    const payload = await response.json();
-    settingsState = mergeAppSettings(DEFAULT_APP_SETTINGS, payload.settings);
-    persistSettings();
-    renderSettings();
-    showToast(COPY.toastSettingsSaved);
-  } catch {
-    showToast(COPY.toastSettingsLocal);
-  }
+  showToast(COPY.toastSettingsSaved);
 }
 
 async function resetSettings() {
   settingsState = cloneSettings();
   persistSettings();
   renderSettings();
-  try {
-    await fetch("/api/settings", { method: "DELETE" });
-  } catch {
-    // Local settings have already been reset; backend sync can be retried later.
-  }
   showToast(COPY.toastSettingsReset);
 }
 
@@ -845,7 +869,7 @@ function buildSettingsExport() {
     return recordings.map((recording) => `${recording.title}\n${recording.meta}\n${recording.transcript || ""}`).join("\n\n---\n\n");
   }
   return recordings
-    .map((recording) => `## ${recording.title}\n\n${recording.meta}\n\n${recording.transcript || "暂无逐字稿"}`)
+    .map((recording) => `## ${recording.title}\n\n${recording.meta}\n\n${recording.transcript || "暂无转写"}`)
     .join("\n\n");
 }
 
@@ -881,7 +905,7 @@ function escapeHtml(value = "") {
 function renderRecordings() {
   if (!savedList) return;
   if (recordings.length === 0) {
-    savedList.innerHTML = `<article class="empty-history">还没有历史记录。完成一次录音后，可以选择“储存”放到这里。</article>`;
+    savedList.innerHTML = `<article class="empty-history">暂无录音记录。完成录音后，可以选择“保存”放到这里。</article>`;
     return;
   }
   savedList.innerHTML = recordings
@@ -890,13 +914,14 @@ function renderRecordings() {
         <article class="saved-card">
           <strong>${escapeHtml(recording.title)}</strong>
           <div class="meta">${escapeHtml(recording.meta)}</div>
+          <button class="saved-delete" type="button" data-action="delete-recording" data-recording-id="${escapeHtml(recording.id)}">删除</button>
           <div class="saved-bottom">
             ${
               recording.audioDataUrl
                 ? `<audio class="saved-audio" controls src="${escapeHtml(recording.audioDataUrl)}"></audio>`
                 : `<div class="mini-wave" aria-hidden="true">${waveform()}</div>`
             }
-            <button class="figma-button primary" data-action="review-recording" data-recording-id="${recording.id}">查看分析</button>
+            <button class="figma-button primary" data-action="review-recording" data-recording-id="${escapeHtml(recording.id)}">查看分析</button>
           </div>
         </article>
       `,
@@ -930,19 +955,20 @@ function stopTimer() {
 function setRecordingState(nextState) {
   recordingState = nextState;
   const content = {
-    ready: ["点击开始录音", "说完后再点一次结束，会生成原音频和逐字稿"],
-    recording: ["正在录音，点击结束", "说完后再点一次结束，然后可以分析或储存"],
-    paused: ["已暂停", "录音已暂停，点击继续会接着写入同一段音频"],
+    ready: ["开始录音", "开始后可随时暂停或结束"],
+    recording: ["正在录音", "可以暂停，或点击“结束录音”完成本段"],
+    paused: ["录音已暂停", "点击继续接着录，或直接结束本段"],
     processing: ["处理中", "正在生成可回放的原音频，请稍等"],
-    stopped: ["录音已结束", "可以现在分析，也可以先储存到历史记录"],
+    stopped: ["录音已结束", "可以核对转写，也可以先保存到录音记录"],
   }[nextState] || ["准备录音", I18N["live-note"]];
 
   if (homeRecordLabel) homeRecordLabel.textContent = content[0];
   if (homeRecordHelper) homeRecordHelper.textContent = content[1];
   homeRecordButton?.classList.toggle("is-recording", nextState === "recording");
+  homeRecordButton?.classList.toggle("is-paused", nextState === "paused");
   homeRecordButton?.classList.toggle("is-stopped", nextState === "stopped");
   homeRecordButton?.setAttribute("aria-pressed", String(nextState === "recording"));
-  if (homeRecordButton) homeRecordButton.disabled = nextState === "processing";
+  if (homeRecordButton) homeRecordButton.disabled = ["recording", "paused", "processing"].includes(nextState);
 
   if (recordingStatusLabel) recordingStatusLabel.textContent = content[0];
   if (recordingHelper) recordingHelper.textContent = content[1];
@@ -952,8 +978,12 @@ function setRecordingState(nextState) {
   if (startRecordingButton) startRecordingButton.hidden = nextState !== "ready";
   if (recordingControls) {
     recordingControls.hidden = !["recording", "paused"].includes(nextState);
-    recordingControls.querySelector('[data-action="pause-recording"]').disabled = nextState !== "recording";
-    recordingControls.querySelector('[data-action="resume-recording"]').disabled = nextState !== "paused";
+    const pauseButton = recordingControls.querySelector('[data-action="pause-recording"]');
+    const resumeButton = recordingControls.querySelector('[data-action="resume-recording"]');
+    pauseButton.hidden = nextState !== "recording";
+    pauseButton.disabled = nextState !== "recording";
+    resumeButton.hidden = nextState !== "paused";
+    resumeButton.disabled = nextState !== "paused";
     recordingControls.querySelector('[data-action="stop-recording"]').disabled = !["recording", "paused"].includes(nextState);
   }
   if (saveRecordingButton) saveRecordingButton.disabled = nextState !== "stopped";
@@ -995,9 +1025,22 @@ function applyTranscribedText(text, { force = false } = {}) {
   return true;
 }
 
+function applyTranscribedResult(result, { force = false } = {}) {
+  const current = getTranscriptText();
+  if (!force && transcriptEditedByUser && current && !isTranscriptPlaceholder(current)) {
+    return false;
+  }
+  if (Array.isArray(result?.segments) && result.segments.length > 0) {
+    const applied = setTranscriptSegments(result.segments, { snapshotOriginal: true });
+    if (applied) transcriptEditedByUser = false;
+    return applied;
+  }
+  return applyTranscribedText(result?.text, { force });
+}
+
 async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
   if (!(blob instanceof Blob) || blob.size === 0) {
-    if (!speechFinalText.trim() && isTranscriptPlaceholder(getTranscriptText())) {
+    if (isTranscriptPlaceholder(getTranscriptText())) {
       setTranscriptText(COPY.transcriptEmptyAudio);
     }
     setTranscriptStatus(COPY.transcriptStatusError, "error");
@@ -1019,29 +1062,21 @@ async function transcribeAndFill(blob, { force = false, silent = false } = {}) {
     const result = await transcribeAudioBlob(blob, {
       onStatus: (status) => {
         if (token !== transcriptionToken) return;
-        if (status === "local") {
+        if (status === "api") {
           setTranscriptStatus(COPY.transcriptStatusLoading, "loading");
-          if (isTranscriptPlaceholder(getTranscriptText()) || getTranscriptText() === COPY.transcriptLoading) {
-            setTranscriptText(COPY.transcriptLocalLoading);
-          }
-          showToast(COPY.toastTranscribeLocal);
+          showToast(COPY.toastTranscribeApi);
         }
       },
     });
     if (token !== transcriptionToken) return false;
-    const applied = applyTranscribedText(result.text, { force });
+    const applied = applyTranscribedResult(result, { force });
     setTranscriptStatus(COPY.transcriptStatusDone, "done");
+    persistCurrentDraft();
     if (applied) showToast(COPY.toastTranscribed);
     return true;
   } catch (error) {
     console.warn("Transcription failed", error);
     if (token !== transcriptionToken) return false;
-    const live = formatTranscriptText(speechFinalText);
-    if (live && (force || isTranscriptPlaceholder(getTranscriptText()))) {
-      setTranscriptText(live, { snapshotOriginal: true });
-      setTranscriptStatus(COPY.transcriptStatusDone, "done");
-      return true;
-    }
     if (isTranscriptPlaceholder(getTranscriptText()) || getTranscriptText() === COPY.transcriptLoading) {
       setTranscriptText(COPY.toastTranscribeFailed);
     }
@@ -1058,85 +1093,6 @@ function releaseAudioStream() {
   audioStream = null;
 }
 
-function currentLiveTranscript() {
-  const finalText = speechFinalText.trim();
-  const interimText = speechInterimText.trim();
-  return [
-    finalText,
-    interimText && recordingState === "recording" ? `（识别中）${interimText}` : "",
-  ].filter(Boolean).join("\n");
-}
-
-function renderSpeechTranscript() {
-  const live = currentLiveTranscript();
-  if (!live || transcriptEditedByUser) return;
-  setTranscriptText(live, { snapshotOriginal: originalTranscriptTurns.length === 0 });
-}
-
-function appendRecognizedText(text) {
-  const line = text.trim();
-  if (!line) return;
-  speechFinalText = `${speechFinalText}${speechFinalText ? "\n" : ""}我：${line}`;
-  renderSpeechTranscript();
-}
-
-function stopSpeechRecognition() {
-  shouldRestartRecognition = false;
-  speechInterimText = "";
-  if (!speechRecognition) {
-    renderSpeechTranscript();
-    return;
-  }
-  const activeRecognition = speechRecognition;
-  speechRecognition = null;
-  activeRecognition.onend = null;
-  try {
-    activeRecognition.stop();
-  } catch {
-    activeRecognition.abort?.();
-  }
-  renderSpeechTranscript();
-}
-
-function startSpeechRecognition() {
-  if (!SpeechRecognition) {
-    showToast(COPY.toastTranscriptionFallback);
-    return;
-  }
-  stopSpeechRecognition();
-  shouldRestartRecognition = true;
-  const recognition = new SpeechRecognition();
-  speechRecognition = recognition;
-  recognition.lang = "zh-CN";
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-  recognition.onresult = (event) => {
-    let interim = "";
-    for (let index = event.resultIndex; index < event.results.length; index += 1) {
-      const result = event.results[index];
-      const text = result[0]?.transcript || "";
-      if (result.isFinal) appendRecognizedText(text);
-      else interim += text;
-    }
-    speechInterimText = interim;
-    renderSpeechTranscript();
-  };
-  recognition.onerror = (event) => {
-    if (!["aborted", "no-speech"].includes(event.error)) showToast(COPY.toastTranscriptionFallback);
-  };
-  recognition.onend = () => {
-    if (shouldRestartRecognition && recordingState === "recording") {
-      window.setTimeout(startSpeechRecognition, 250);
-    }
-  };
-  try {
-    recognition.start();
-  } catch {
-    showToast(COPY.toastTranscriptionFallback);
-  }
-}
-
 function blobToDataUrl(blob) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -1144,13 +1100,6 @@ function blobToDataUrl(blob) {
     reader.onerror = () => resolve("");
     reader.readAsDataURL(blob);
   });
-}
-
-function ensureTranscriptReady() {
-  if (isTranscriptPlaceholder(getTranscriptText())) {
-    const live = formatTranscriptText(speechFinalText);
-    if (live) setTranscriptText(live, { snapshotOriginal: originalTranscriptTurns.length === 0 });
-  }
 }
 
 async function finalizeRecordedAudio({ silent = false } = {}) {
@@ -1169,28 +1118,27 @@ async function finalizeRecordedAudio({ silent = false } = {}) {
     if (recordingAudioCard) recordingAudioCard.hidden = true;
   }
   releaseAudioStream();
-  ensureTranscriptReady();
   currentDraftRecordingId ||= `live-${Date.now()}`;
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
   setRecordingState("stopped");
-  renderSpeechTranscript();
-  if (speechFinalText.trim()) setTranscriptStatus(COPY.transcriptStatusDone, "done");
+  persistCurrentDraft();
   setTranscribing(false);
   if (retranscribeButton) retranscribeButton.disabled = !recordedAudioBlob;
   if (currentScreen === "home") recordingReviewSheet.hidden = false;
   if (!silent) showToast(COPY.toastRecordingStopped);
-  if (audioBlob && settingsState.device.autoTranscribe && !speechFinalText.trim()) {
+  if (audioBlob && settingsState.device.autoTranscribe) {
     await transcribeAndFill(audioBlob, { silent: true });
-  } else if (!audioBlob && !speechFinalText.trim()) {
+    persistCurrentDraft();
+  } else if (!audioBlob) {
     setTranscriptText(COPY.transcriptEmptyAudio);
     setTranscriptStatus(COPY.transcriptStatusError, "error");
+    persistCurrentDraft();
   }
 }
 
 function prepareRecordingSession() {
   stopTimer();
-  stopSpeechRecognition();
   releaseAudioStream();
   clearRecordedAudio();
   recordedChunks = [];
@@ -1198,8 +1146,6 @@ function prepareRecordingSession() {
   currentDraftRecordingId = "";
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = "";
-  speechFinalText = "";
-  speechInterimText = "";
   transcriptionToken += 1;
   transcriptEditedByUser = false;
   elapsed = 0;
@@ -1211,7 +1157,6 @@ function prepareRecordingSession() {
   const marker = document.querySelector('[data-action="mark"]');
   if (marker) marker.textContent = I18N["marked-initial"];
   setRecordingState("ready");
-  renderSpeechTranscript();
 }
 
 async function startRecording() {
@@ -1221,8 +1166,6 @@ async function startRecording() {
   currentDraftRecordingId = "";
   currentDraftTitle = COPY.liveTitle;
   currentDraftMeta = "";
-  speechFinalText = "";
-  speechInterimText = "";
   transcriptionToken += 1;
   transcriptEditedByUser = false;
   elapsed = 0;
@@ -1231,17 +1174,16 @@ async function startRecording() {
   setTranscriptStatus(COPY.transcriptStatusReady, "");
   setRecordingState("recording");
   startTimer();
-  renderSpeechTranscript();
   showToast(COPY.toastRecordingStarted);
 
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
-    startSpeechRecognition();
+    stopTimer();
+    setRecordingState("ready");
     showToast(COPY.toastTranscriptionFallback);
     return;
   }
 
   try {
-    startSpeechRecognition();
     audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     if (recordingState !== "recording") {
       releaseAudioStream();
@@ -1253,22 +1195,24 @@ async function startRecording() {
       if (event.data?.size > 0) recordedChunks.push(event.data);
     });
     mediaRecorder.start(250);
-    if (!speechRecognition && SpeechRecognition) startSpeechRecognition();
   } catch (error) {
     console.warn("Recording unavailable", error);
     releaseAudioStream();
-    startSpeechRecognition();
+    stopTimer();
+    setRecordingState("ready");
     showToast(COPY.toastTranscriptionFallback);
   }
 }
 
 function pauseRecording() {
   if (recordingState !== "recording") return;
+  if (!mediaRecorder || mediaRecorder.state !== "recording") {
+    showToast("麦克风正在连接，请稍候");
+    return;
+  }
   if (mediaRecorder?.state === "recording") mediaRecorder.pause();
   stopTimer();
-  stopSpeechRecognition();
   setRecordingState("paused");
-  renderSpeechTranscript();
   showToast(COPY.toastRecordingPaused);
 }
 
@@ -1277,8 +1221,6 @@ function resumeRecording() {
   if (mediaRecorder?.state === "paused") mediaRecorder.resume();
   setRecordingState("recording");
   startTimer();
-  startSpeechRecognition();
-  renderSpeechTranscript();
   showToast(COPY.toastRecordingResumed);
 }
 
@@ -1288,12 +1230,13 @@ function stopRecording({ silent = false } = {}) {
     return;
   }
   stopTimer();
-  stopSpeechRecognition();
   setRecordingState("processing");
   if (mediaRecorder && mediaRecorder.state !== "inactive") {
     mediaRecorder.addEventListener("stop", () => finalizeRecordedAudio({ silent }), { once: true });
     mediaRecorder.stop();
+    releaseAudioStream();
   } else {
+    releaseAudioStream();
     finalizeRecordedAudio({ silent });
   }
 }
@@ -1317,7 +1260,6 @@ function revealInbox(behavior = "smooth") {
 function showScreen(id, { scrollInbox = false } = {}) {
   const next = screens.find((screen) => screen.dataset.screen === id);
   if (!next) return;
-  const previousScreen = currentScreen;
   const prev = screens.find((screen) => screen.classList.contains("active"));
 
   if (prev && prev !== next) prev.classList.remove("active");
@@ -1336,12 +1278,15 @@ function showScreen(id, { scrollInbox = false } = {}) {
   currentScreen = id;
   const tab = next.dataset.tab || id;
   guides.forEach((guide) => guide.classList.toggle("active", guide.dataset.jump === tab || guide.dataset.jump === id));
-  if (previousScreen === "home" && id !== "home" && ["recording", "paused"].includes(recordingState)) {
+  if (id !== "home" && ["recording", "paused"].includes(recordingState)) {
     stopRecording({ silent: true });
   } else if (id !== "home") {
     stopTimer();
   }
   if (id === "home" && scrollInbox) revealInbox();
+  if (id === "home" && recordingState === "stopped" && currentDraftRecordingId) {
+    recordingReviewSheet.hidden = false;
+  }
   if (id === "vent") sendVentIdentity();
 }
 
@@ -1493,8 +1438,19 @@ function addRecording(recording) {
   renderRecordings();
 }
 
+function deleteRecording(recordingId) {
+  const id = String(recordingId || "");
+  if (!recordings.some((recording) => recording.id === id)) return false;
+  if (!window.confirm("确定删除这条录音记录吗？")) return false;
+  recordings = recordings.filter((recording) => recording.id !== id);
+  persistRecordings();
+  renderRecordings();
+  if (currentDraftRecordingId === id) prepareRecordingSession();
+  showToast("录音记录已删除");
+  return true;
+}
+
 function buildCurrentRecording() {
-  ensureTranscriptReady();
   currentDraftRecordingId ||= `live-${Date.now()}`;
   currentDraftMeta ||= `${COPY.justNow} · ${formatTimer(Math.max(elapsed, 18))} · ${COPY.stored}`;
   return {
@@ -1504,6 +1460,12 @@ function buildCurrentRecording() {
     transcript: getTranscriptText(),
     audioDataUrl: recordedAudioDataUrl,
   };
+}
+
+function persistCurrentDraft() {
+  if (recordingState !== "stopped" || !currentDraftRecordingId) return false;
+  addRecording(buildCurrentRecording());
+  return true;
 }
 
 function saveCurrentRecording({ navigateToHistory = true } = {}) {
@@ -1525,7 +1487,6 @@ function loadRecordingForReview(recordingId) {
     return;
   }
   stopTimer();
-  stopSpeechRecognition();
   releaseAudioStream();
   currentDraftRecordingId = recording.id;
   currentDraftTitle = recording.title || COPY.liveTitle;
@@ -1550,11 +1511,6 @@ function loadRecordingForReview(recordingId) {
   showScreen("transcript");
 }
 
-function knowledgeBase() {
-  knowledgePromise ||= loadKnowledgeBase();
-  return knowledgePromise;
-}
-
 function setKnowledgeText(selector, value) {
   const element = document.querySelector(selector);
   if (element) element.textContent = value || "—";
@@ -1566,9 +1522,13 @@ function renderKnowledgeVoice(voiceId) {
   if (!voice) return;
   selectedKnowledgeVoice = voiceId;
   document.querySelectorAll("[data-voice]").forEach((button) => {
+    const buttonVoice = currentKnowledgeAnalysis.voices[button.dataset.voice];
+    if (buttonVoice) button.textContent = buttonVoice.display_name;
     button.classList.toggle("active", button.dataset.voice === voiceId);
   });
-  setKnowledgeText("#kb-voice-label", `${voice.display_name} · ${voice.tone_tags.join(" · ")}`);
+  const roleName = `${voice.display_name} · ${voice.roleLabel}`;
+  const tone = voice.tone_tags.length ? ` · ${voice.tone_tags.join(" · ")}` : "";
+  setKnowledgeText("#kb-voice-label", `${roleName}${tone}`);
   setKnowledgeText("#kb-voice-headline", voice.headline);
   setKnowledgeText("#kb-voice-analysis", `${voice.position} ${voice.analysis}`);
   setKnowledgeText("#kb-direct-reply", voice.direct_reply);
@@ -1580,55 +1540,52 @@ function renderKnowledgeAnalysis(result) {
   const riskLabel = result.riskLevel === "urgent" ? " · 安全优先" : "";
   setKnowledgeText(
     "#kb-status",
-    `${confidenceLabel} · ${result.sourceStats.scenes} 场景${riskLabel}`,
+    `当前对话分析 · ${confidenceLabel}${riskLabel}`,
   );
-  setKnowledgeText("#kb-match-title", `匹配场景：${result.scene.title}`);
-  setKnowledgeText("#kb-scene-opening", result.sceneRead.opening);
-  setKnowledgeText("#kb-key-detail", result.sceneRead.key_detail);
-  setKnowledgeText("#kb-stuck", result.sceneRead.where_it_is_stuck);
-  setKnowledgeText("#kb-confirm", result.sceneRead.need_to_confirm);
-  setKnowledgeText("#kb-uncertainty", `不确定性说明：${result.uncertainty}`);
-
-  const evidence = document.querySelector("#kb-evidence");
-  evidence.replaceChildren(
-    ...result.evidence.map((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      return li;
-    }),
-  );
-
-  const tags = document.querySelector("#kb-tags");
-  const items = [
-    ...result.patterns.map((item) => `模式：${item.name}`),
-    ...result.strategies.map((item) => `策略：${item.name}`),
-  ];
-  tags.replaceChildren(
-    ...items.slice(0, 6).map((item) => {
-      const tag = document.createElement("span");
-      tag.textContent = item;
-      return tag;
-    }),
+  setKnowledgeText(
+    "#kb-match-title",
+    result.currentDialogue?.title || result.sceneRead?.opening || "当前对话分析",
   );
   renderKnowledgeVoice(result.primaryVoice);
+}
+
+async function requestGroundedKnowledgeAnalysis(transcript, context) {
+  const segments = transcriptTurns.map((turn) => ({
+    id: turn.id,
+    speakerId: turn.speakerId || turn.speaker || "待确认",
+    text: turn.text,
+    startMs: Number(turn.startMs) || 0,
+    endMs: Number(turn.endMs) || 0,
+    confidence: Number.isFinite(Number(turn.confidence)) ? Number(turn.confidence) : null,
+    isUserEdited: Boolean(turn.isUserEdited || transcriptEditedByUser),
+  }));
+  const response = await fetch("/api/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ transcript, context, segments }),
+  });
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(payload?.error || `analysis_${response.status}`);
+  return payload;
 }
 
 async function runKnowledgeAnalysis(transcript) {
   const text = String(transcript || "").trim();
   if (!text) {
-    showToast("请先确认逐字稿内容");
+    showToast("请先确认转写内容");
     return;
   }
   showScreen("analysis");
   analysisScreen.classList.add("is-loading");
-  setKnowledgeText("#kb-status", "正在检索 120 个场景…");
+  setKnowledgeText("#kb-status", "正在检索知识库并整理三种视角…");
   try {
-    const knowledge = await knowledgeBase();
-    renderKnowledgeAnalysis(analyzeConfirmedTranscript(text, knowledge, { extra: collectAnalysisContext() }));
+    const context = collectAnalysisContext();
+    renderKnowledgeAnalysis(await requestGroundedKnowledgeAnalysis(text, context));
   } catch (error) {
     console.error("Knowledge analysis failed", error);
-    setKnowledgeText("#kb-status", "知识库读取失败");
-    showToast("知识库暂时无法读取，请重试");
+    setKnowledgeText("#kb-status", "智能分析暂时不可用");
+    setKnowledgeText("#kb-match-title", "请检查 API 配置后重试");
+    showToast("智能分析暂时不可用，请稍后重试");
   } finally {
     analysisScreen.classList.remove("is-loading");
   }
@@ -1678,13 +1635,16 @@ function openLevels(scene) {
 function appendDrill(role, text) {
   const bubble = document.createElement("div");
   bubble.className = `drill-bubble ${role}`;
-  bubble.textContent = text;
+  if (role === "ai") {
+    const speaker = document.createElement("small");
+    speaker.textContent = currentDrill?.role || "对方";
+    bubble.appendChild(speaker);
+  }
+  const message = document.createElement("p");
+  message.textContent = text;
+  bubble.appendChild(message);
   drillThread.appendChild(bubble);
   drillThread.scrollTop = drillThread.scrollHeight;
-}
-
-function renderSuggestions(list) {
-  drillSuggestions.innerHTML = list.map((line) => `<button type="button" data-suggest="${line}">${line}</button>`).join("");
 }
 
 function updateDrillProgress() {
@@ -1692,77 +1652,219 @@ function updateDrillProgress() {
     drillProgress.textContent = "";
     return;
   }
-  drillProgress.textContent = `技能包离线训练 · 第 ${Math.min(currentTrainingSession.turn + 1, 5)} / 5 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
+  const difficulty = ["", "容易", "中等", "困难"][currentTrainingSession.difficulty] || "容易";
+  drillProgress.textContent = `沉浸对练 · ${difficulty} · 第 ${Math.min(currentTrainingSession.turn + 1, currentTrainingSession.maxTurns)} / ${currentTrainingSession.maxTurns} 轮 · 已覆盖 ${currentTrainingSession.achievedGoalIds.length} / 5 项能力`;
 }
 
-function appendTrainingReview() {
-  const review = buildTrainingReview(currentTrainingSession);
+function listCard(title, values) {
   const card = document.createElement("article");
-  card.className = "drill-review";
-  const title = document.createElement("strong");
-  title.textContent = `训练复盘 · 已覆盖 ${review.achievedNames.length} / ${review.totalGoals}`;
-  const achieved = document.createElement("p");
-  achieved.textContent = review.achievedNames.length
-    ? `你已经做到：${review.achievedNames.join("、")}`
-    : "这一轮还没有覆盖到明确能力点。";
-  const next = document.createElement("p");
-  next.textContent = `下一步：${review.nextStep}`;
-  card.append(title, achieved, next);
-  drillThread.appendChild(card);
-  drillThread.scrollTop = drillThread.scrollHeight;
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  const list = document.createElement("ul");
+  (values?.length ? values : ["这轮对话较短，暂时没有足够证据。"] ).forEach((value) => {
+    const item = document.createElement("li");
+    item.textContent = value;
+    list.appendChild(item);
+  });
+  card.append(heading, list);
+  return card;
 }
 
-function startDrill(id, extra = {}) {
+function renderClassicTrainingReview(review) {
+  const target = document.querySelector("#training-review");
+  target.replaceChildren();
+
+  const summary = document.createElement("section");
+  summary.className = "review-summary-card";
+  const summaryText = document.createElement("p");
+  summaryText.textContent = review.summary || "本轮训练已经结束。";
+  summary.appendChild(summaryText);
+
+  const columns = document.createElement("div");
+  columns.className = "review-columns";
+  columns.append(
+    listCard("做得好的地方", review.strengths),
+    listCard("优先改进", review.priority_improvements),
+  );
+
+  const dimensions = document.createElement("div");
+  dimensions.className = "review-dimensions";
+  (review.dimensions || []).forEach((dimension) => {
+    const card = document.createElement("article");
+    const header = document.createElement("header");
+    const name = document.createElement("strong");
+    name.textContent = dimension.name;
+    const score = document.createElement("span");
+    score.textContent = dimension.score == null ? "证据不足" : `${dimension.score}/5`;
+    header.append(name, score);
+    const evidence = document.createElement("small");
+    evidence.textContent = `对话证据：${dimension.evidence || "暂无"}`;
+    const feedback = document.createElement("p");
+    feedback.textContent = dimension.feedback || "";
+    card.append(header, evidence, feedback);
+    dimensions.appendChild(card);
+  });
+
+  const next = document.createElement("article");
+  next.className = "review-next";
+  const betterTitle = document.createElement("strong");
+  betterTitle.textContent = "换一种更清楚的说法";
+  const better = document.createElement("p");
+  better.textContent = review.better_response || "下一轮先把事实、边界和下一步说具体。";
+  const practiceTitle = document.createElement("strong");
+  practiceTitle.textContent = "下一次只练这一点";
+  const practice = document.createElement("p");
+  practice.textContent = review.next_practice || "换一个场景继续练习。";
+  const back = document.createElement("button");
+  back.className = "figma-button primary";
+  back.dataset.action = "practice";
+  back.textContent = "返回场景地图";
+  next.append(betterTitle, better, practiceTitle, practice, back);
+
+  target.append(summary, columns, dimensions, next);
+  showScreen("review");
+}
+
+async function startDrill(id, extra = {}) {
   const trainingModule = getTrainingModule(id);
-  currentTrainingSession = trainingModule ? createTrainingSession(id) : null;
+  currentTrainingSession = null;
   currentDrill = { ...(DRILLS[id] || DRILLS.custom), ...extra };
   if (trainingModule) {
     currentDrill = {
       role: trainingModule.role,
       title: trainingModule.title,
-      opener: trainingModule.opener,
-      suggestions: getTrainingHints(currentTrainingSession),
+      summary: trainingModule.summary,
+      opener: "",
+      suggestions: [],
       replies: [],
     };
   }
+  const trainingModuleId = resolveTrainingModuleId(id, currentDrill);
   drillOrigin = extra.origin || "levels";
   drillStep = 0;
+  boundaryWins = 0;
+  const isFamily = trainingModuleId.includes("family");
+  const drillScreen = document.querySelector(".drill-screen");
+  drillScreen?.classList.toggle("scene-family", isFamily);
+  drillScreen?.classList.toggle("scene-workplace", !isFamily);
+  drillScreen?.classList.toggle("use-boss-two", /general|overtime|emotional|gender/.test(trainingModuleId));
+  document.querySelector(".family-dinner-stage")?.classList.remove("is-softened");
   document.querySelector("#drill-role").textContent = currentDrill.role;
   document.querySelector("#drill-title").textContent = extra.title || currentDrill.title;
   drillThread.innerHTML = "";
-  appendDrill("ai", currentDrill.opener);
-  renderSuggestions(currentDrill.suggestions);
-  drillForm.classList.remove("is-disabled");
-  document.querySelector("#drill-input").disabled = false;
-  updateDrillProgress();
+  drillInput.value = "";
   showScreen("drill");
+
+  drillForm.classList.add("is-disabled");
+  drillInput.disabled = true;
+  drillProgress.textContent = "正在进入训练场景…";
+  try {
+    const data = await createClassicTrainingSession(trainingModuleId, selectedClassicDifficulty, {
+      title: currentDrill.title,
+      role: currentDrill.role,
+      summary: currentDrill.summary || currentDrill.title,
+    });
+    currentTrainingSession = {
+      sessionId: data.session_id,
+      turn: data.current_turn,
+      maxTurns: data.max_turns,
+      difficulty: selectedClassicDifficulty,
+      achievedGoalIds: [],
+      finished: false,
+    };
+    appendDrill("ai", data.opponent_message);
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
+    updateDrillProgress();
+  } catch (error) {
+    appendDrill("ai", `系统提示：${error.message}。没有启用旧版预设回复。`);
+    drillProgress.textContent = "训练服务暂时不可用";
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
+  }
 }
 
-function sendDrill(text) {
+async function sendDrill(text) {
   if (!currentDrill || !text.trim()) return;
   appendDrill("me", text.trim());
-  if (currentTrainingSession) {
-    currentTrainingSession = submitTrainingTurn(currentTrainingSession, text);
-    updateDrillProgress();
-    window.setTimeout(() => {
-      appendDrill("ai", currentTrainingSession.reply);
-      if (currentTrainingSession.finished) {
-        appendTrainingReview();
-        renderSuggestions([]);
-        drillForm.classList.add("is-disabled");
-        document.querySelector("#drill-input").disabled = true;
-      } else {
-        renderSuggestions(getTrainingHints(currentTrainingSession));
-      }
-    }, 260);
+  if (!currentTrainingSession) {
+    appendDrill("ai", "系统提示：训练会话尚未建立，请返回后重新进入这一关。");
     return;
   }
-  const reply = currentDrill.replies[Math.min(drillStep, currentDrill.replies.length - 1)];
-  drillStep += 1;
-  window.setTimeout(() => {
-    appendDrill("ai", reply);
-    if (drillStep >= currentDrill.replies.length) renderSuggestions([COPY.endSuggest]);
-  }, 420);
+  if (/请.{0,8}(尊重|不要|别)|我(会|想|决定|安排).{0,12}(自己|以后|再说)|不想.{0,8}(讨论|回答)/.test(text)) {
+    boundaryWins += 1;
+  }
+  drillForm.classList.add("is-disabled");
+  drillInput.disabled = true;
+  drillProgress.textContent = "对方正在回应…";
+  try {
+    const data = await sendClassicTrainingTurn(currentTrainingSession.sessionId, text.trim());
+    currentTrainingSession = {
+      ...currentTrainingSession,
+      turn: data.current_turn,
+      maxTurns: data.max_turns,
+      achievedGoalIds: data.state?.resolved_goal_ids || currentTrainingSession.achievedGoalIds,
+      finished: data.end_session,
+    };
+    appendDrill("ai", data.opponent_message);
+    if (boundaryWins >= 2 && currentDrill?.role && /家|亲戚|长辈|父母/.test(currentDrill.title)) {
+      document.querySelector(".family-dinner-stage")?.classList.add("is-softened");
+    }
+    updateDrillProgress();
+    if (data.end_session) {
+      drillProgress.textContent = "正在生成练习复盘…";
+      const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
+      currentTrainingSession = null;
+      renderClassicTrainingReview(review);
+      return;
+    }
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
+    drillInput.focus();
+  } catch (error) {
+    appendDrill("ai", `系统提示：${error.message}`);
+    drillProgress.textContent = "发送失败，请稍后重试";
+    drillForm.classList.remove("is-disabled");
+    drillInput.disabled = false;
+  }
+}
+
+async function finishClassicTraining() {
+  if (!currentTrainingSession?.sessionId) return;
+  drillForm.classList.add("is-disabled");
+  drillProgress.textContent = "正在生成练习复盘…";
+  try {
+    const review = await finishClassicTrainingSession(currentTrainingSession.sessionId);
+    currentTrainingSession = null;
+    renderClassicTrainingReview(review);
+  } catch (error) {
+    appendDrill("ai", `复盘生成失败：${error.message}`);
+    drillForm.classList.remove("is-disabled");
+  }
+}
+
+async function showClassicTrainingHint() {
+  let lines = currentDrill?.suggestions || [];
+  if (!currentTrainingSession?.sessionId) {
+    if (lines[0]) {
+      drillInput.value = lines[0];
+      drillInput.focus();
+    }
+    return;
+  }
+  drillProgress.textContent = "正在整理这一轮提示…";
+  try {
+    const hint = await getClassicTrainingHint(currentTrainingSession.sessionId);
+    lines = [hint.sentence_starter, hint.communication_move, ...(hint.facts_to_use || []).slice(0, 1)].filter(Boolean);
+    if (lines[0]) {
+      drillInput.value = lines[0];
+      drillInput.focus();
+    }
+    drillProgress.textContent = "提示已填入输入框，不会占用训练轮数";
+  } catch (error) {
+    showToast(`提示生成失败：${error.message}`);
+    updateDrillProgress();
+  }
 }
 
 document.addEventListener("click", async (event) => {
@@ -1772,14 +1874,17 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
-  const suggest = event.target.closest("[data-suggest]");
-  if (suggest) {
-    if (suggest.dataset.suggest === COPY.endSuggest) {
-      showToast(COPY.toastEndDrill);
-      showScreen("analysis");
-      return;
-    }
-    sendDrill(suggest.dataset.suggest);
+  if (event.target.closest("#drill-hint")) {
+    await showClassicTrainingHint();
+    return;
+  }
+
+  const difficulty = event.target.closest("[data-classic-difficulty]");
+  if (difficulty) {
+    selectedClassicDifficulty = Number(difficulty.dataset.classicDifficulty) || 1;
+    document.querySelectorAll("[data-classic-difficulty]").forEach((button) => {
+      button.classList.toggle("active", button === difficulty);
+    });
     return;
   }
 
@@ -1822,14 +1927,6 @@ document.addEventListener("click", async (event) => {
       prepareRecordingSession();
       await startRecording();
       break;
-    case "toggle-recording":
-      if (["recording", "paused"].includes(recordingState)) {
-        stopRecording();
-      } else if (recordingState !== "processing") {
-        prepareRecordingSession();
-        await startRecording();
-      }
-      break;
     case "history-list":
       showScreen("history");
       break;
@@ -1838,13 +1935,17 @@ document.addEventListener("click", async (event) => {
         showToast(COPY.toastRecordingRequired);
         break;
       }
-      ensureTranscriptReady();
-      renderSpeechTranscript();
       recordingReviewSheet.hidden = true;
       showScreen("transcript");
       break;
+    case "close-recording-review":
+      recordingReviewSheet.hidden = true;
+      break;
     case "review-recording":
       loadRecordingForReview(control.dataset.recordingId);
+      break;
+    case "delete-recording":
+      deleteRecording(control.dataset.recordingId);
       break;
     case "add-turn":
       addTranscriptTurn();
@@ -1876,7 +1977,10 @@ document.addEventListener("click", async (event) => {
       await transcribeAndFill(recordedAudioBlob, { force: true });
       break;
     case "start-recording":
-      await startRecording();
+      if (!["recording", "paused", "processing"].includes(recordingState)) {
+        prepareRecordingSession();
+        await startRecording();
+      }
       break;
     case "pause-recording":
       pauseRecording();
@@ -1922,9 +2026,13 @@ document.addEventListener("click", async (event) => {
           showToast(COPY.toastRecordingRequired);
           break;
         }
+        if (currentScreen !== "context") {
+          openContextScreen();
+          break;
+        }
         const transcript = getTranscriptText();
         if (isTranscriptPlaceholder(transcript)) {
-          showToast(transcribing ? COPY.toastTranscribing : "请先确认逐字稿内容");
+          showToast(transcribing ? COPY.toastTranscribing : "请先确认转写内容");
           break;
         }
         recordingReviewSheet.hidden = true;
@@ -1939,6 +2047,16 @@ document.addEventListener("click", async (event) => {
       showToast(COPY.toastReplay);
       openLevels("work");
       break;
+    case "save-personal-scene": {
+      const role = document.querySelector("#context-relationship")?.value.trim() || "对方";
+      const sceneTitle = currentKnowledgeAnalysis?.scene?.title || "我的专属场景";
+      const sceneText = [sceneTitle, getTranscriptText(), collectAnalysisContext()].filter(Boolean).join("\n");
+      document.querySelector("#custom-role").value = role;
+      document.querySelector("#custom-scene").value = sceneText;
+      showToast("已纳入用户专属场景");
+      showScreen("custom");
+      break;
+    }
     case "open-levels":
       openLevels(control.dataset.scene || selectedMap);
       break;
@@ -1946,11 +2064,11 @@ document.addEventListener("click", async (event) => {
       showScreen("custom");
       break;
     case "start-drill":
-      startDrill(control.dataset.drill);
+      await startDrill(control.dataset.drill);
       break;
     case "end-drill":
-      showToast(COPY.toastEndDrill);
-      showScreen("practice");
+      if (currentTrainingSession?.sessionId) await finishClassicTraining();
+      else showScreen("practice");
       break;
     case "levels":
       showScreen(drillOrigin === "custom" ? "custom" : "levels");
@@ -1973,19 +2091,18 @@ document.addEventListener("click", async (event) => {
   }
 });
 
-document.querySelector("#custom-form").addEventListener("submit", (event) => {
+document.querySelector("#custom-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const role = document.querySelector("#custom-role").value.trim() || COPY.opponent;
   const scene = document.querySelector("#custom-scene").value.trim() || COPY.customOpener;
   showToast(COPY.toastCustom);
-  startDrill("custom", { role, title: COPY.customTitle, opener: scene, origin: "custom" });
+  await startDrill("custom", { role, title: COPY.customTitle, opener: scene, origin: "custom" });
 });
 
-document.querySelector("#drill-form").addEventListener("submit", (event) => {
+document.querySelector("#drill-form").addEventListener("submit", async (event) => {
   event.preventDefault();
-  const input = document.querySelector("#drill-input");
-  sendDrill(input.value);
-  input.value = "";
+  await sendDrill(drillInput.value);
+  drillInput.value = "";
 });
 
 document.querySelectorAll("[data-settings-form]").forEach((form) => {
@@ -2001,12 +2118,19 @@ document.addEventListener("input", (event) => {
     if (transcriptMode === "original") return;
     const turn = findTurn(turnField.dataset.turnId);
     if (!turn) return;
-    turn[turnField.dataset.turnField] = turnField.value;
+    const nextValue = turnField.dataset.turnField === "speaker"
+      ? normalizeSpeakerName(turnField.value)
+      : turnField.value;
+    if (turnField.value !== nextValue) turnField.value = nextValue;
+    turn[turnField.dataset.turnField] = nextValue;
+    if (turnField.dataset.turnField === "speaker") turn.speakerId = nextValue;
     syncTranscriptFromTurns();
     if (turnField.dataset.turnField !== "speaker") return;
     const card = turnField.closest(".transcript-turn");
     const avatar = card?.querySelector(".turn-avatar");
     if (avatar) avatar.textContent = (turnField.value || "我").slice(0, 1);
+    const dialogueField = card?.querySelector('[data-turn-field="text"]');
+    dialogueField?.setAttribute("aria-label", `${turnField.value || "待确认"}的对话`);
     card?.querySelectorAll("[data-action='set-turn-speaker']").forEach((chip) => {
       chip.classList.toggle("active", chip.dataset.speaker === turnField.value.trim());
     });
@@ -2019,6 +2143,17 @@ document.addEventListener("input", (event) => {
   document.querySelectorAll(`[data-context-group="${group}"] .chip`).forEach((chip) => {
     chip.classList.toggle("active", chip.dataset.contextValue === contextField.value.trim());
   });
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && ["recording", "paused"].includes(recordingState)) {
+    stopRecording({ silent: true });
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  if (["recording", "paused"].includes(recordingState)) stopRecording({ silent: true });
+  releaseAudioStream();
 });
 
 installPhoneViewportFitting();

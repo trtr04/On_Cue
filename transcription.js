@@ -1,15 +1,10 @@
-const TRANSFORMER_URLS = [
-  "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.2/+esm",
-  "https://unpkg.com/@huggingface/transformers@3.5.2/+esm",
-];
-const LOCAL_MODEL = "Xenova/whisper-base";
-const MODEL_HOSTS = ["https://huggingface.co/", "https://hf-mirror.com/"];
-
 const PLACEHOLDER_SNIPPETS = [
   "自动转写会出现在这里",
   "这里会填入这次录音",
+  "转写内容会显示在这里",
   "这里会自动填入",
   "正在整理这次录音",
+  "正在整理录音转写",
   "正在听，请开始说话",
   "没有录到音频",
   "转写失败",
@@ -17,12 +12,21 @@ const PLACEHOLDER_SNIPPETS = [
   "首次转写需要加载",
 ];
 
-let localPipelinePromise = null;
-
 export function isTranscriptPlaceholder(value) {
   const text = String(value || "").trim();
   if (!text) return true;
   return PLACEHOLDER_SNIPPETS.some((snippet) => text.includes(snippet));
+}
+
+export function splitTranscriptSentences(value) {
+  const text = String(value || "")
+    .replace(/\r/g, "")
+    .replace(/[ \t]+/g, " ")
+    .trim();
+  if (!text) return [];
+  return (text.match(/[^。！？!?；;.\n]+[。！？!?；;.]?/g) || [])
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
 }
 
 export function parseTranscriptTurns(value) {
@@ -31,17 +35,59 @@ export function parseTranscriptTurns(value) {
   const turns = [];
   text.split(/\n+/).forEach((line) => {
     const match = line.match(/^([^：:]{1,12})[：:]\s*(.*)$/);
-    if (match) {
-      turns.push({ speaker: match[1].trim() || "我", text: match[2].trim() });
-      return;
-    }
-    if (turns.length) {
-      turns[turns.length - 1].text = `${turns[turns.length - 1].text}\n${line}`.trim();
-      return;
-    }
-    turns.push({ speaker: "我", text: line.trim() });
+    const speaker = match ? match[1].trim() || "待确认" : "待确认";
+    const content = match ? match[2] : line;
+    splitTranscriptSentences(content).forEach((sentence) => {
+      turns.push({ speaker, text: sentence });
+    });
   });
   return turns.filter((turn) => turn.speaker || turn.text);
+}
+
+function speakerName(index, speakerId) {
+  if (index === 0) return "对方";
+  if (index === 1) return "我";
+  return `说话人 ${String(speakerId || index + 1).slice(0, 12)}`;
+}
+
+export function normalizeDiarizedSegments(value) {
+  if (!Array.isArray(value)) return [];
+  const speakers = new Map();
+  const turns = [];
+  value.slice(0, 800).forEach((raw, segmentIndex) => {
+    if (!raw || typeof raw !== "object") return;
+    const speakerId = String(raw.speakerId ?? raw.speaker ?? "").trim().slice(0, 40);
+    const segmentText = String(raw.text || "").trim().slice(0, 2_000);
+    if (!speakerId || !segmentText) return;
+    if (!speakers.has(speakerId)) speakers.set(speakerId, speakerName(speakers.size, speakerId));
+    const sentences = splitTranscriptSentences(segmentText);
+    if (!sentences.length) return;
+    const rawStart = Number(raw.startMs ?? Number(raw.start) * 1_000);
+    const rawEnd = Number(raw.endMs ?? Number(raw.end) * 1_000);
+    const startMs = Number.isFinite(rawStart) ? Math.max(0, Math.round(rawStart)) : 0;
+    const endMs = Number.isFinite(rawEnd) ? Math.max(startMs, Math.round(rawEnd)) : startMs;
+    const totalWeight = sentences.reduce((sum, sentence) => sum + Math.max(1, sentence.length), 0);
+    let consumedWeight = 0;
+    sentences.forEach((sentence, sentenceIndex) => {
+      const sentenceWeight = Math.max(1, sentence.length);
+      const sentenceStart = startMs + Math.round((endMs - startMs) * consumedWeight / totalWeight);
+      consumedWeight += sentenceWeight;
+      const sentenceEnd = sentenceIndex === sentences.length - 1
+        ? endMs
+        : startMs + Math.round((endMs - startMs) * consumedWeight / totalWeight);
+      turns.push({
+        id: `${String(raw.id || `segment-${segmentIndex + 1}`).slice(0, 80)}-${sentenceIndex + 1}`,
+        speaker: speakers.get(speakerId),
+        speakerId,
+        text: sentence,
+        startMs: sentenceStart,
+        endMs: sentenceEnd,
+        confidence: Number.isFinite(Number(raw.confidence)) ? Number(raw.confidence) : null,
+        isUserEdited: false,
+      });
+    });
+  });
+  return turns;
 }
 
 export function serializeTranscriptTurns(turns) {
@@ -62,10 +108,10 @@ export function formatTranscriptText(value) {
     .replace(/\n{3,}/g, "\n\n")
     .trim();
   if (!text) return "";
-  if (/^(我|对方|导师|领导|家人|同事)[：:]/m.test(text) || text.includes("\n")) {
+  if (/^[^：:\n]{1,12}[：:]/m.test(text) || text.includes("\n")) {
     return text.replace(/^(\S+):/gm, "$1：");
   }
-  return `我：${text}`;
+  return `待确认：${text}`;
 }
 
 export function filenameForAudio(blob, fallback = "recording.webm") {
@@ -106,119 +152,23 @@ async function transcribeViaApi(blob) {
   const payload = await response.json();
   const text = formatTranscriptText(payload?.text);
   if (!text) throw new Error("empty_api_transcript");
-  return { text, source: payload.source || "api" };
+  return {
+    text,
+    segments: normalizeDiarizedSegments(payload?.segments),
+    source: payload.source || "api",
+    model: payload.model || "",
+    diarized: Boolean(payload?.diarized),
+  };
 }
 
-async function loadTransformers() {
-  let lastError = null;
-  for (const url of TRANSFORMER_URLS) {
-    try {
-      return await import(/* @vite-ignore */ url);
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError || new Error("transformers_unavailable");
-}
-
-async function decodeToWhisperAudio(blob) {
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) throw new Error("no_audio_context");
-  const context = new AudioContextClass();
-  try {
-    const copied = (await blob.arrayBuffer()).slice(0);
-    const buffer = await context.decodeAudioData(copied);
-    const channel = buffer.numberOfChannels > 1 ? mixToMono(buffer) : buffer.getChannelData(0);
-    const samples = resample(channel, buffer.sampleRate, 16000);
-    return { raw: samples, sampling_rate: 16000 };
-  } finally {
-    await context.close().catch(() => {});
-  }
-}
-
-function mixToMono(buffer) {
-  const length = buffer.length;
-  const mixed = new Float32Array(length);
-  const count = buffer.numberOfChannels;
-  for (let channel = 0; channel < count; channel += 1) {
-    const data = buffer.getChannelData(channel);
-    for (let index = 0; index < length; index += 1) mixed[index] += data[index] / count;
-  }
-  return mixed;
-}
-
-function resample(input, fromRate, toRate) {
-  if (fromRate === toRate) return input;
-  const ratio = fromRate / toRate;
-  const length = Math.max(1, Math.round(input.length / ratio));
-  const output = new Float32Array(length);
-  for (let index = 0; index < length; index += 1) {
-    const position = index * ratio;
-    const left = Math.floor(position);
-    const right = Math.min(left + 1, input.length - 1);
-    const t = position - left;
-    output[index] = input[left] * (1 - t) + input[right] * t;
-  }
-  return output;
-}
-
-async function createLocalPipeline(remoteHost) {
-  const { pipeline, env } = await loadTransformers();
-  env.allowLocalModels = false;
-  env.useBrowserCache = true;
-  if (remoteHost) env.remoteHost = remoteHost;
-  try {
-    return await pipeline("automatic-speech-recognition", LOCAL_MODEL, { dtype: "q8" });
-  } catch {
-    return pipeline("automatic-speech-recognition", LOCAL_MODEL);
-  }
-}
-
-async function getLocalPipeline() {
-  if (!localPipelinePromise) {
-    localPipelinePromise = (async () => {
-      let lastError = null;
-      for (const host of MODEL_HOSTS) {
-        try {
-          return await createLocalPipeline(host);
-        } catch (error) {
-          lastError = error;
-        }
-      }
-      throw lastError || new Error("local_model_failed");
-    })();
-  }
-  try {
-    return await localPipelinePromise;
-  } catch (error) {
-    localPipelinePromise = null;
-    throw error;
-  }
-}
-
-async function transcribeViaLocalWhisper(blob) {
-  const transcriber = await getLocalPipeline();
-  const audio = await decodeToWhisperAudio(blob);
-  const result = await transcriber(audio.raw, {
-    language: "chinese",
-    task: "transcribe",
-    chunk_length_s: 30,
-    stride_length_s: 5,
-  });
-  const text = formatTranscriptText(result?.text);
-  if (!text) throw new Error("empty_local_transcript");
-  return { text, source: "whisper-local" };
+export function transcriptionPlan() {
+  return ["api"];
 }
 
 export async function transcribeAudioBlob(blob, { onStatus } = {}) {
   if (!(blob instanceof Blob) || blob.size === 0) {
     throw new Error("missing_audio");
   }
-  onStatus?.("cloud");
-  try {
-    return await transcribeViaApi(blob);
-  } catch {
-    onStatus?.("local");
-    return await transcribeViaLocalWhisper(blob);
-  }
+  onStatus?.("api");
+  return transcribeViaApi(blob);
 }

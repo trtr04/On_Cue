@@ -8,9 +8,9 @@ export default defineConfig({
     assetsDir: "assets",
     rollupOptions: {
       output: {
-        entryFileNames: "assets/oncue.js",
+        entryFileNames: "assets/oncue-[hash].js",
         assetFileNames: (assetInfo) =>
-          assetInfo.name?.endsWith(".css") ? "assets/oncue.css" : "assets/[name]-[hash][extname]",
+          assetInfo.name?.endsWith(".css") ? "assets/oncue-[hash].css" : "assets/[name]-[hash][extname]",
       },
     },
   },

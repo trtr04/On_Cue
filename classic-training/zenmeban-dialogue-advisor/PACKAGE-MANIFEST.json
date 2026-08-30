@@ -1,0 +1,161 @@
+{
+  "package": "zenmeban-dialogue-advisor",
+  "version": "0.2.7",
+  "platform": "macOS Codex",
+  "build_date": "2026-08-27",
+  "files": 29,
+  "contents": [
+    {
+      "path": "INSTALL-macOS.md",
+      "bytes": 2182,
+      "sha256": "273e9613aa2bdcd64f2f0389494e7a9fb5d30f0dfa2eb757c947ee29026566e6"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3450,
+      "sha256": "7038a9e5b792e9002c17ce3f05c8aaea4c9c6c5c9f5ddeb0943fa90e0f854d79"
+    },
+    {
+      "path": "install-macos.command",
+      "bytes": 573,
+      "sha256": "c4b5902a8ba9fd349447be6c4091d3df8f25260a4179fbdd376db0a43ec57ed3"
+    },
+    {
+      "path": "references/core/AMBIGUITY-ANALYSIS-SPEC.md",
+      "bytes": 3295,
+      "sha256": "8b951d67a001c68025d66c5567290aa2f72066b772874c4870e8b509144ef0fb"
+    },
+    {
+      "path": "references/core/API-INTEGRATION-VOICE-CONTRACT.md",
+      "bytes": 3796,
+      "sha256": "518b212662da56fc17e036194bff4e634d530f980e1614615e3934199741dade"
+    },
+    {
+      "path": "references/core/LIVING-VOICE-SPEC.md",
+      "bytes": 5639,
+      "sha256": "3fa469ee491c15e0f8c65a7ad09408c3e1411c27b95a73e357f7a8e3e85a537d"
+    },
+    {
+      "path": "references/core/system-prompt.md",
+      "bytes": 11384,
+      "sha256": "e6be963afec7d7de86e1abcd4255c59eb6b31db64acfc542f1ec5bc73b5f7e33"
+    },
+    {
+      "path": "references/core/voice-profiles.json",
+      "bytes": 4917,
+      "sha256": "b9b3f53798276438d69ea4f32e331bb659d9f429bbaa1f324dfaaa295380c093"
+    },
+    {
+      "path": "references/core/voice-router.json",
+      "bytes": 756,
+      "sha256": "c6c426c5a406a17b68463de0c8a141f5988416421f2ab43d6c63e8f00eaedfd7"
+    },
+    {
+      "path": "references/evaluation/AMBIGUOUS-CONVERSATION-20-CASE-REPORT.md",
+      "bytes": 23462,
+      "sha256": "af07e7e7718624be03454b97c2ec17ede0d0fa4f9504e5882337331aa5fbc6ae"
+    },
+    {
+      "path": "references/evaluation/LIVING-VOICE-20-CASE-REPORT.md",
+      "bytes": 33398,
+      "sha256": "c829e97b55524e8325e1267450271ff183387f0600215e2e5628045729e9fb17"
+    },
+    {
+      "path": "references/evaluation/ambiguity-evaluation.json",
+      "bytes": 59653,
+      "sha256": "93d8c3457c21aefb04ec976a8a56d1f8c0c679a319efab02a4d3f2008909d2c1"
+    },
+    {
+      "path": "references/evaluation/living-voice-20-cases.json",
+      "bytes": 41756,
+      "sha256": "a96e27ab756871298cee865de29b895ff13d880a995c1dde5641def4f3def846"
+    },
+    {
+      "path": "references/evaluation/validation-report.md",
+      "bytes": 5135,
+      "sha256": "18d3c52e8e18170fad754b26778ca99cfd9c75ea745a639e5e86180dbf455cf9"
+    },
+    {
+      "path": "references/knowledge/patterns.json",
+      "bytes": 34001,
+      "sha256": "46a0c30b1187684c8a211452748c170d305ff9ab373b5116a544c992a545f39c"
+    },
+    {
+      "path": "references/knowledge/retrieval-aliases.json",
+      "bytes": 232827,
+      "sha256": "d6c2f4cbb3123c2d85e8d705c861db211bf73e12200fcfa39bd72b284396dae1"
+    },
+    {
+      "path": "references/knowledge/scenes.json",
+      "bytes": 1097385,
+      "sha256": "6a7491c34de0628d5bf959baa75e2ec6b99c33d857319ec068f6abd0ab1da8dd"
+    },
+    {
+      "path": "references/knowledge/strategies.json",
+      "bytes": 27234,
+      "sha256": "0cf531fb9e2e059b306a54768202738119c7ff32847dae0d5d64ecfcf406cda1"
+    },
+    {
+      "path": "references/schemas/ambiguity-evaluation.schema.json",
+      "bytes": 1602,
+      "sha256": "a3522ae630c14f961dd20329fdd5b4f5e60e1ff3bc4be87cc2754781a0c75355"
+    },
+    {
+      "path": "references/schemas/analysis-input.schema.json",
+      "bytes": 3438,
+      "sha256": "fa901e27387bffbbc1896c35ac42b879139e7fd92e8d2641f45f28a849e11ec9"
+    },
+    {
+      "path": "references/schemas/analysis-output.schema.json",
+      "bytes": 17030,
+      "sha256": "794b24f79932115db0ea52e5ec527a01c8dcdc64cea9fa2d30696e4b95a57bd3"
+    },
+    {
+      "path": "references/schemas/patterns.schema.json",
+      "bytes": 2619,
+      "sha256": "86839ca3e63c14b3647b4acce26c39a16a9d438eb166030e3cea0f4bf8fd9003"
+    },
+    {
+      "path": "references/schemas/scenes.schema.json",
+      "bytes": 20300,
+      "sha256": "148459125652112b681d552b307e9e0d5373feebc630617d7354f8fd75bbd284"
+    },
+    {
+      "path": "references/schemas/strategies.schema.json",
+      "bytes": 3009,
+      "sha256": "e0700a5d8862faf474224ab40b8dcf5c6e75da71aa0d072eceb141e2c8acab0c"
+    },
+    {
+      "path": "references/schemas/voice-profiles.schema.json",
+      "bytes": 2244,
+      "sha256": "69acf50e5d413dd7cf001e0da8aa93c88942adaf25d0569317408b4952ea2824"
+    },
+    {
+      "path": "references/schemas/voice-router.schema.json",
+      "bytes": 3503,
+      "sha256": "ceaa95833af5b416ce1ca30496a0546f5828658985d8803a29b93a09451f2431"
+    },
+    {
+      "path": "scripts/build_manifest.py",
+      "bytes": 1314,
+      "sha256": "7790a46013d5c579e23f0d0c8de1215afb8f419c0f3bf00ba97591ab80393931"
+    },
+    {
+      "path": "scripts/search_kb.py",
+      "bytes": 3912,
+      "sha256": "76bde6c27279f557ddf35f03586c5928f22414c4f562ff7dd0700f772576ff87"
+    },
+    {
+      "path": "scripts/validate_package.py",
+      "bytes": 4635,
+      "sha256": "518228c0b866dd651021c2749ec46076b6c5ec4baab963e8dfb1a93d281e8829"
+    }
+  ],
+  "validation": {
+    "full_kb_scripts": 17,
+    "scenes": 120,
+    "ambiguity_cases": 20,
+    "voices": 3
+  },
+  "privacy": "No real recordings, private transcripts, API keys, attachment paths, or builder user paths."
+}
